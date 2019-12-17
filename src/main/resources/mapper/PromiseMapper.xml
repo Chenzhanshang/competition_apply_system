@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nnxy.competition.dao.PromiseDao">
+
+    <select id="getPromiseByRole"  parameterType="com.nnxy.competition.entity.Role" resultType="com.nnxy.competition.entity.Promise">
+        select p.promise_id promise_id,p.promise_name promise_name
+        from t_promise p
+        left join t_role_promise rp
+        on p.promise_id = rp.promise_id
+        where rp.role_id in
+        <foreach collection="collection" item="item" open="(" separator="," close=")">
+            #{item.roleId}
+        </foreach>
+    </select>
+
+</mapper>
