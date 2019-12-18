@@ -32,6 +32,8 @@ public class Competition {
 
     private String competitionSite;
 
+    private List<Notification> notifications;
+
     public String getCompetitionId() {
         return competitionId;
     }
@@ -129,6 +131,15 @@ public class Competition {
         this.users = users;
     }
 
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
     @Override
     public String toString() {
         return "Competition{" +
@@ -144,6 +155,7 @@ public class Competition {
                 ", competitionStoptime=" + competitionStoptime +
                 ", competitionLevel=" + competitionLevel +
                 ", competitionSite='" + competitionSite + '\'' +
+                ", notifications=" + notifications +
                 '}';
     }
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nnxy.competition.dao.NotificationDao">
+    <select id="findNotificationByType" parameterType="Integer" resultMap="notificationMap">
+        SELECT n.notification_id notification_id,n.notification_state notification_state,n.notification_title notification_title,
+        c.competition_id competition_id, c.competition_level competition_level,
+        c.competition_type competition_type, c.competition_site competition_site
+        FROM t_notification n
+        LEFT JOIN t_competition c
+        ON n.competition_id = c.competition_id
+        WHERE n.notification_type = #{v}
+    </select>
+
+    <resultMap id="notificationMap" type="com.nnxy.competition.entity.Notification">
+        <id column="notification_id" property="notificationId" javaType="String" />
+        <result column="notification_state" property="notificationState" javaType="Integer" />
+        <result column="notification_title" property="notificationTitle" javaType="String" />
+        <association property="competition" javaType="com.nnxy.competition.entity.Competition" column="competition_id">
+            <id column="competition_id" property="competitionId" javaType="String" />
+            <result column="competition_level" property="competitionLevel" javaType="Integer" />
+            <result column="competition_type" property="competitionType" javaType="String" />
+            <result column="competition_site" property="competitionSite" javaType="String" />
+        </association>
+    </resultMap>
+
+</mapper>

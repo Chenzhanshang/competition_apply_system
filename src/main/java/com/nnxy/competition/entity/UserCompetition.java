@@ -10,6 +10,16 @@ public class UserCompetition {
 
     private String userId;
 
+    private Long date;
+
+    public Long getDate() {
+        return date;
+    }
+
+    public void setDate(Long date) {
+        this.date = date;
+    }
+
     public String getCompetitionId() {
         return competitionId;
     }
@@ -24,5 +34,14 @@ public class UserCompetition {
 
     public void setUserId(String userId) {
         this.userId = userId == null ? null : userId.trim();
+    }
+
+    @Override
+    public String toString() {
+        return "UserCompetition{" +
+                "competitionId='" + competitionId + '\'' +
+                ", userId='" + userId + '\'' +
+                ", date=" + date +
+                '}';
     }
 }

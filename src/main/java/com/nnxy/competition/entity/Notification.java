@@ -1,7 +1,5 @@
 package com.nnxy.competition.entity;
 
-import java.util.List;
-
 /**
  * @author CZS
  * CreateTime 2019/12/13 11:10
@@ -12,7 +10,7 @@ public class Notification {
 
     private String notificationContent;
 
-    private List<User> users;
+    private Competition competition;
 
     private String notificationDate;
 
@@ -70,12 +68,12 @@ public class Notification {
         this.notificationState = notificationState;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public Competition getCompetition() {
+        return competition;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setCompetition(Competition competition) {
+        this.competition = competition;
     }
 
     @Override
@@ -83,7 +81,7 @@ public class Notification {
         return "Notification{" +
                 "notificationId='" + notificationId + '\'' +
                 ", notificationContent='" + notificationContent + '\'' +
-                ", users=" + users +
+                ", competition=" + competition +
                 ", notificationDate='" + notificationDate + '\'' +
                 ", notificationTitle='" + notificationTitle + '\'' +
                 ", notificationType=" + notificationType +

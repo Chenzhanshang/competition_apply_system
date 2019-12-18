@@ -33,7 +33,7 @@ public class UserController {
 
 
     /**
-     * 用户登录控制层
+     * 用户登录
      * @param user
      * @return
      */
@@ -81,6 +81,11 @@ public class UserController {
 
     }
 
+
+    /**
+     * 用户个人信息
+     * @return
+     */
     @RequestMapping("/findUserByUsername")
     @ResponseBody
     public User  findUserByUsername(){
