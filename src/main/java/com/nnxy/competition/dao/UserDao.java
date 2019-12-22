@@ -20,6 +20,13 @@ public interface UserDao {
     User findByUsernameAndPassword(User user);
 
     /**
+     * 通过用户名查询学院id
+     * @param userName
+     * @return
+     */
+    String findCollegeIdByUserName(String userName);
+
+    /**
      * 通过userName查询所有用户信息
      * @param userName
      * @return
@@ -32,8 +39,5 @@ public interface UserDao {
      * @param user
      */
     void updateUserByUserName(User user);
-
-
-
 
 }

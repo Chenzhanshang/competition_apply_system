@@ -1,5 +1,7 @@
 package com.nnxy.competition.entity;
 
+import java.util.List;
+
 /**
  * @author CZS
  * CreateTime 2019/12/13 11:10
@@ -19,6 +21,16 @@ public class Notification {
     private Integer notificationType;
 
     private Integer notificationState;
+
+    private List<File> files;
+
+    public List<File> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<File> files) {
+        this.files = files;
+    }
 
     public String getNotificationId() {
         return notificationId;
@@ -86,6 +98,7 @@ public class Notification {
                 ", notificationTitle='" + notificationTitle + '\'' +
                 ", notificationType=" + notificationType +
                 ", notificationState=" + notificationState +
+                ", files=" + files +
                 '}';
     }
 }

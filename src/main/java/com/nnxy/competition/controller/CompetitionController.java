@@ -35,4 +35,6 @@ public class CompetitionController {
             return new ResponseMessage("0","获取失败");
         }
     }
+
+
 }

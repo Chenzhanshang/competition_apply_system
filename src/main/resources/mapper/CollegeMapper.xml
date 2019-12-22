@@ -1,0 +1,34 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nnxy.competition.dao.CollegeDao">
+    <select id="findCollegeByNameAndUniversityId" parameterType="String" resultType="com.nnxy.competition.entity.College">
+        SELECT * FROM t_college WHERE college_name = #{collegeName} AND university_id = #{universityId}
+    </select>
+
+    <select id="findCollegeByUniversityId" parameterType="String" resultType="com.nnxy.competition.entity.College">
+        SELECT * FROM t_college WHERE university_id = #{universityId}
+    </select>
+
+    <select id="findCollegeById" parameterType="String" resultMap="collegeMap">
+        SELECT c.college_id college_id, c.college_name college_name, u.university_id university_id,
+        u.university_name university_name, u.university_city university_city
+        FROM t_college c
+        LEFT JOIN t_university u
+        ON c.university_id = u.university_id
+        WHERE college_id = #{v}
+    </select>
+
+    <resultMap id="collegeMap" type="com.nnxy.competition.entity.College">
+        <id column="college_id" property="collegeId" javaType="String" />
+        <result column="college_name" property="collegeName" javaType="String" />
+        <collection property="university" javaType="com.nnxy.competition.entity.University" column="university_id" >
+            <id column="university_id" property="universityId" javaType="String" />
+            <result column="university_name" property="universityName" javaType="String" />
+            <result column="university_city" property="universityCity" javaType="String" />
+        </collection>
+    </resultMap>
+
+
+
+</mapper>

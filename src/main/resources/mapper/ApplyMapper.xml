@@ -7,8 +7,13 @@
         INSERT INTO t_user_competition(competition_id, user_id, date) values (#{competitionId}, #{userId}, #{date})
     </insert>
 
+
     <select id="findApplyByUserIdAndCompetitionId" parameterType="com.nnxy.competition.entity.UserCompetition" resultType="com.nnxy.competition.entity.UserCompetition">
         SELECT * FROM t_user_competition WHERE user_id = #{userId} AND competition_id = #{competitionId}
+    </select>
+
+    <select id="deleteApply" parameterType="com.nnxy.competition.entity.UserCompetition" >
+        DELETE FROM t_user_competition WHERE user_id = #{userId} AND competition_id = #{competitionId}
     </select>
 
 </mapper>

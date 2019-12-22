@@ -25,6 +25,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public String findCollegeIdByUserName(String userName) {
+        String collegeId = userDao.findCollegeIdByUserName(userName);
+        return collegeId;
+    }
+
+    @Override
     public User findUserByUsername(String userName) {
         User user = userDao.findUserByUsername(userName);
         return user;

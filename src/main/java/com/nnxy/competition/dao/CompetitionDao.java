@@ -1,6 +1,7 @@
 package com.nnxy.competition.dao;
 
 import com.nnxy.competition.entity.Competition;
+import com.nnxy.competition.utils.CompetitionNotificationVO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -16,4 +17,26 @@ public interface CompetitionDao {
      * @return
      */
     Competition findCompetitionById(String competitionId);
+
+    /**
+     * 通过竞赛id删除比赛
+     * @param competitionId
+     * @return
+     */
+    void deleteCompetitionById(String competitionId);
+
+    /**
+     * 插入新比赛
+     * @param competition
+     * @return
+     */
+    void insertCompetition(Competition competition);
+
+    /**
+     * 修改竞赛通知及竞赛文件，竞赛内容
+     *
+     * @param competitionNotificationVO
+     * @return
+     */
+    void updateCompetition(CompetitionNotificationVO competitionNotificationVO);
 }

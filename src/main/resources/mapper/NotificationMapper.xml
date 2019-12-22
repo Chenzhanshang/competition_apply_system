@@ -6,7 +6,8 @@
     <select id="findNotificationByType" parameterType="Integer" resultMap="notificationMap">
         SELECT n.notification_id notification_id,n.notification_state notification_state,n.notification_title notification_title,
         c.competition_id competition_id, c.competition_level competition_level,
-        c.competition_type competition_type, c.competition_site competition_site
+        c.competition_type competition_type, c.competition_site competition_site,
+        c.competition_state competitionState
         FROM t_notification n
         LEFT JOIN t_competition c
         ON n.competition_id = c.competition_id
@@ -22,7 +23,61 @@
             <result column="competition_level" property="competitionLevel" javaType="Integer" />
             <result column="competition_type" property="competitionType" javaType="String" />
             <result column="competition_site" property="competitionSite" javaType="String" />
+            <result column="competition_state" property="competitionState" javaType="Integer" />
         </association>
     </resultMap>
 
+    <select id="findaSystemNoticeByTypeAndState" parameterType="Integer" resultType="com.nnxy.competition.entity.Notification">
+        SELECT * FROM t_notification WHERE notification_type = #{notificationType}
+        AND notification_state = #{notificationState}
+    </select>
+
+    <insert id="insertNotification" parameterType="com.nnxy.competition.entity.Notification">
+        INSERT INTO t_notification(notification_id,notification_title, notification_state, notification_type, competition_id)
+        VALUES (#{notificationId}, #{notificationTitle}, #{notificationState}, #{notificationType}, #{competition.competitionId})
+    </insert>
+
+    <select id="findDataByNotificationId" parameterType="String" resultMap="notificationMapVo">
+        SELECT n.notification_id notification_id, n.notification_title notification_title, n.notification_state notification_state, c.competition_id competition_id,
+        c.competition_name competition_name, c.competition_content competition_content,c.competition_site competition_site,
+        c.competition_time competition_time, c.competition_level competition_level, c.competition_state competition_state,
+        c.competition_type competition_type, c.competition_time competition_time, tc.college_id college_id, tc.college_name college_name
+        FROM t_notification n
+        LEFT JOIN t_competition c
+        ON n.competition_id = c.competition_id
+        LEFT JOIN t_college tc
+        ON tc.college_id = c.college_id
+        WHERE n.notification_id = #{v}
+    </select>
+
+    <resultMap id="notificationMapVo" type="com.nnxy.competition.entity.Notification">
+        <id column="notification_id" property="notificationId" javaType="String" />
+        <result column="notification_title" property="notificationTitle" javaType="String" />
+        <result column="notification_state" property="notificationState" javaType="Integer" />
+        <association property="competition" javaType="com.nnxy.competition.entity.Competition" column="competition_id">
+            <id column="competition_id" property="competitionId" javaType="String" />
+            <result column="competition_level" property="competitionLevel" javaType="Integer" />
+            <result column="competition_name" property="competitionName" javaType="String" />
+            <result column="competition_content" property="competitionContent" javaType="String" />
+            <result column="competition_time" property="competitionTime" javaType="String" />
+            <result column="competition_type" property="competitionType" javaType="String" />
+            <result column="competition_site" property="competitionSite" javaType="String" />
+            <result column="competition_time" property="competitionTime" javaType="String" />
+            <result column="competition_state" property="competitionState" javaType="Integer" />
+            <association property="college" javaType="com.nnxy.competition.entity.College" column="college_id">
+                <id column="college_id" property="collegeId" javaType="String" />
+                <result column="college_name" property="collegeName" javaType="String" />
+            </association>
+        </association>
+    </resultMap>
+
+    <delete id="deleteNotificationById" parameterType="String">
+        DELETE FROM t_notification WHERE notification_id = #{v}
+    </delete>
+
+    <update id="updateNotification" parameterType="com.nnxy.competition.utils.CompetitionNotificationVO">
+        UPDATE t_notification SET notification_title = #{notificationTitle},
+        notification_state = #{notificationState}
+        WHERE notification_id = #{notificationId}
+    </update>
 </mapper>

@@ -7,4 +7,25 @@
         SELECT * FROM t_competition WHERE competition_id = #{v}
     </select>
 
+    <insert id="insertCompetition" parameterType="com.nnxy.competition.entity.Competition">
+        INSERT INTO t_competition(competition_id, college_id, competition_name, competition_state,
+         competition_content, competition_type, competition_time, competition_level, competition_site)
+         VALUES (#{competitionId} , #{college.collegeId}, #{competitionName}, #{competitionState}, #{competitionContent},
+         #{competitionType}, #{competitionTime}, #{competitionLevel}, #{competitionSite})
+    </insert>
+
+    <delete id="deleteCompetitionById" parameterType="String">
+        DELETE FROM t_competition WHERE competition_id = #{v}
+    </delete>
+
+    <update id="updateCompetition" parameterType="com.nnxy.competition.utils.CompetitionNotificationVO">
+        UPDATE t_competition SET competition_name = #{competitionName}, competition_content = #{competitionContent},
+        competition_site = #{competitionSite}, competition_type = #{competitionType}, competition_level = #{competitionLevel},
+        competition_time = #{competitionTime}
+        <if test="collegeId!=null and collegeId!=''">
+            , college_id = #{collegeId}
+        </if>
+        WHERE competition_id = #{competitionId}
+    </update>
+
 </mapper>

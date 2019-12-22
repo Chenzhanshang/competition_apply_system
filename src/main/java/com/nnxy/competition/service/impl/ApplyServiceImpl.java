@@ -26,4 +26,9 @@ public class ApplyServiceImpl implements ApplyService {
         UserCompetition uc = applyDao.findApplyByUserIdAndCompetitionId(userCompetition);
         return uc;
     }
+
+    @Override
+    public void deleteApply(UserCompetition userCompetition) {
+        applyDao.deleteApply(userCompetition);
+    }
 }

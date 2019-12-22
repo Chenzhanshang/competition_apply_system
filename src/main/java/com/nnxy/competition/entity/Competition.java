@@ -24,7 +24,7 @@ public class Competition {
 
     private String competitionType;
 
-    private Long competitionStarttime;
+    private String competitionTime;
 
     private Long competitionStoptime;
 
@@ -33,6 +33,16 @@ public class Competition {
     private String competitionSite;
 
     private List<Notification> notifications;
+
+    private List<File> files;
+
+    public List<File> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<File> files) {
+        this.files = files;
+    }
 
     public String getCompetitionId() {
         return competitionId;
@@ -83,12 +93,12 @@ public class Competition {
         this.competitionType = competitionType == null ? null : competitionType.trim();
     }
 
-    public Long getCompetitionStarttime() {
-        return competitionStarttime;
+    public String getCompetitionTime() {
+        return competitionTime;
     }
 
-    public void setCompetitionStarttime(Long competitionStarttime) {
-        this.competitionStarttime = competitionStarttime;
+    public void setCompetitionTime(String competitionTime) {
+        this.competitionTime = competitionTime;
     }
 
     public Long getCompetitionStoptime() {
@@ -151,11 +161,12 @@ public class Competition {
                 ", competitionFile='" + competitionFile + '\'' +
                 ", competitionContent='" + competitionContent + '\'' +
                 ", competitionType='" + competitionType + '\'' +
-                ", competitionStarttime=" + competitionStarttime +
+                ", competitionTime='" + competitionTime + '\'' +
                 ", competitionStoptime=" + competitionStoptime +
                 ", competitionLevel=" + competitionLevel +
                 ", competitionSite='" + competitionSite + '\'' +
                 ", notifications=" + notifications +
+                ", files=" + files +
                 '}';
     }
 }

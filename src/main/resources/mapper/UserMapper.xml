@@ -20,6 +20,10 @@
         </trim>
         WHERE user_name = #{userName}
     </update>
+
+    <select id="findCollegeIdByUserName" parameterType="String" resultType="String">
+        SELECT college_id FROM t_user WHERE user_name = #{v}
+    </select>
     
     <select id="findUserByUsername" parameterType="String" resultMap="userMap">
         SELECT u.user_id user_id, u.user_name user_name, u.email email, u.password password, u.name name, u.phone phone,

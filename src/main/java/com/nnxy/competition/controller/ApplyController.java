@@ -44,6 +44,25 @@ public class ApplyController {
 
     }
 
+    @RequestMapping("/cancelApply")
+    public @ResponseBody
+    ResponseMessage cancelApply(String competitionId){
+        //创建中间表对象，封装报名信息
+        UserCompetition userCompetition = new UserCompetition();
+        userCompetition.setCompetitionId(competitionId);
+        User user = (User)SecurityUtils.getSubject().getPrincipal();
+        userCompetition.setUserId(user.getUserId());
+        try{
+            applyService.deleteApply(userCompetition);
+            return new ResponseMessage("1", "取消报名成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ResponseMessage("0", "取消报名失败");
+        }
+
+    }
+
     @RequestMapping("/loadApplyState")
     public @ResponseBody
     ResponseMessage loadApplyState(String competitionId){

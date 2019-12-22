@@ -22,4 +22,10 @@ public interface ApplyService {
      * @return
      */
     public UserCompetition findApplyByUserIdAndCompetitionId(UserCompetition userCompetition);
+
+    /**
+     * 根据用户id和竞赛id删除报名信息
+     * @param userCompetition
+     */
+    void deleteApply(UserCompetition userCompetition);
 }

@@ -22,4 +22,5 @@ public class CompetitionServiceImpl implements CompetitionService {
         Competition competition = competitionDao.findCompetitionById(competitionId);
         return competition;
     }
+
 }
