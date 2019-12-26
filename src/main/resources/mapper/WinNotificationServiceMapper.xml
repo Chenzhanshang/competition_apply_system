@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nnxy.competition.dao.WinNotificationServiceDao">
+    <select id="findAllWinNotification" parameterType="Integer" resultMap="notificationMap">
+        SELECT n.notification_id notification_id,n.notification_time notification_time,n.notification_title notification_title,
+        c.competition_id competition_id, c.competition_name competition_name
+--         , c.competition_level competition_level,
+--         c.competition_type competition_type, c.competition_site competition_site,
+--         c.competition_state competitionState
+        FROM t_notification n
+        LEFT JOIN t_competition c
+        ON n.competition_id = c.competition_id
+        WHERE n.notification_type = #{v}
+
+    </select>
+
+    <resultMap id="notificationMap" type="com.nnxy.competition.entity.Notification">
+        <id column="notification_id" property="notificationId" javaType="String" />
+        <result column="notification_time" property="notificationTime" javaType="Long" />
+<!--        <result column="notification_state" property="notificationState" javaType="Integer" />-->
+        <result column="notification_title" property="notificationTitle" javaType="String" />
+        <association property="competition" javaType="com.nnxy.competition.entity.Competition" column="competition_id">
+            <id column="competition_id" property="competitionId" javaType="String" />
+            <result column="competition_name" property="competitionName" javaType="String" />
+<!--            <result column="competition_level" property="competitionLevel" javaType="Integer" />-->
+<!--            <result column="competition_type" property="competitionType" javaType="String" />-->
+<!--            <result column="competition_site" property="competitionSite" javaType="String" />-->
+<!--            <result column="competition_state" property="competitionState" javaType="Integer" />-->
+        </association>
+    </resultMap>
+
+    <insert id="insertWinNotification" parameterType="com.nnxy.competition.entity.Notification">
+        INSERT INTO t_notification(notification_id, notification_time, notification_title, notification_type, competition_id)
+        VALUES (#{notificationId}, #{notificationTime}, #{notificationTitle}, #{notificationType}, #{competition.competitionId})
+    </insert>
+    
+    <update id="updateWinRanking">
+        UPDATE t_user_competition SET win_ranking = #{ranking} WHERE user_id = #{userId} AND competition_id = #{competitionId}
+    </update>
+
+    <update id="deleteWin" parameterType="String">
+        UPDATE t_user_competition SET win_ranking = NULL, win_level_name = NULL WHERE competition_id = #{competitionId}
+    </update>
+
+    <update id="updateWinNotification" parameterType="com.nnxy.competition.entity.Notification">
+        UPDATE t_notification SET notification_id = #{notificationId}
+        <if test="notificationTitle != null and notificationTitle != ''">
+            ,notification_title = #{notificationTitle}
+        </if>
+        <if test="competition.competitionId != null and competition.competitionId != ''">
+            ,competition_id = #{competition.competitionId}
+        </if>
+        WHERE notification_id = #{notificationId}
+    </update>
+
+</mapper>

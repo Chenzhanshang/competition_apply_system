@@ -14,7 +14,7 @@ public class Notification {
 
     private Competition competition;
 
-    private String notificationDate;
+    private Long notificationTime;
 
     private String notificationTitle;
 
@@ -23,6 +23,17 @@ public class Notification {
     private Integer notificationState;
 
     private List<File> files;
+
+    private List<String> userIds;
+
+    //手动录入获奖信息时使用
+    public List<String> getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(List<String> userIds) {
+        this.userIds = userIds;
+    }
 
     public List<File> getFiles() {
         return files;
@@ -48,12 +59,13 @@ public class Notification {
         this.notificationContent = notificationContent == null ? null : notificationContent.trim();
     }
 
-    public String getNotificationDate() {
-        return notificationDate;
+
+    public Long getNotificationTime() {
+        return notificationTime;
     }
 
-    public void setNotificationDate(String notificationDate) {
-        this.notificationDate = notificationDate == null ? null : notificationDate.trim();
+    public void setNotificationTime(Long notificationTime) {
+        this.notificationTime = notificationTime;
     }
 
     public String getNotificationTitle() {
@@ -94,7 +106,7 @@ public class Notification {
                 "notificationId='" + notificationId + '\'' +
                 ", notificationContent='" + notificationContent + '\'' +
                 ", competition=" + competition +
-                ", notificationDate='" + notificationDate + '\'' +
+                ", notificationTime='" + notificationTime + '\'' +
                 ", notificationTitle='" + notificationTitle + '\'' +
                 ", notificationType=" + notificationType +
                 ", notificationState=" + notificationState +

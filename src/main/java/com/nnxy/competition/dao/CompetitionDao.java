@@ -1,8 +1,11 @@
 package com.nnxy.competition.dao;
 
 import com.nnxy.competition.entity.Competition;
+import com.nnxy.competition.entity.User;
 import com.nnxy.competition.utils.CompetitionNotificationVO;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * @author :CZS
@@ -39,4 +42,17 @@ public interface CompetitionDao {
      * @return
      */
     void updateCompetition(CompetitionNotificationVO competitionNotificationVO);
+
+    /**
+     * 查询所有比赛详情
+     * @return
+     */
+    List<Competition> findAllCompetition();
+
+    /**
+     * 根据比赛id获得参赛列表
+     * @param competitionId
+     * @return
+     */
+    List<User> findUserByCompetitionId(String competitionId);
 }

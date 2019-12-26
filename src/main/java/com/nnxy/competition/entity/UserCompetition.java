@@ -6,11 +6,31 @@ package com.nnxy.competition.entity;
  * Email 642125256@qq.com
  */
 public class UserCompetition {
-    private String competitionId;
+    private Competition competition;
 
-    private String userId;
+    private User user;
 
     private Long date;
+
+    private Integer winRanking;
+
+    private String winLevelName;
+
+    public Integer getWinRanking() {
+        return winRanking;
+    }
+
+    public void setWinRanking(Integer winRanking) {
+        this.winRanking = winRanking;
+    }
+
+    public String getWinLevelName() {
+        return winLevelName;
+    }
+
+    public void setWinLevelName(String winLevelName) {
+        this.winLevelName = winLevelName;
+    }
 
     public Long getDate() {
         return date;
@@ -20,28 +40,30 @@ public class UserCompetition {
         this.date = date;
     }
 
-    public String getCompetitionId() {
-        return competitionId;
+    public Competition getCompetition() {
+        return competition;
     }
 
-    public void setCompetitionId(String competitionId) {
-        this.competitionId = competitionId == null ? null : competitionId.trim();
+    public void setCompetition(Competition competition) {
+        this.competition = competition;
     }
 
-    public String getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId == null ? null : userId.trim();
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
     public String toString() {
         return "UserCompetition{" +
-                "competitionId='" + competitionId + '\'' +
-                ", userId='" + userId + '\'' +
+                "competition=" + competition +
+                ", user=" + user +
                 ", date=" + date +
+                ", winRanking=" + winRanking +
+                ", winLevelName='" + winLevelName + '\'' +
                 '}';
     }
 }

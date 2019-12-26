@@ -46,4 +46,11 @@ public interface FileService {
      */
     void deleteFileById(String fileId);
 
+
+    /**
+     * 根据公告id查询文件
+     * @param notificationId
+     * @return
+     */
+    List<File> findFileByNotificationId(String notificationId);
 }

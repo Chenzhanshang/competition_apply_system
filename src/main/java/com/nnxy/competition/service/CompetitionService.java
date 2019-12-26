@@ -1,6 +1,9 @@
 package com.nnxy.competition.service;
 
 import com.nnxy.competition.entity.Competition;
+import com.nnxy.competition.entity.User;
+
+import java.util.List;
 
 /**
  * 
@@ -15,4 +18,17 @@ public interface CompetitionService {
      * @return
      */
     Competition findCompetitionById(String competitionId);
+
+    /**
+     * 查询所有比赛详情
+     * @return
+     */
+    List<Competition> findAllCompetition();
+
+    /**
+     * 根据比赛id获得参赛列表
+     * @param competitionId
+     * @return
+     */
+    List<User> findUserByCompetitionId(String competitionId);
 }

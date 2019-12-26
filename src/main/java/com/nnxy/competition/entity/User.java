@@ -34,7 +34,19 @@ public class User implements Serializable {
 
     private College college;
 
+    private String userClassName;
+
     private Set<Role> Roles;
+
+    private Win win;
+
+    public Win getWin() {
+        return win;
+    }
+
+    public void setWin(Win win) {
+        this.win = win;
+    }
 
     public String getUserId() {
         return userId;
@@ -141,6 +153,13 @@ public class User implements Serializable {
         this.teams = teams;
     }
 
+    public String getUserClassName() {
+        return userClassName;
+    }
+
+    public void setUserClassName(String userClassName) {
+        this.userClassName = userClassName;
+    }
 
     @Override
     public String toString() {
@@ -157,7 +176,9 @@ public class User implements Serializable {
                 ", sex='" + sex + '\'' +
                 ", period=" + period +
                 ", college=" + college +
+                ", userClassName='" + userClassName + '\'' +
                 ", Roles=" + Roles +
+                ", win=" + win +
                 '}';
     }
 }

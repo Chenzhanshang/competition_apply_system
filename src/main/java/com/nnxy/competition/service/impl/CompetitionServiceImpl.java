@@ -1,10 +1,14 @@
 package com.nnxy.competition.service.impl;
 
 import com.nnxy.competition.dao.CompetitionDao;
+import com.nnxy.competition.dao.FileDao;
 import com.nnxy.competition.entity.Competition;
+import com.nnxy.competition.entity.User;
 import com.nnxy.competition.service.CompetitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 
@@ -17,10 +21,27 @@ public class CompetitionServiceImpl implements CompetitionService {
     @Autowired
     private  CompetitionDao competitionDao;
 
+    @Autowired
+    private FileDao fileDao;
+
     @Override
     public Competition findCompetitionById(String competitionId) {
         Competition competition = competitionDao.findCompetitionById(competitionId);
+//        List<File> files = fileDao.findFileByCompetitionId(competitionId);
+//        competition.setFiles(files);
         return competition;
+    }
+
+    @Override
+    public List<Competition> findAllCompetition() {
+        List<Competition> competitions = competitionDao.findAllCompetition();
+        return competitions;
+    }
+
+    @Override
+    public List<User> findUserByCompetitionId(String competitionId) {
+        List<User> users = competitionDao.findUserByCompetitionId(competitionId);
+        return users;
     }
 
 }

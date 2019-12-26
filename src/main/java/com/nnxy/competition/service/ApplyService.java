@@ -2,6 +2,8 @@ package com.nnxy.competition.service;
 
 import com.nnxy.competition.entity.UserCompetition;
 
+import java.util.List;
+
 /**
  * 
  * @author  :CZS
@@ -28,4 +30,11 @@ public interface ApplyService {
      * @param userCompetition
      */
     void deleteApply(UserCompetition userCompetition);
+
+    /**
+     * 根据竞赛id获取获奖列表
+     * @param competitionId
+     * @return
+     */
+    List<UserCompetition> findWinByCompetitionId(String competitionId);
 }

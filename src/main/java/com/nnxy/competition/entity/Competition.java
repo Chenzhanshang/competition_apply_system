@@ -36,6 +36,16 @@ public class Competition {
 
     private List<File> files;
 
+    private Win win;
+
+    public Win getWin() {
+        return win;
+    }
+
+    public void setWin(Win win) {
+        this.win = win;
+    }
+
     public List<File> getFiles() {
         return files;
     }
@@ -167,6 +177,7 @@ public class Competition {
                 ", competitionSite='" + competitionSite + '\'' +
                 ", notifications=" + notifications +
                 ", files=" + files +
+                ", win=" + win +
                 '}';
     }
 }

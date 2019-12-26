@@ -3,8 +3,10 @@ package com.nnxy.competition.dao;
 import com.nnxy.competition.entity.UserCompetition;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
- * 
+ * 处理报名及获奖信息
  * @author  :CZS
  * @date    :2019/12/18 17:00
  * Email    :642125256@qq.com
@@ -31,4 +33,11 @@ public interface ApplyDao {
      * @param userCompetition
      */
     void deleteApply(UserCompetition userCompetition);
+
+    /**
+     * 根据竞赛id获取获奖列表
+     * @param competitionId
+     * @return
+     */
+    List<UserCompetition> findWinByCompetitionId(String competitionId);
 }

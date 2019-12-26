@@ -46,4 +46,18 @@ public interface FileDao {
      * @return
      */
     void deleteFileById(String fileId);
+
+    /**
+     * 根据公告id查询文件
+     * @param notificationId
+     * @return
+     */
+    List<File> findFileByNotificationId(String notificationId);
+
+    /**
+     * 根据公告id删除文件
+     * @param notificationId
+     * @return
+     */
+    void deleteFileByNnotificationId(String notificationId);
 }

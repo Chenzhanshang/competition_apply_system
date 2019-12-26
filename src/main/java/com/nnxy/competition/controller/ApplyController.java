@@ -1,5 +1,6 @@
 package com.nnxy.competition.controller;
 
+import com.nnxy.competition.entity.Competition;
 import com.nnxy.competition.entity.User;
 import com.nnxy.competition.entity.UserCompetition;
 import com.nnxy.competition.service.ApplyService;
@@ -28,9 +29,11 @@ public class ApplyController {
         System.out.println(competitionId);
         //创建中间表对象，封装报名信息
         UserCompetition userCompetition = new UserCompetition();
-        userCompetition.setCompetitionId(competitionId);
+        Competition competition = new Competition();
+        competition.setCompetitionId(competitionId);
+        userCompetition.setCompetition(competition);
         User user = (User)SecurityUtils.getSubject().getPrincipal();
-        userCompetition.setUserId(user.getUserId());
+        userCompetition.setUser(user);
         //获取当前时间毫秒值,并存入封装对象
         userCompetition.setDate(System.currentTimeMillis());
         try{
@@ -49,9 +52,11 @@ public class ApplyController {
     ResponseMessage cancelApply(String competitionId){
         //创建中间表对象，封装报名信息
         UserCompetition userCompetition = new UserCompetition();
-        userCompetition.setCompetitionId(competitionId);
+        Competition competition = new Competition();
+        competition.setCompetitionId(competitionId);
+        userCompetition.setCompetition(competition);
         User user = (User)SecurityUtils.getSubject().getPrincipal();
-        userCompetition.setUserId(user.getUserId());
+        userCompetition.setUser(user);
         try{
             applyService.deleteApply(userCompetition);
             return new ResponseMessage("1", "取消报名成功");
@@ -69,9 +74,11 @@ public class ApplyController {
         System.out.println(competitionId);
         //创建中间表对象，封装报名信息
         UserCompetition userCompetition = new UserCompetition();
-        userCompetition.setCompetitionId(competitionId);
+        Competition competition = new Competition();
+        competition.setCompetitionId(competitionId);
+        userCompetition.setCompetition(competition);
         User user = (User)SecurityUtils.getSubject().getPrincipal();
-        userCompetition.setUserId(user.getUserId());
+        userCompetition.setUser(user);
 
         try{
             UserCompetition uc = applyService.findApplyByUserIdAndCompetitionId(userCompetition);

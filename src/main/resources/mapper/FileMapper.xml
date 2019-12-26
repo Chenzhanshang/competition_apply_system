@@ -26,4 +26,14 @@
     </delete>
 
 
+    <select id="findFileByNotificationId" parameterType="String" resultType="com.nnxy.competition.entity.File">
+        SELECT * FROM t_file WHERE notification_id = #{v}
+    </select>
+
+    <delete id="deleteFileByNnotificationId" parameterType="String">
+        DELETE FROM t_file WHERE notification_id = #{v}
+    </delete>
+
+
+
 </mapper>

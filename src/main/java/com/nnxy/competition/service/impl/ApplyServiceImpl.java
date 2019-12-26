@@ -6,6 +6,8 @@ import com.nnxy.competition.service.ApplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 
  * @author  :CZS
@@ -30,5 +32,11 @@ public class ApplyServiceImpl implements ApplyService {
     @Override
     public void deleteApply(UserCompetition userCompetition) {
         applyDao.deleteApply(userCompetition);
+    }
+
+    @Override
+    public List<UserCompetition> findWinByCompetitionId(String competitionId) {
+        List<UserCompetition> userCompetitions = applyDao.findWinByCompetitionId(competitionId);
+        return userCompetitions;
     }
 }

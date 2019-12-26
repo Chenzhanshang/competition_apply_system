@@ -47,4 +47,10 @@ public class FileServiceImpl implements FileService {
         fileDao.deleteFileById(fileId);
     }
 
+    @Override
+    public List<File> findFileByNotificationId(String notificationId) {
+        List<File> files = fileDao.findFileByNotificationId(notificationId);
+        return files;
+    }
+
 }

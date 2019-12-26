@@ -47,16 +47,16 @@ public class NotificationController {
     private String path = "C:\\Users\\Administrator\\Desktop\\file";
 
     /**
-     * 通知类型查找通知
+     * 通知类型查找通知，已指定notificationType为0的为竞赛通知
      *
-     * @param notificationType
      * @return
      */
     @RequestMapping("/findNotificationByType")
     public @ResponseBody
-    ResponseMessage findNotificationByType(Integer notificationType) {
+    ResponseMessage findNotificationByType() {
         try {
-            List<Notification> notifications = notificationService.findNotificationByType(notificationType);
+            //获取类型为0（竞赛通知）的数据
+            List<Notification> notifications = notificationService.findNotificationByType(0);
             System.out.println(notifications);
             ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
             responseMessage.getData().put("notifications", notifications);
@@ -200,27 +200,29 @@ public class NotificationController {
                 //保存文件夹路径
                 s = files.get(0).getFilePath().substring(0,files.get(0).getFilePath().length() - files.get(0).getFileName().length() - 1);
                 System.out.println(s);
-            }
-            //快速for循环 快捷键iter
-            for (File file : files) {
-                System.out.println(file);
-                java.io.File f = new java.io.File(file.getFilePath());
-                //文件是否存在
-                if (f.exists()) {
-                    //存在就删除
-                    if (f.delete()) {
-                        System.out.println("本地文件删除成功");
+                //快速for循环 快捷键iter
+                for (File file : files) {
+                    System.out.println(file);
+                    java.io.File f = new java.io.File(file.getFilePath());
+                    //文件是否存在
+                    if (f.exists()) {
+                        //存在就删除
+                        if (f.delete()) {
+                            System.out.println("本地文件删除成功");
+                        } else {
+                            System.out.println("本地文件删除失败");
+                        }
                     } else {
-                        System.out.println("本地文件删除失败");
+                        System.out.println("本地不存在");
                     }
-                } else {
-                    System.out.println("本地不存在");
                 }
+                //获得上级文件夹
+                java.io.File f1 = new java.io.File(s);
+                //删除文件夹
+                f1.delete();
             }
-            //获得上级文件夹
-            java.io.File f1 = new java.io.File(s);
-            //删除文件夹
-            f1.delete();
+
+
             //删除信息
             notificationService.deleteNotificationById(notificationId, competitionId);
             ResponseMessage responseMessage = new ResponseMessage("1", "删除成功");
@@ -267,8 +269,6 @@ public class NotificationController {
         System.out.println(competitionNotificationVO);
         //将competitionId存入redis，修改文件时使用
         redisUtil.set("competitionId",competitionNotificationVO.getCompetitionId());
-        //设置标记为修改进redis，供修改文件使用
-        redisUtil.set("isUpdate", "true");
         try {
             notificationService.updateNotification(competitionNotificationVO);
             ResponseMessage responseMessage = new ResponseMessage("1","修改成功");
