@@ -30,9 +30,9 @@
 
     <insert id="insertCompetition" parameterType="com.nnxy.competition.entity.Competition">
         INSERT INTO t_competition(competition_id, college_id, competition_name, competition_state,
-         competition_content, competition_type, competition_time, competition_level, competition_site)
+         competition_content, competition_type, competition_time, competition_level, competition_site, competition_people_sum)
          VALUES (#{competitionId} , #{college.collegeId}, #{competitionName}, #{competitionState}, #{competitionContent},
-         #{competitionType}, #{competitionTime}, #{competitionLevel}, #{competitionSite})
+         #{competitionType}, #{competitionTime}, #{competitionLevel}, #{competitionSite}, #{competitionPeopleSum})
     </insert>
 
     <delete id="deleteCompetitionById" parameterType="String">
@@ -42,7 +42,7 @@
     <update id="updateCompetition" parameterType="com.nnxy.competition.utils.CompetitionNotificationVO">
         UPDATE t_competition SET competition_name = #{competitionName}, competition_content = #{competitionContent},
         competition_site = #{competitionSite}, competition_type = #{competitionType}, competition_level = #{competitionLevel},
-        competition_time = #{competitionTime}
+        competition_time = #{competitionTime}, competition_people_sum = #{competitionPeopleSum}
         <if test="collegeId!=null and collegeId!=''">
             , college_id = #{collegeId}
         </if>
@@ -52,7 +52,7 @@
     <select id="findAllCompetition" resultMap="findAllCompetitionMap">
         SELECT  c.competition_id competition_id, c.competition_time competition_time, c.competition_name competition_name,
         c.competition_content competition_content, c.competition_site competition_site, c.competition_level competition_level,
-        c.competition_type competition_type, tc.college_name college_name, u.university_name university_name
+        c.competition_type competition_type, c.competition_people_sum competition_people_sum,tc.college_name college_name, u.university_name university_name
         FROM t_competition c
         LEFT JOIN t_college tc
         ON c.college_id = tc.college_id
@@ -68,6 +68,7 @@
         <result column="competition_site" property="competitionSite" javaType="String" />
         <result column="competition_level" property="competitionLevel" javaType="Integer" />
         <result column="competition_type" property="competitionType" javaType="String" />
+        <result column="competition_people_sum" property="competitionPeopleSum" javaType="Integer" />
         <association property="college" javaType="com.nnxy.competition.entity.College" column="college_id">
             <id column="college_id" property="collegeId" javaType="String" />
             <result column="college_name" property="collegeName" javaType="String" />
@@ -76,7 +77,6 @@
                 <result column="university_name" property="universityName" javaType="String" />
             </association>
         </association>
-
     </resultMap>
 
     <select id="findUserByCompetitionId" parameterType="String" resultMap="findUserByCompetitionIdMap">
@@ -103,5 +103,35 @@
             <result column="college_name" property="collegeName" javaType="String" />
         </association>
     </resultMap>
+
+    <select id="findCompetitionListByUserId" parameterType="String" resultMap="findCompetitionListByUserIdMap">
+        SELECT uc.date dt, c.competition_name competition_name, c.competition_type competition_type,
+        c.competition_id competition_id,c.competition_people_sum competition_people_sum, c.competition_state competition_state
+        FROM t_user_competition uc
+        LEFT JOIN t_competition c
+        ON uc.competition_id = c.competition_id
+        WHERE uc.user_id = #{v}
+    </select>
+
+    <resultMap id="findCompetitionListByUserIdMap" type="com.nnxy.competition.entity.UserCompetition">
+        <id column="user_id" property="userId" javaType="String" />
+        <result column="dt" property="date" javaType="Long" />
+        <association property="competition" javaType="com.nnxy.competition.entity.Competition" column="competition_id">
+            <id column="competition_id" property="competitionId" javaType="String" />
+            <result column="competition_name" property="competitionName" javaType="String" />
+            <result column="competition_state" property="competitionState" javaType="Integer" />
+            <result column="competition_type" property="competitionType" javaType="String" />
+            <result column="competition_people_sum" property="competitionPeopleSum" javaType="Integer" />
+        </association>
+    </resultMap>
+
+
+    <select id="findAllTeamCompetition" resultType="com.nnxy.competition.entity.Competition">
+        SELECT  competition_id, competition_name, competition_people_sum
+        FROM t_competition
+        WHERE competition_people_sum > 1
+    </select>
+
+
 
 </mapper>

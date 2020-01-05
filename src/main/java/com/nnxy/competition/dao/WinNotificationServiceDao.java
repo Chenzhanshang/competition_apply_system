@@ -50,4 +50,5 @@ public interface WinNotificationServiceDao {
      * @return
      */
     void updateWinNotification(Notification notification);
+
 }

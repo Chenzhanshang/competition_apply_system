@@ -102,6 +102,7 @@ public class NotificationController {
         competition.setCompetitionSite(competitionNotificationVO.getCompetitionSite());
         competition.setCompetitionName(competitionNotificationVO.getCompetitionName());
         competition.setCompetitionType(competitionNotificationVO.getCompetitionType());
+        competition.setCompetitionPeopleSum(competitionNotificationVO.getCompetitionPeopleSum());
 
         String competitionId = UUID.randomUUID().toString();
         //将competitionId存入redis，存储文件时使用
@@ -177,6 +178,7 @@ public class NotificationController {
             return responseMessage;
         }
         catch (Exception e){
+            e.printStackTrace();
             return new ResponseMessage("0","获取失败");
         }
     }

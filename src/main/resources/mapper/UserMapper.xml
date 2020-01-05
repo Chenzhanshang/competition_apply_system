@@ -70,5 +70,9 @@
         </collection>
     </resultMap>
 
+    <update id="updatePassword" parameterType="com.nnxy.competition.entity.User" >
+        UPDATE t_user SET password = #{password} WHERE user_id = #{userId}
+    </update>
+
 
 </mapper>

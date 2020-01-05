@@ -1,5 +1,6 @@
 package com.nnxy.competition.service;
 
+import com.nnxy.competition.entity.Apply;
 import com.nnxy.competition.entity.UserCompetition;
 
 import java.util.List;
@@ -37,4 +38,33 @@ public interface ApplyService {
      * @return
      */
     List<UserCompetition> findWinByCompetitionId(String competitionId);
+
+    /**
+     * 保存队伍申请
+     * @param apply
+     * @return
+     */
+    void insertTeamApply(Apply apply);
+
+    /**
+     * 通过处理加入队伍的结果，修改申请信息
+     * @param apply
+     */
+    void updateApplyByDispose(Apply apply);
+
+    /**
+     * 获取用户所有申请中的申请
+     * @param userId
+     * @param applyState
+     * @return
+     */
+    List<Apply> findMyApplyList(String userId, Integer applyState);
+
+    /**
+     * 获取用户所有已结束的申请，状态参数，正在申请的状态0，除去状态为0的都为已结束申请
+     * @param userId
+     * @param applyState
+     * @return
+     */
+    List<Apply> findMyHistoryApplyList(String userId, Integer applyState);
 }

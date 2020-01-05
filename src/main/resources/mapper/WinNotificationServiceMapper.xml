@@ -4,13 +4,16 @@
 <mapper namespace="com.nnxy.competition.dao.WinNotificationServiceDao">
     <select id="findAllWinNotification" parameterType="Integer" resultMap="notificationMap">
         SELECT n.notification_id notification_id,n.notification_time notification_time,n.notification_title notification_title,
-        c.competition_id competition_id, c.competition_name competition_name
+        c.competition_id competition_id, c.competition_name competition_name,f.file_path file_path, f.file_name file_name,
+        f.file_id file_id
 --         , c.competition_level competition_level,
 --         c.competition_type competition_type, c.competition_site competition_site,
 --         c.competition_state competitionState
         FROM t_notification n
         LEFT JOIN t_competition c
         ON n.competition_id = c.competition_id
+        LEFT JOIN t_file f
+        ON f.notification_id = n.notification_id
         WHERE n.notification_type = #{v}
 
     </select>
@@ -28,6 +31,11 @@
 <!--            <result column="competition_site" property="competitionSite" javaType="String" />-->
 <!--            <result column="competition_state" property="competitionState" javaType="Integer" />-->
         </association>
+        <collection property="files" ofType="com.nnxy.competition.entity.File" column="file_id">
+            <id column="file_id" property="fileId" javaType="String" />
+            <result column="file_name" property="fileName" javaType="String" />
+            <result column="file_path" property="filePath" javaType="String" />
+        </collection>
     </resultMap>
 
     <insert id="insertWinNotification" parameterType="com.nnxy.competition.entity.Notification">

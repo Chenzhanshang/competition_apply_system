@@ -31,11 +31,9 @@ public interface UserService {
     User findUserByUsername(String userName);
 
 
-
     /**
-     * 通过userName修改密码
-     * @param userName
+     * 修改用户密码
+     * @param user
      */
-    void updatePasswordByAdminAccount(User userName);
-
+    void updatePassword(User user);
 }

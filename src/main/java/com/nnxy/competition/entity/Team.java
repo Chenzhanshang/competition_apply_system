@@ -18,7 +18,37 @@ public class Team {
 
     private Integer teamHeadcount;
 
+    private Competition competition;
+
     private List<User> users;
+
+    private String teamContent;
+
+    private List<Apply> applies;
+
+    public List<Apply> getApplies() {
+        return applies;
+    }
+
+    public void setApplies(List<Apply> applies) {
+        this.applies = applies;
+    }
+
+    public String getTeamContent() {
+        return teamContent;
+    }
+
+    public void setTeamContent(String teamContent) {
+        this.teamContent = teamContent;
+    }
+
+    public Competition getCompetition() {
+        return competition;
+    }
+
+    public void setCompetition(Competition competition) {
+        this.competition = competition;
+    }
 
     public String getTeamId() {
         return teamId;
@@ -77,7 +107,10 @@ public class Team {
                 ", teamName='" + teamName + '\'' +
                 ", teamState=" + teamState +
                 ", teamHeadcount=" + teamHeadcount +
+                ", competition=" + competition +
                 ", users=" + users +
+                ", teamContent='" + teamContent + '\'' +
+                ", applies=" + applies +
                 '}';
     }
 }

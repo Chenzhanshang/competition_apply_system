@@ -32,11 +32,32 @@ public class Competition {
 
     private String competitionSite;
 
+    private Integer competitionPeopleSum;
+
     private List<Notification> notifications;
 
     private List<File> files;
 
     private Win win;
+
+    private List<Team> teams;
+
+
+    public Integer getCompetitionPeopleSum() {
+        return competitionPeopleSum;
+    }
+
+    public void setCompetitionPeopleSum(Integer competitionPeopleSum) {
+        this.competitionPeopleSum = competitionPeopleSum;
+    }
+
+    public List<Team> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
+    }
 
     public Win getWin() {
         return win;
@@ -175,9 +196,11 @@ public class Competition {
                 ", competitionStoptime=" + competitionStoptime +
                 ", competitionLevel=" + competitionLevel +
                 ", competitionSite='" + competitionSite + '\'' +
+                ", competitionPeopleSum=" + competitionPeopleSum +
                 ", notifications=" + notifications +
                 ", files=" + files +
                 ", win=" + win +
+                ", teams=" + teams +
                 '}';
     }
 }

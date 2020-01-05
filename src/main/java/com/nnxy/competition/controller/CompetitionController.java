@@ -2,8 +2,10 @@ package com.nnxy.competition.controller;
 
 import com.nnxy.competition.entity.Competition;
 import com.nnxy.competition.entity.User;
+import com.nnxy.competition.entity.UserCompetition;
 import com.nnxy.competition.service.CompetitionService;
 import com.nnxy.competition.utils.ResponseMessage;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,6 +61,10 @@ public class CompetitionController {
         }
     }
 
+    /**
+     * 查询所有比赛
+     * @return
+     */
     @RequestMapping("/findAllCompetition")
     public @ResponseBody
     ResponseMessage findAllCompetition(){
@@ -74,5 +80,43 @@ public class CompetitionController {
         }
     }
 
+    /**
+     * 根据当前用户id获得已参加列表
+     * @return
+     */
+    @RequestMapping("/findCompetitionListByUserId")
+    public @ResponseBody ResponseMessage findCompetitionListByUserId(){
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        System.out.println(user);
+        try {
+            List<UserCompetition> userCompetitions = competitionService.findCompetitionListByUserId(user.getUserId());
+            ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
+            responseMessage.getData().put("userCompetitions", userCompetitions);
+            return responseMessage;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ResponseMessage("0", "获取失败");
+        }
+    }
+
+    /**
+     * 查询所有组队比赛
+     * @return
+     */
+    @RequestMapping("/findAllTeamCompetition")
+    public @ResponseBody
+    ResponseMessage findAllTeamCompetition(){
+        try{
+            List<Competition> competitions = competitionService.findAllTeamCompetition();
+            ResponseMessage responseMessage = new ResponseMessage("1","获取成功");
+            responseMessage.getData().put("competitions", competitions);
+            return responseMessage;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ResponseMessage("0", "获取失败");
+        }
+    }
 
 }

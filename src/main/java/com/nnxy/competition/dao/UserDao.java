@@ -40,4 +40,10 @@ public interface UserDao {
      */
     void updateUserByUserName(User user);
 
+    /**
+     * 修改用户密码
+     * @param user
+     */
+    void updatePassword(User user);
+
 }

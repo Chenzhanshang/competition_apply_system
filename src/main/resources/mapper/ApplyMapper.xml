@@ -46,4 +46,53 @@
         </association>
     </resultMap>
 
+    <insert id="insertTeamApply" parameterType="com.nnxy.competition.entity.Apply">
+        INSERT INTO t_apply(apply_id, apply_time, apply_content, apply_state, team_id, user_id)
+        VALUES (#{applyId}, #{applyTime}, #{applyContent}, #{applyState}, #{team.teamId}, #{user.userId})
+    </insert>
+
+    <update id="updateApplyByDispose" parameterType="com.nnxy.competition.entity.Apply">
+        UPDATE t_apply SET apply_state = #{applyState}, apply_dispose_time = #{applyDisposeTime} WHERE apply_id = #{applyId}
+    </update>
+
+    <select id="findMyApplyList" resultMap="ApplyListMap">
+        SELECT a.apply_id apply_id, a.apply_time apply_time, a.apply_state apply_state,a.apply_dispose_time apply_dispose_time,
+        a.apply_content apply_content,t.team_id team_id, t.team_name team_name, c.competition_id competition_id,
+        c.competition_name competition_name
+        FROM t_apply a
+        LEFT JOIN t_team t
+        ON a.team_id = t.team_id
+        LEFT JOIN t_competition c
+        ON t.competition_id = c.competition_id
+        WHERE a.user_id = #{userId} AND a.apply_state = #{applyState}
+    </select>
+
+    <resultMap id="ApplyListMap" type="com.nnxy.competition.entity.Apply">
+        <id column="apply_id" property="applyId" javaType="String" />
+        <result column="apply_time" property="applyTime" javaType="Long" />
+        <result column="apply_state" property="applyState" javaType="Integer" />
+        <result column="apply_dispose_time" property="applyDisposeTime" javaType="Long" />
+        <result column="apply_content" property="applyContent" javaType="String" />
+        <association property="team" javaType="com.nnxy.competition.entity.Team" column="team_id">
+            <id column="team_id" property="teamId" javaType="String" />
+            <result column="team_name" property="teamName" javaType="String" />
+            <association property="competition" javaType="com.nnxy.competition.entity.Competition" column="competition_id">
+                <id column="competition_id" property="competitionId" javaType="String" />
+                <result column="competition_name" property="competitionName" javaType="String" />
+            </association>
+        </association>
+    </resultMap>
+
+    <select id="findMyHistoryApplyList" resultMap="ApplyListMap">
+        SELECT a.apply_id apply_id, a.apply_time apply_time, a.apply_state apply_state,a.apply_dispose_time apply_dispose_time,
+        a.apply_content apply_content,t.team_id team_id, t.team_name team_name, c.competition_id competition_id,
+        c.competition_name competition_name
+        FROM t_apply a
+        LEFT JOIN t_team t
+        ON a.team_id = t.team_id
+        LEFT JOIN t_competition c
+        ON t.competition_id = c.competition_id
+        WHERE a.user_id = #{userId} AND a.apply_state != #{applyState}
+    </select>
+
 </mapper>

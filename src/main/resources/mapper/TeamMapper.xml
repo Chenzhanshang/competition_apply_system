@@ -1,0 +1,120 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nnxy.competition.dao.TeamDao">
+    <insert id="insertTeam" parameterType="com.nnxy.competition.entity.Team">
+        INSERT INTO t_team(team_id, captain_id, team_name, team_state, team_headcount, competition_id, team_content)
+        VALUES (#{teamId}, #{captain.userId}, #{teamName}, #{teamState}, #{teamHeadcount}, #{competition.competitionId}, #{teamContent})
+    </insert>
+
+    <select id="findJoinTeam" parameterType="String" resultMap="findTeamMap">
+        SELECT t.team_id team_id, t.team_name team_name, t.team_content team_content, t.team_state team_state,
+        t.team_content team_content, c.competition_id competition_id, c.competition_name competition_name
+        FROM t_team t
+        LEFT JOIN t_competition c
+        ON t.competition_id = c.competition_id
+        LEFT JOIN t_user_team ut
+        ON t.team_id = ut.team_id
+        WHERE ut.user_id = #{v} AND ut.user_id != t.captain_id
+    </select>
+
+    <select id="findMyTeam" parameterType="String" resultMap="findTeamMap">
+        SELECT t.team_id team_id, t.team_name team_name, t.team_content team_content, t.team_state team_state,
+        t.team_content team_content, c.competition_id competition_id, c.competition_name competition_name
+        FROM t_team t
+        LEFT JOIN t_competition c
+        ON t.competition_id = c.competition_id
+        WHERE t.captain_id = #{v}
+    </select>
+
+    <resultMap id="findTeamMap" type="com.nnxy.competition.entity.Team">
+        <id column="team_id" property="teamId" javaType="String" />
+        <result column="team_name" property="teamName" javaType="String" />
+        <result column="team_state" property="teamState" javaType="Integer" />
+        <result column="team_content" property="teamContent" javaType="String" />
+        <association property="competition" javaType="com.nnxy.competition.entity.Competition" column="competition_id">
+            <id column="competition_id" property="competitionId" javaType="String" />
+            <result column="competition_name" property="competitionName" javaType="String" />
+        </association>
+
+    </resultMap>
+
+    <insert id="insertUserTeam" parameterType="String" >
+        INSERT INTO t_user_team( team_id, user_id) VALUES (#{teamId}, #{userId})
+    </insert>
+
+    <select id="findUsersByTeamIdAndNotNowUser" parameterType="String" resultMap="findUsersByTeamIdAndNotNowUserMap">
+        SELECT u.user_id user_id, u.name name, u.user_className user_className ,c.college_name college_name
+        FROM t_user_team ut
+        LEFT JOIN t_user u
+        On ut.user_id = u.user_id
+        LEFT JOIN t_college c
+        On u.college_id = c.college_id
+        WHERE team_id = #{teamId} AND u.user_id != #{userId}
+    </select>
+    <resultMap id="findUsersByTeamIdAndNotNowUserMap" type="com.nnxy.competition.entity.User">
+        <id column="user_id" property="userId" javaType="String" />
+        <result column="name" property="name" javaType="String" />
+        <result column="user_className" property="userClassName" javaType="String" />
+        <association property="college" javaType="com.nnxy.competition.entity.College" column="college_id">
+            <id column="college_id" property="collegeId" javaType="String" />
+            <result column="college_name" property="collegeName" javaType="String" />
+        </association>
+    </resultMap>
+
+    <update id="updateMyTeam" parameterType="com.nnxy.competition.entity.Team">
+        UPDATE t_team SET team_name = #{teamName}, team_content = #{teamContent} WHERE team_id = #{teamId}
+    </update>
+
+    <delete id="deleteTeamUser" parameterType="String" >
+        DELETE FROM t_user_team WHERE team_id = #{teamId} AND user_id = #{userId}
+    </delete>
+
+    <delete id="deleteTeam" parameterType="String">
+        DELETE FROM t_team WHERE team_id = #{v}
+    </delete>
+
+    <delete id="deleteTeamUserByTeamId" parameterType="String" >
+        DELETE FROM t_user_team WHERE team_id = #{v}
+    </delete>
+
+    <select id="findAllMyTeamApply" resultMap="findAllMyTeamApplyMap">
+        SELECT a.apply_id apply_id, a.apply_state apply_state, a.apply_content apply_content, a.apply_time apply_time,
+        a.apply_dispose_time apply_dispose_time, t.team_id team_id, t.team_name team_name, u.user_id user_id, u.name name,
+        c.competition_id competition_id, c.competition_name competition_name
+        FROM t_apply a
+        LEFT JOIN t_user u
+        ON u.user_id = a.user_id
+        LEFT JOIN t_team t
+        ON t.team_id = a.team_id
+        LEFT JOIN t_competition c
+        ON c.competition_id = t.competition_id
+        WHERE a.team_id IN 
+        <foreach collection="teams" item="item" separator="," open="(" close=")">
+            #{item.teamId}
+        </foreach>
+        AND  a.apply_state = #{applyState}
+    </select>
+
+    <resultMap id="findAllMyTeamApplyMap" type="com.nnxy.competition.entity.Apply">
+        <id column="apply_id" property="applyId" javaType="String" />
+        <result column="apply_state" property="applyState" javaType="Integer" />
+        <result column="apply_content" property="applyContent" javaType="String" />
+        <result column="apply_time" property="applyTime" javaType="Long" />
+        <result column="apply_dispose_time" property="applyDisposeTime" javaType="Long" />
+        <association property="user" javaType="com.nnxy.competition.entity.User" column="user_id">
+            <id column="user_id" property="userId" javaType="String" />
+            <result column="name" property="name" javaType="String" />
+        </association>
+        <association property="team" javaType="com.nnxy.competition.entity.Team" column="team_id">
+            <id column="team_id" property="teamId" javaType="String" />
+            <result column="team_name" property="teamName" javaType="String" />
+            <association property="competition" javaType="com.nnxy.competition.entity.Competition" column="competition_id">
+                <id column="competition_id" property="competitionId" javaType="String" />
+                <result column="competition_name" property="competitionName" javaType="String" />
+            </association>
+        </association>
+    </resultMap>
+
+</mapper>
+

@@ -31,6 +31,16 @@ public class CompetitionNotificationVO {
 
     private Integer competitionState;
 
+    private Integer competitionPeopleSum;
+
+    public Integer getCompetitionPeopleSum() {
+        return competitionPeopleSum;
+    }
+
+    public void setCompetitionPeopleSum(Integer competitionPeopleSum) {
+        this.competitionPeopleSum = competitionPeopleSum;
+    }
+
     public String getNotificationId() {
         return notificationId;
     }
@@ -143,6 +153,7 @@ public class CompetitionNotificationVO {
                 ", collegeId='" + collegeId + '\'' +
                 ", notificationState=" + notificationState +
                 ", competitionState=" + competitionState +
+                ", competitionPeopleSum=" + competitionPeopleSum +
                 '}';
     }
 }

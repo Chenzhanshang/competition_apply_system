@@ -9,7 +9,9 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -97,6 +99,47 @@ public class UserController {
         return user;
     }
 
+    /**
+     * 修改用户密码
+     * @param u
+     * @return
+     */
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
+    public @ResponseBody ResponseMessage updatePassword(@RequestBody User u){
+        try {
+            User user = (User) SecurityUtils.getSubject().getPrincipal();
+            //获取盐值
+            ByteSource credentialsSalt = ByteSource.Util.bytes(user.getUserName());
+            //加密密码
+            SimpleHash simpleHash = new SimpleHash("MD5", u.getPassword(), credentialsSalt, 1024);
+            user.setPassword(simpleHash.toString());
+            userService.updatePassword(user);
+            return new ResponseMessage("1", "修改成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ResponseMessage("0", "修改失败");
+        }
+    }
+
+    @RequestMapping(value = "/logout",method = RequestMethod.GET)
+    public @ResponseBody
+    ResponseMessage logout(){
+        try {
+            Subject subject = SecurityUtils.getSubject();
+            if(subject.isAuthenticated()){
+                subject.logout();
+                return new ResponseMessage("1","退出成功");
+            }
+            else{
+                return new ResponseMessage(ErrorEnum.E_UNAUTHENTICATED);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseMessage("0","退出失败");
+        }
+    }
+
     @Autowired
     private RedisTemplate redisTemplate; //注入
 
@@ -112,6 +155,8 @@ public class UserController {
 
         return null;
     }
+
+
 
 
 

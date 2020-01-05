@@ -40,6 +40,16 @@ public class User implements Serializable {
 
     private Win win;
 
+    private List<Apply> applies;
+
+    public List<Apply> getApplies() {
+        return applies;
+    }
+
+    public void setApplies(List<Apply> applies) {
+        this.applies = applies;
+    }
+
     public Win getWin() {
         return win;
     }
@@ -179,6 +189,7 @@ public class User implements Serializable {
                 ", userClassName='" + userClassName + '\'' +
                 ", Roles=" + Roles +
                 ", win=" + win +
+                ", applies=" + applies +
                 '}';
     }
 }

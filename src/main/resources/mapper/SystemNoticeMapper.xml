@@ -24,8 +24,8 @@
     </resultMap>
 
     <insert id="insertNotice" parameterType="com.nnxy.competition.entity.Notification" >
-        INSERT INTO t_notification(notification_id, notification_title, notification_content, notification_time)
-        VALUES (#{notificationId}, #{notificationTitle}, #{notificationContent}, #{notificationTime})
+        INSERT INTO t_notification(notification_id, notification_title, notification_content, notification_time, notification_type)
+        VALUES (#{notificationId}, #{notificationTitle}, #{notificationContent}, #{notificationTime}, #{notificationType})
     </insert>
 
     <update id="updateNotification" parameterType="com.nnxy.competition.entity.Notification" >
