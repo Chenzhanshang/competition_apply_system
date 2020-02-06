@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -216,6 +217,30 @@ public class TeamController {
             e.printStackTrace();
             return new ResponseMessage("0", "获取失败");
         }
+    }
+
+    @RequestMapping("/getMyTeamByCompetitionId")
+    public @ResponseBody ResponseMessage getMyTeamByCompetitionId(String competitionId){
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        try {
+            List<Team> teams = teamService.findMyTeam(user.getUserId());
+            List<Team> teams1 = new ArrayList<Team>();
+            if(teams.size() != 0 && teams != null){
+                for (Team team : teams) {
+                    if(team.getCompetition().getCompetitionId().equals(competitionId)){
+                        teams1.add(team);
+                    }
+                }
+            }
+            ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
+            responseMessage.getData().put("teams", teams1);
+            return responseMessage;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ResponseMessage("0", "获取失败");
+        }
+
     }
 
 }

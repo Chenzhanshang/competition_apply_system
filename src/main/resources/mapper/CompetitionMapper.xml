@@ -6,7 +6,7 @@
     <select id="findCompetitionById" parameterType="String" resultMap="competitionMap">
         SELECT c.competition_id competition_id, c.competition_time competition_time, c.competition_name competition_name,
         c.competition_content competition_content, c.competition_site competition_site, c.competition_state competition_state,
-        f.file_id file_id, f.file_name file_name, f.file_path file_path
+        c.competition_people_sum competition_people_sum, f.file_id file_id, f.file_name file_name, f.file_path file_path
         FROM t_competition c
         LEFT JOIN t_file f
         ON c.competition_id = f.competition_id
@@ -20,6 +20,7 @@
         <result column="competition_content" property="competitionContent" javaType="String" />
         <result column="competition_site" property="competitionSite" javaType="String" />
         <result column="competition_state" property="competitionState" javaType="Integer" />
+        <result column="competition_people_sum" property="competitionPeopleSum" javaType="Integer" />
         <collection property="files" ofType="com.nnxy.competition.entity.File" column="file_id">
             <id column="file_id" property="fileId" javaType="String"/>
             <result column="file_name" property="fileName" javaType="String" />

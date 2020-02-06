@@ -16,6 +16,14 @@
         DELETE FROM t_user_competition WHERE user_id = #{user.userId} AND competition_id = #{competition.competitionId}
     </select>
 
+    <select id="findApplyByUserIdAndApplyStateAndTeamId" parameterType="com.nnxy.competition.entity.Apply" resultType="com.nnxy.competition.entity.Apply">
+        SELECT * FROM t_apply WHERE user_id = #{user.userId} AND team_id = #{team.teamId} AND apply_state = 0
+    </select>
+
+    <delete id="deleteTeamApply" parameterType="String">
+        DELETE FROM t_apply WHERE apply_id = #{aplyId}
+    </delete>
+
     <select id="findWinByCompetitionId" parameterType="String" resultMap="findWinByCompetitionIdMap" >
         SELECT uc.competition_id competition_id, uc.user_id user_id, uc.win_ranking win_ranking, uc.win_level_name win_level_name,
         u.name name,u.user_className user_className, c.competition_name competition_name, tc.college_name college_name
@@ -65,6 +73,7 @@
         LEFT JOIN t_competition c
         ON t.competition_id = c.competition_id
         WHERE a.user_id = #{userId} AND a.apply_state = #{applyState}
+        ORDER BY a.apply_time DESC
     </select>
 
     <resultMap id="ApplyListMap" type="com.nnxy.competition.entity.Apply">
@@ -93,6 +102,11 @@
         LEFT JOIN t_competition c
         ON t.competition_id = c.competition_id
         WHERE a.user_id = #{userId} AND a.apply_state != #{applyState}
+        ORDER BY a.apply_dispose_time DESC
     </select>
+
+    <insert id="insertUserTeam" parameterType="com.nnxy.competition.entity.UserTeam">
+        INSERT INTO t_user_team(user_id, team_id) VALUES (#{userId}, #{teamId})
+    </insert>
 
 </mapper>

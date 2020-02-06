@@ -24,10 +24,11 @@ public interface NotificationDao {
 
     /**
      * 通知类型和状态查找系统公告
-     * @param notificationType,notificationState
+     * @param notificationType
+     * @param notificationState
      * @return
      */
-    List<Notification> findaSystemNoticeByTypeAndState(Integer notificationType,Integer notificationState);
+    List<Notification> findSystemNoticeByTypeAndState(Integer notificationType,Integer notificationState);
 
     /**
      * 插入新通知

@@ -1,5 +1,6 @@
 package com.nnxy.competition.controller;
 
+import com.nnxy.competition.entity.Role;
 import com.nnxy.competition.entity.User;
 import com.nnxy.competition.service.UserService;
 import com.nnxy.competition.utils.ErrorEnum;
@@ -42,7 +43,9 @@ public class UserController {
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public @ResponseBody
     ResponseMessage login(@RequestBody User user){
+        System.out.println("---------------------------------");
         System.out.println(user);
+        System.out.println("---------------------------------");
         //获取subject
         Subject subject = SecurityUtils.getSubject();
         if (!subject.isAuthenticated()){
@@ -58,12 +61,36 @@ public class UserController {
                 //获取用户的信息
                 User principal = (User) subject.getPrincipal();
 
+                for (Role role : principal.getRoles()) {
+                    if(role.getRoleId().equals(user.getRoles().iterator().next().getRoleId())){
+                        //将角色返回
+                        responseMessage.getData().put("roles",
+                                principal.getRoles());
+                        System.out.println( principal.getRoles());
+                        return responseMessage;
+                    }
+                }
+                if("1".equals(user.getRoles().iterator().next().getRoleId())){
+                    //无该角色，登出（后同）
+                    if(SecurityUtils.getSubject().isAuthenticated()){
+                        subject.logout();
+                    }
+                    return new ResponseMessage(ErrorEnum.E_NOTADMIN);
+                }
+                else if("2".equals(user.getRoles().iterator().next().getRoleId())){
+                    if(SecurityUtils.getSubject().isAuthenticated()){
+                        subject.logout();
+                    }
+                    return new ResponseMessage(ErrorEnum.E_NOTSTUDENT);
+                }
+                else {
+                    if(SecurityUtils.getSubject().isAuthenticated()){
+                        subject.logout();
+                    }
+                    return new ResponseMessage(ErrorEnum.E_NOTROLE);
 
-                //将角色返回
-                responseMessage.getData().put("roles",
-                        principal.getRoles());
-                System.out.println( principal.getRoles());
-                return responseMessage;
+                }
+
             }
             catch (UnknownAccountException e){
                 e.printStackTrace();
@@ -122,6 +149,10 @@ public class UserController {
         }
     }
 
+    /**
+     * 注销登录
+     * @return
+     */
     @RequestMapping(value = "/logout",method = RequestMethod.GET)
     public @ResponseBody
     ResponseMessage logout(){

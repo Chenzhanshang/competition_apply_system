@@ -26,4 +26,11 @@ public class UserTeam {
         this.teamId = teamId == null ? null : teamId.trim();
     }
 
+    @Override
+    public String toString() {
+        return "UserTeam{" +
+                "userId='" + userId + '\'' +
+                ", teamId='" + teamId + '\'' +
+                '}';
+    }
 }

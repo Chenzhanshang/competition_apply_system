@@ -83,4 +83,25 @@ public interface TeamService {
      * @return
      */
     List<Apply> findAllMyHistoryTeamApply(List<Team> teams);
+
+    /**
+     * 报名，修改队伍信息
+     * @param team
+     */
+    void updateTeam(Team team);
+
+    /**
+     * 根据用户id和竞赛id获取队伍
+     * @param userId
+     * @param competitionId
+     * @return
+     */
+    Team findTeamByCaptainIdAndCompetitionId(String userId, String competitionId);
+
+    /**
+     * 取消队伍报名
+     * @param teamId
+     */
+    void updateTeamCancelApply(String teamId);
+
 }

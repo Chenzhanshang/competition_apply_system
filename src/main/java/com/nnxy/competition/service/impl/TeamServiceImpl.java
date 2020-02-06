@@ -70,16 +70,36 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public List<Apply> findAllMyTeamApply(List<Team> teams) {
-        List<Apply> applies = teamDao.findAllMyTeamApply(teams, 0);
+        if(teams == null || teams.size() == 0){
+            return null;
+        }
+        List<Apply> applies = teamDao.findAllMyTeamApply(teams);
         return applies;
     }
 
     @Override
     public List<Apply> findAllMyHistoryTeamApply(List<Team> teams) {
-        //获取通过的列表
-        List<Apply> applies = teamDao.findAllMyTeamApply(teams, 1);
-        //获取拒绝的列表，加入到applies中
-        applies.addAll(teamDao.findAllMyTeamApply(teams, 2));
+        if(teams == null || teams.size() == 0){
+            return null;
+        }
+        //获取审批过的申请列表
+        List<Apply> applies = teamDao.findAllMyDispose(teams);
         return applies;
+    }
+
+    @Override
+    public void updateTeam(Team team) {
+        teamDao.updateTeam(team);
+    }
+
+    @Override
+    public Team findTeamByCaptainIdAndCompetitionId(String userId, String competitionId) {
+        Team team = teamDao.findTeamByCaptainIdAndCompetitionId(userId, competitionId);
+        return team;
+    }
+
+    @Override
+    public void updateTeamCancelApply(String teamId) {
+        teamDao.updateTeamCancelApply(teamId);
     }
 }

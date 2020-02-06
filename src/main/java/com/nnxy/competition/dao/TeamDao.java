@@ -4,7 +4,6 @@ import com.nnxy.competition.entity.Apply;
 import com.nnxy.competition.entity.Team;
 import com.nnxy.competition.entity.User;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -79,10 +78,42 @@ public interface TeamDao {
     List<Team> findJoinTeam(String userId);
 
     /**
-     * 根据用户所有比赛获取所有申请
+     * 根据用户所有比赛获取所有已处理的申请
      * @param teams
-     * @param applyState
      * @return
      */
-    List<Apply> findAllMyTeamApply(@Param("teams") List<Team> teams, @Param("applyState") Integer applyState);
+    List<Apply> findAllMyDispose(List<Team> teams);
+
+    /**
+     * 根据用户所有比赛获取所有待处理的申请
+     * @param teams
+     * @return
+     */
+    List<Apply> findAllMyTeamApply(List<Team> teams);
+
+    /**
+     * 报名，修改队伍信息
+     * @param team
+     */
+    void updateTeam(Team team);
+
+    /**
+     * 根据用户id和竞赛id获取队伍
+     * @param userId
+     * @param competitionId
+     * @return
+     */
+    Team findTeamByCaptainIdAndCompetitionId(String userId, String competitionId);
+
+    /**
+     * 取消队伍报名
+     * @param teamId
+     */
+    void updateTeamCancelApply(String teamId);
+
+    /**
+     * 修改队伍的状态和人数
+     * @param team
+     */
+    void updateTeamStateAndHeadCount(Team team);
 }

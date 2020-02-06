@@ -2,6 +2,7 @@ package com.nnxy.competition.dao;
 
 import com.nnxy.competition.entity.Apply;
 import com.nnxy.competition.entity.UserCompetition;
+import com.nnxy.competition.entity.UserTeam;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -71,4 +72,23 @@ public interface ApplyDao {
      * @return
      */
     List<Apply> findMyHistoryApplyList(@Param("userId") String userId, @Param("applyState") Integer applyState);
+
+    /**
+     * 保存用户-队伍信息
+     * @param userTeam
+     */
+    void insertUserTeam(UserTeam userTeam);
+
+    /**
+     * 根据用户id,申请状态，队伍id查找记录
+     * @param apply
+     * @return
+     */
+    Apply findApplyByUserIdAndApplyStateAndTeamId(Apply apply);
+
+    /**
+     * 根据申请id删除申请
+     * @param applyId
+     */
+    void deleteTeamApply(String applyId);
 }

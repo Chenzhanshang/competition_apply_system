@@ -139,6 +139,7 @@ public class NotificationController {
 
         notification.setNotificationTitle(competitionNotificationVO.getNotificationTitle());
         notification.setNotificationId(UUID.randomUUID().toString());
+        notification.setNotificationTime(System.currentTimeMillis());
         notification.setNotificationState(1);
         notification.setNotificationType(0);
         notification.setCompetition(competition);

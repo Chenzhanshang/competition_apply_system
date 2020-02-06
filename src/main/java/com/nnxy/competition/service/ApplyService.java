@@ -67,4 +67,17 @@ public interface ApplyService {
      * @return
      */
     List<Apply> findMyHistoryApplyList(String userId, Integer applyState);
+
+    /**
+     * 根据用户id,申请状态，队伍id查找记录
+     * @param apply
+     * @return
+     */
+    Boolean findApplyByUserIdAndApplyStateAndTeamId(Apply apply);
+
+    /**
+     * 根据申请id删除申请
+     * @param applyId
+     */
+    void deleteTeamApply(String applyId);
 }

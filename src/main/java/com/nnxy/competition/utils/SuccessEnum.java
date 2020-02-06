@@ -11,8 +11,8 @@ public enum SuccessEnum {
     /**
      * 成功信息
      */
-    S_LOGIN_SUCCESS("0","登录成功"),
-    S_LOGINED("0","用户已登录，无需重复登录");
+    S_LOGIN_SUCCESS("1","登录成功"),
+    S_LOGINED("1","用户已登录，无需重复登录");
 
 
 

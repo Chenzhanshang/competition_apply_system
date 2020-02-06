@@ -142,6 +142,7 @@ public class SystemNoticeController {
     @RequestMapping(value = "/updateNotice", method = RequestMethod.POST)
     public @ResponseBody
     ResponseMessage updateNotification(@RequestBody Notification notification){
+        System.out.println(notification);
         //将competitionId存入redis，修改文件时使用
         redisUtil.set("notificationId",notification.getNotificationId());
         try {

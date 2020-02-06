@@ -12,6 +12,8 @@ public class Team {
 
     private User captain;
 
+    private Long applyTime;
+
     private String teamName;
 
     private Integer teamState;
@@ -25,6 +27,14 @@ public class Team {
     private String teamContent;
 
     private List<Apply> applies;
+
+    public Long getApplyTime() {
+        return applyTime;
+    }
+
+    public void setApplyTime(Long applyTime) {
+        this.applyTime = applyTime;
+    }
 
     public List<Apply> getApplies() {
         return applies;
@@ -104,6 +114,7 @@ public class Team {
         return "Team{" +
                 "teamId='" + teamId + '\'' +
                 ", captain=" + captain +
+                ", applyTime=" + applyTime +
                 ", teamName='" + teamName + '\'' +
                 ", teamState=" + teamState +
                 ", teamHeadcount=" + teamHeadcount +

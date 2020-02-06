@@ -30,5 +30,9 @@
         </collection>
     </resultMap>
 
+    <select id="findAllUserTeam" parameterType="String" resultType="com.nnxy.competition.entity.UserTeam">
+        SELECT * FROM t_user_team WHERE user_id = #{v}
+    </select>
+
 </mapper>
 

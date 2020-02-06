@@ -28,7 +28,7 @@ public interface NotificationService {
      * @param notificationState
      * @return
      */
-    List<Notification> findaSystemNoticeByTypeAndState(Integer notificationType, Integer notificationState);
+    List<Notification> findSystemNoticeByTypeAndState(Integer notificationType, Integer notificationState);
 
     /**
      * 将新通知，比赛

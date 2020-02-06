@@ -2,6 +2,7 @@ package com.nnxy.competition.controller;
 
 import com.nnxy.competition.entity.*;
 import com.nnxy.competition.service.ApplyService;
+import com.nnxy.competition.service.TeamService;
 import com.nnxy.competition.utils.ResponseMessage;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,14 @@ public class ApplyController {
     @Autowired
     private ApplyService applyService;
 
+    @Autowired
+    private TeamService teamService;
+
+    /**
+     * 个人赛报名
+     * @param competitionId
+     * @return
+     */
     @RequestMapping("/doApply")
     public @ResponseBody
     ResponseMessage doApply(String competitionId){
@@ -50,6 +59,37 @@ public class ApplyController {
 
     }
 
+    /**
+     * 组队赛报名
+     * @param teamId
+     * @return
+     */
+    @RequestMapping("/doApplyByTeam")
+    public @ResponseBody
+    ResponseMessage doApplyByTeam(String teamId){
+        //创建队伍对象，封装id和报名时间,队伍状态
+        Team team = new Team();
+        team.setTeamId(teamId);
+        //设置队伍状态为3,即已报名
+        team.setTeamState(3);
+        team.setApplyTime(System.currentTimeMillis());
+        System.out.println(team);
+        try{
+            teamService.updateTeam(team);
+            return new ResponseMessage("1", "报名成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ResponseMessage("0", "报名失败");
+        }
+
+    }
+
+    /**
+     * 个人赛取消报名
+     * @param competitionId
+     * @return
+     */
     @RequestMapping("/cancelApply")
     public @ResponseBody
     ResponseMessage cancelApply(String competitionId){
@@ -69,6 +109,38 @@ public class ApplyController {
             return new ResponseMessage("0", "取消报名失败");
         }
 
+    }
+
+    /**
+     * 组队赛取消报名
+     * @param competitionId
+     * @return
+     */
+    @RequestMapping("/cancelTeamApply")
+    public @ResponseBody
+    ResponseMessage cancelTeamApply(String competitionId){
+        User user = (User)SecurityUtils.getSubject().getPrincipal();
+
+        try{
+            Team team = teamService.findTeamByCaptainIdAndCompetitionId(user.getUserId(), competitionId);
+            if(team != null && team.getApplyTime() != null){
+                if (team.getCaptain().getUserId().equals(user.getUserId())) {
+                    teamService.updateTeamCancelApply(team.getTeamId());
+                    return new ResponseMessage("1", "取消报名成功");
+                }
+                else {//非队长取消报名
+                    return new ResponseMessage("1", "取消报名失败，队员无权取消报名，请联系队长");
+                }
+            }
+            else{
+                return new ResponseMessage("0", "未报名，取消报名失败");
+            }
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ResponseMessage("0", "取消报名失败");
+        }
     }
 
     @RequestMapping("/loadApplyState")
@@ -96,13 +168,42 @@ public class ApplyController {
 
     }
 
+    /**
+     * 判断是否已报名该比赛
+     * @param competitionId
+     * @return
+     */
+    @RequestMapping("/loadTeamApplyState")
+    public @ResponseBody
+    ResponseMessage loadTeamApplyState(String competitionId){
+        try{
+            User user = (User) SecurityUtils.getSubject().getPrincipal();
+            Team team = teamService.findTeamByCaptainIdAndCompetitionId(user.getUserId(), competitionId);
+            if(team != null && team.getApplyTime() != null){
+                ResponseMessage responseMessage = new ResponseMessage("2", "有已报名该比赛队伍");
+                responseMessage.getData().put("team",team);
+                return responseMessage;
+            }
+            return new ResponseMessage("1", "无已报名该比赛队伍");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ResponseMessage("0", "加载失败");
+        }
+
+    }
+
     @RequestMapping(value = "/joinTeam", method = RequestMethod.POST)
     public @ResponseBody ResponseMessage joinTeam(@RequestBody Apply apply){
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         apply.setUser(user);
+        apply.setApplyState(0);
+        //判断是否有正在加入该队伍的申请
+        if(applyService.findApplyByUserIdAndApplyStateAndTeamId(apply)){
+            return new ResponseMessage("-1", "您有正在申请加入该队伍的申请，请前往“我的比赛·队伍 -> 我的申请”查看");
+        }
         apply.setApplyId(UUID.randomUUID().toString());
         apply.setApplyTime(System.currentTimeMillis());
-        apply.setApplyState(0);
         try {
             applyService.insertTeamApply(apply);
             ResponseMessage responseMessage = new ResponseMessage("1", "提交申请成功");
@@ -116,15 +217,26 @@ public class ApplyController {
 
     /**
      * 通过加入队伍申请
-     * @param applyId
+     * @param apply
      * @return
      */
-    @RequestMapping("/pass")
-    public @ResponseBody ResponseMessage pass(String applyId){
-        Apply apply = new Apply();
-        apply.setApplyId(applyId);
+    @RequestMapping(value = "/pass",method = RequestMethod.POST)
+    public @ResponseBody ResponseMessage pass(@RequestBody Apply apply){
+        System.out.println(apply);
         apply.setApplyDisposeTime(System.currentTimeMillis());
+        //设置申请状态为1，即通过
         apply.setApplyState(1);
+        //队伍人数加1
+        apply.getTeam().setTeamHeadcount(apply.getTeam().getTeamHeadcount()+1);
+        //若队伍人数等于竞赛规定人数
+        if(apply.getTeam().getTeamHeadcount().equals(apply.getTeam().getCompetition().getCompetitionPeopleSum())){
+            //设置队伍状态为已满员
+            apply.getTeam().setTeamState(2);
+        }
+        else {
+            //设置为队伍状态招募中
+            apply.getTeam().setTeamState(1);
+        }
         try {
             applyService.updateApplyByDispose(apply);
             return new ResponseMessage("1", "处理成功");
@@ -194,5 +306,24 @@ public class ApplyController {
             return new ResponseMessage("0", "获取失败");
         }
     }
+
+    /**
+     * 撤销加入队伍申请
+     * @param applyId
+     * @return
+     */
+    @RequestMapping("/cancelMyTeamApply")
+    public @ResponseBody ResponseMessage cancelMyTeamApply(String applyId){
+        try{
+            applyService.deleteTeamApply(applyId);
+            return new ResponseMessage("1","撤销成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ResponseMessage("0","撤销失败");
+        }
+
+    }
+
 
 }

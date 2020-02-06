@@ -1,6 +1,7 @@
 package com.nnxy.competition.service;
 
 import com.nnxy.competition.entity.Team;
+import com.nnxy.competition.entity.UserTeam;
 
 import java.util.List;
 
@@ -18,4 +19,11 @@ public interface RecruitService {
      * @return
      */
     public List<Team> findAllTeamByState(Integer teamState) ;
+
+    /**
+     * 查询该用户的所有加入的队伍列表
+     * @param  userId
+     * @return
+     */
+    List<UserTeam> findAllUserTeam(String userId);
 }

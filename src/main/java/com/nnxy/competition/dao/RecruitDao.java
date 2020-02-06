@@ -1,6 +1,7 @@
 package com.nnxy.competition.dao;
 
 import com.nnxy.competition.entity.Team;
+import com.nnxy.competition.entity.UserTeam;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,4 +23,11 @@ public interface RecruitDao {
      * @return
      */
     public List<Team> findAllTeamByState(@Param("teamState") Integer teamState, @Param("captainId") String captainId) ;
+
+    /**
+     * 查询该用户的所有加入的队伍列表
+     * @param  userId
+     * @return
+     */
+    List<UserTeam> findAllUserTeam(String userId);
 }

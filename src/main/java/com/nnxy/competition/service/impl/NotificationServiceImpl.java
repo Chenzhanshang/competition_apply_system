@@ -38,8 +38,8 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public List<Notification> findaSystemNoticeByTypeAndState(Integer notificationType,Integer notificationState) {
-        List<Notification> notifications = notificationDao.findaSystemNoticeByTypeAndState(notificationType,notificationState);
+    public List<Notification> findSystemNoticeByTypeAndState(Integer notificationType,Integer notificationState) {
+        List<Notification> notifications = notificationDao.findSystemNoticeByTypeAndState(notificationType,notificationState);
         return notifications;
     }
 

@@ -8,7 +8,7 @@
     </insert>
 
     <select id="findJoinTeam" parameterType="String" resultMap="findTeamMap">
-        SELECT t.team_id team_id, t.team_name team_name, t.team_content team_content, t.team_state team_state,
+        SELECT t.team_id team_id, t.team_name team_name, t.team_content team_content, t.team_state team_state,t.team_headcount team_headcount,
         t.team_content team_content, c.competition_id competition_id, c.competition_name competition_name
         FROM t_team t
         LEFT JOIN t_competition c
@@ -18,9 +18,39 @@
         WHERE ut.user_id = #{v} AND ut.user_id != t.captain_id
     </select>
 
-    <select id="findMyTeam" parameterType="String" resultMap="findTeamMap">
+    <select id="findTeamByCaptainIdAndCompetitionId" parameterType="String" resultMap="findTeamByCaptainIdAndCompetitionIdMap">
         SELECT t.team_id team_id, t.team_name team_name, t.team_content team_content, t.team_state team_state,
-        t.team_content team_content, c.competition_id competition_id, c.competition_name competition_name
+        t.apply_time apply_time,t.team_content team_content, c.competition_id competition_id, c.competition_name competition_name,
+        u.user_id user_id
+        FROM t_team t
+        LEFT JOIN t_competition c
+        ON t.competition_id = c.competition_id
+        LEFT JOIN t_user_team ut
+        ON t.team_id = ut.team_id
+        LEFT JOIN t_user u
+        ON t.captain_id = u.user_id
+        WHERE (t.captain_id = #{userId} OR ut.user_id = #{userId}) AND
+        t.competition_id = #{competitionId}
+    </select>
+
+    <resultMap id="findTeamByCaptainIdAndCompetitionIdMap" type="com.nnxy.competition.entity.Team">
+        <id column="team_id" property="teamId" javaType="String" />
+        <result column="team_name" property="teamName" javaType="String" />
+        <result column="team_state" property="teamState" javaType="Integer" />
+        <result column="apply_time" property="applyTime" javaType="Long" />
+        <result column="team_content" property="teamContent" javaType="String" />
+        <association property="competition" javaType="com.nnxy.competition.entity.Competition" column="competition_id">
+            <id column="competition_id" property="competitionId" javaType="String" />
+            <result column="competition_name" property="competitionName" javaType="String" />
+        </association>
+        <association property="captain" javaType="com.nnxy.competition.entity.User" column="user_id">
+            <id column="user_id" property="userId" javaType="String" />
+        </association>
+    </resultMap>
+
+    <select id="findMyTeam" parameterType="String" resultMap="findTeamMap">
+        SELECT t.team_id team_id, t.team_name team_name, t.team_content team_content, t.team_state team_state,t.team_headcount team_headcount,
+        t.apply_time apply_time,t.team_content team_content, c.competition_id competition_id, c.competition_name competition_name, c.competition_people_sum competition_people_sum
         FROM t_team t
         LEFT JOIN t_competition c
         ON t.competition_id = c.competition_id
@@ -31,10 +61,13 @@
         <id column="team_id" property="teamId" javaType="String" />
         <result column="team_name" property="teamName" javaType="String" />
         <result column="team_state" property="teamState" javaType="Integer" />
+        <result column="apply_time" property="applyTime" javaType="Long" />
         <result column="team_content" property="teamContent" javaType="String" />
+        <result column="team_headcount" property="teamHeadcount" javaType="Integer" />
         <association property="competition" javaType="com.nnxy.competition.entity.Competition" column="competition_id">
             <id column="competition_id" property="competitionId" javaType="String" />
             <result column="competition_name" property="competitionName" javaType="String" />
+            <result column="competition_people_sum" property="competitionPeopleSum" javaType="Integer" />
         </association>
 
     </resultMap>
@@ -78,9 +111,10 @@
         DELETE FROM t_user_team WHERE team_id = #{v}
     </delete>
 
-    <select id="findAllMyTeamApply" resultMap="findAllMyTeamApplyMap">
+    <select id="findAllMyDispose" parameterType="java.util.List" resultMap="findTeamApplyMap">
         SELECT a.apply_id apply_id, a.apply_state apply_state, a.apply_content apply_content, a.apply_time apply_time,
         a.apply_dispose_time apply_dispose_time, t.team_id team_id, t.team_name team_name, u.user_id user_id, u.name name,
+        t.team_state team_state,t.team_headcount team_headcount,c.competition_people_sum competition_people_sum,
         c.competition_id competition_id, c.competition_name competition_name
         FROM t_apply a
         LEFT JOIN t_user u
@@ -90,13 +124,34 @@
         LEFT JOIN t_competition c
         ON c.competition_id = t.competition_id
         WHERE a.team_id IN 
-        <foreach collection="teams" item="item" separator="," open="(" close=")">
+        <foreach collection="list" item="item" separator="," open="(" close=")">
             #{item.teamId}
         </foreach>
-        AND  a.apply_state = #{applyState}
+        AND  (a.apply_state = 1 OR a.apply_state = 2)
+        ORDER BY a.apply_dispose_time DESC
     </select>
 
-    <resultMap id="findAllMyTeamApplyMap" type="com.nnxy.competition.entity.Apply">
+    <select id="findAllMyTeamApply" parameterType="java.util.List" resultMap="findTeamApplyMap">
+        SELECT a.apply_id apply_id, a.apply_state apply_state, a.apply_content apply_content, a.apply_time apply_time,
+        a.apply_dispose_time apply_dispose_time, t.team_id team_id, t.team_name team_name, u.user_id user_id, u.name name,
+        t.team_state team_state,t.team_headcount team_headcount,c.competition_people_sum competition_people_sum,
+        c.competition_id competition_id, c.competition_name competition_name
+        FROM t_apply a
+        LEFT JOIN t_user u
+        ON u.user_id = a.user_id
+        LEFT JOIN t_team t
+        ON t.team_id = a.team_id
+        LEFT JOIN t_competition c
+        ON c.competition_id = t.competition_id
+        WHERE a.team_id IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item.teamId}
+        </foreach>
+        AND  a.apply_state = 0
+        ORDER BY a.apply_dispose_time DESC
+    </select>
+
+    <resultMap id="findTeamApplyMap" type="com.nnxy.competition.entity.Apply">
         <id column="apply_id" property="applyId" javaType="String" />
         <result column="apply_state" property="applyState" javaType="Integer" />
         <result column="apply_content" property="applyContent" javaType="String" />
@@ -109,12 +164,25 @@
         <association property="team" javaType="com.nnxy.competition.entity.Team" column="team_id">
             <id column="team_id" property="teamId" javaType="String" />
             <result column="team_name" property="teamName" javaType="String" />
+            <result column="team_headcount" property="teamHeadcount" javaType="Integer" />
             <association property="competition" javaType="com.nnxy.competition.entity.Competition" column="competition_id">
                 <id column="competition_id" property="competitionId" javaType="String" />
                 <result column="competition_name" property="competitionName" javaType="String" />
+                <result column="competition_people_sum" property="competitionPeopleSum" javaType="Integer" />
             </association>
         </association>
     </resultMap>
 
+    <update id="updateTeam" parameterType="com.nnxy.competition.entity.Team">
+        UPDATE t_team SET team_state = #{teamState}, apply_time = #{applyTime} WHERE team_id = #{teamId}
+    </update>
+
+    <update id="updateTeamCancelApply" parameterType="String">
+        UPDATE t_team SET team_state = 2, apply_time = NULL WHERE team_id = #{v}
+    </update>
+
+    <update id="updateTeamStateAndHeadCount" parameterType="com.nnxy.competition.entity.Team">
+        UPDATE t_team SET team_state = #{teamState}, team_headcount = #{teamHeadcount} WHERE team_id = #{teamId}
+    </update>
 </mapper>
 
