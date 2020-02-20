@@ -77,8 +77,8 @@ public class UserRealm extends AuthorizingRealm {
         //转换为UsernamePasswordToken
         UsernamePasswordToken upToken = (UsernamePasswordToken)authenticationToken;
         //从数据库中获取用户信息
-        System.out.println(userService.findUserByUsername(upToken.getUsername()));
-        User userFindUserByUsername = userService.findUserByUsername(upToken.getUsername());
+        System.out.println(userService.findUserByUserName(upToken.getUsername()));
+        User userFindUserByUsername = userService.findUserByUserName(upToken.getUsername());
         if (userFindUserByUsername == null){
             throw new UnknownAccountException("用户不存在");
         }

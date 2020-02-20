@@ -243,4 +243,39 @@ public class TeamController {
 
     }
 
+    @RequestMapping("/getTeamReportList")
+    public @ResponseBody ResponseMessage getTeamReportList(String competitionId){
+        try {
+            //根据竞赛id及已报名的状态（3），获取队伍列表
+            List<Team> teams = teamService.findTeamByCompetitionIdAndRegistered(competitionId);
+            ResponseMessage responseMessage = new ResponseMessage("1","获取成功");
+            responseMessage.getData().put("teams",teams);
+            return responseMessage;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ResponseMessage("0","获取失败");
+        }
+    }
+
+    /**
+     * 根据队伍id和队长id获取队伍所有成员信息
+     * @param teamId
+     * @param captainId
+     * @return
+     */
+    @RequestMapping("/getTeamMembers")
+    public @ResponseBody ResponseMessage getTeamMembers(String teamId, String captainId){
+        try {
+            List<User> users = teamService.findUserListByTeamIdAndCaptainId(teamId, captainId);
+            ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
+            responseMessage.getData().put("users",users);
+            return responseMessage;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ResponseMessage("0", "获取失败");
+        }
+    }
+
 }

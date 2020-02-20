@@ -1,6 +1,7 @@
 package com.nnxy.competition.service.impl;
 
 import com.nnxy.competition.dao.TeamDao;
+import com.nnxy.competition.dao.UserDao;
 import com.nnxy.competition.entity.Apply;
 import com.nnxy.competition.entity.Team;
 import com.nnxy.competition.entity.User;
@@ -8,6 +9,7 @@ import com.nnxy.competition.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +22,8 @@ import java.util.List;
 public class TeamServiceImpl implements TeamService {
     @Autowired
     private TeamDao teamDao;
+    @Autowired
+    private UserDao userDao;
 
     @Override
     public void insertTeam(Team team) {
@@ -48,6 +52,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public void deleteTeamUser(String teamId, String userId) {
         teamDao.deleteTeamUser(teamId, userId);
+        teamDao.updateTeamHeadcount(teamId);
     }
 
     @Override
@@ -101,5 +106,26 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public void updateTeamCancelApply(String teamId) {
         teamDao.updateTeamCancelApply(teamId);
+    }
+
+    @Override
+    public List<Team> findTeamByCompetitionIdAndRegistered(String competitionId) {
+        List<Team> teams = teamDao.findTeamByCompetitionIdAndRegistered(competitionId);
+        return teams;
+    }
+
+    @Override
+    public List<User> findUserListByTeamIdAndCaptainId(String teamId, String captainId) {
+        //获取队长信息
+        List<User> users = new ArrayList<User>();
+        User captain = userDao.findUserByUserId(captainId);
+        users.add(captain);
+
+        //获取除队长以外的队员信息
+        List<User> users1 = teamDao.findUserListByTeamId(teamId);
+        for (User user : users1) {
+            users.add(user);
+        }
+        return users;
     }
 }

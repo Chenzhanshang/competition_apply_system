@@ -184,5 +184,78 @@
     <update id="updateTeamStateAndHeadCount" parameterType="com.nnxy.competition.entity.Team">
         UPDATE t_team SET team_state = #{teamState}, team_headcount = #{teamHeadcount} WHERE team_id = #{teamId}
     </update>
+
+    <select id="findTeamByCompetitionIdAndRegistered" parameterType="String" resultMap="findTeamByCompetitionIdAndRegisteredMap">
+        SELECT t.team_id team_id, t.team_name team_name, t.apply_time apply_time,
+        u.user_id user_id,u.name name,u.phone phone,u.email email
+        FROM t_team t 
+        LEFT JOIN t_user u ON t.captain_id = u.user_id
+        WHERE t.competition_id = #{v} AND t.team_state = 3
+        ORDER BY t.apply_time DESC 
+    </select>
+    
+    <resultMap id="findTeamByCompetitionIdAndRegisteredMap" type="com.nnxy.competition.entity.Team">
+        <id column="team_id" property="teamId" javaType="String" />
+        <result column="team_name" property="teamName" javaType="String" />
+        <result column="apply_time" property="applyTime" javaType="Long" />
+        <association property="captain" column="user_id" javaType="com.nnxy.competition.entity.User">
+            <id column="user_id" property="userId" javaType="String" />
+            <result column="name" property="name" javaType="String" />
+            <result column="phone" property="phone" javaType="String" />
+            <result column="email" property="email" javaType="String" />
+        </association>
+    </resultMap>
+
+    <update id="updateTeamHeadcount" parameterType="String">
+        UPDATE t_team SET team_headcount = team_headcount-1 WHERE team_id = #{v}
+    </update>
+
+
+    <select id="findUserListByTeamId" parameterType="String" resultMap="userMap">
+        SELECT u.user_id user_id, u.user_name user_name, u.email email, u.password password, u.name name, u.phone phone,
+        u.sex sex,u.user_className user_className, u.period period, r.role_id role_id, r.role_name role_name, c.college_id college_id,
+        c.college_name college_name, un.university_id university_id, un.university_name university_name
+        FROM t_user_team ut
+        LEFT JOIN t_user u
+        ON ut.user_id = u.user_id
+        LEFT JOIN t_user_role ur
+        ON u.user_id = ur.user_id
+        LEFT JOIN  t_role r
+        ON ur.role_id = r.role_id
+        LEFT JOIN t_college c
+        ON u.college_id = c.college_id
+        LEFT JOIN t_university un
+        ON c.university_id = un.university_id
+        WHERE ut.team_id = #{v}
+    </select>
+
+    <!-- 手动映射User的内容 -->
+    <resultMap id="userMap" type="com.nnxy.competition.entity.User">
+        <id column="user_id" property="userId" javaType="String" />
+        <result column="user_name" property="userName" javaType="String" />
+        <result column="email" property="email" javaType="String" />
+        <result column="password" property="password" javaType="String" />
+        <result column="name" property="name" javaType="String" />
+        <result column="phone" property="phone" javaType="String" />
+        <result column="sex" property="sex" javaType="String" />
+        <result column="period" property="period" javaType="Integer" />
+        <result column="user_className" property="userClassName" javaType="String" />
+
+        <association property="college" column="college_id" javaType="com.nnxy.competition.entity.College">
+            <id column="college_id" property="collegeId" javaType="String" />
+            <result column="college_name" property="collegeName" javaType="String" />
+            <association property="university" column="university_id" javaType="com.nnxy.competition.entity.University">
+                <id column="university_id" property="universityId" javaType="String" />
+                <result column="university_name" property="universityName" javaType="String" />
+            </association>
+        </association>
+
+        <!-- 用户-角色需要使用collection进行映射 一对多使用 配置在一的一方添加属性 collection：对关联查询的多条记录映射到集合对象中去
+        property: 将关联查询出来的多条记录映射到类中的那个属性中 list ofType : 指定映射到集合属性中的pojo类，list的泛型 -->
+        <collection  property="roles" column="role_id" ofType="com.nnxy.competition.entity.Role">
+            <id column="role_id" property="roleId" javaType="String" />
+            <result column="role_name" property="roleName" javaType="String" />
+        </collection>
+    </resultMap>
 </mapper>
 

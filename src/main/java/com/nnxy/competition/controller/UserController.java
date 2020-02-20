@@ -120,7 +120,7 @@ public class UserController {
     public User  findUserByUsername(){
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         System.out.println(user);
-        user = userService.findUserByUsername(user.getUserName());
+        user = userService.findUserByUserName(user.getUserName());
         System.out.println(user);
 
         return user;
@@ -187,8 +187,16 @@ public class UserController {
         return null;
     }
 
-
-
-
+    /**
+     * 根据用户id查找用户
+     * @param userId
+     * @return
+     */
+    @RequestMapping("/getUserByUserId")
+    @ResponseBody
+    public User  getUserByUserId(String userId){
+        User user = userService.findUserByUserId(userId);
+        return user;
+    }
 
 }

@@ -112,6 +112,26 @@ public class ApplyController {
     }
 
     /**
+     * 管理员取消用户报名
+     * @param userCompetition
+     * @return
+     */
+    @RequestMapping(value = "/adminCancelApply",method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseMessage adminCancelApply(@RequestBody UserCompetition userCompetition){
+        System.out.println(userCompetition);
+        try{
+            applyService.deleteApply(userCompetition);
+            return new ResponseMessage("1", "取消报名成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ResponseMessage("0", "取消报名失败");
+        }
+
+    }
+
+    /**
      * 组队赛取消报名
      * @param competitionId
      * @return
@@ -136,6 +156,28 @@ public class ApplyController {
                 return new ResponseMessage("0", "未报名，取消报名失败");
             }
 
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ResponseMessage("0", "取消报名失败");
+        }
+    }
+
+    /**
+     * 管理员取消组队赛报名
+     * @param teamId
+     * @return
+     */
+    @RequestMapping("/adminCancelTeamApply")
+    public @ResponseBody
+    ResponseMessage adminCancelTeamApply(String teamId){
+        try{
+            Team team = new Team();
+            team.setTeamId(teamId);
+            team.setTeamState(2);
+            System.out.println(team);
+            teamService.updateTeam(team);
+            return new ResponseMessage("1", "取消报名成功");
         }
         catch (Exception e){
             e.printStackTrace();

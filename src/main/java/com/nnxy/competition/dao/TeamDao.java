@@ -116,4 +116,24 @@ public interface TeamDao {
      * @param team
      */
     void updateTeamStateAndHeadCount(Team team);
+
+    /**
+     * 根据竞赛id及已报名的状态（3），获取队伍列表
+     * @param competitionId
+     * @return
+     */
+    List<Team> findTeamByCompetitionIdAndRegistered(String competitionId);
+
+    /**
+     * 修改队伍人数 为当前人数-1
+     * @param teamId
+     */
+    void updateTeamHeadcount(String teamId);
+
+    /**
+     * 根据队伍id获取除队长以外的队员信息
+     * @param teamId
+     * @return
+     */
+    List<User> findUserListByTeamId(String teamId);
 }

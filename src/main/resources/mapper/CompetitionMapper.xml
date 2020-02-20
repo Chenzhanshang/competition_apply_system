@@ -133,6 +133,37 @@
         WHERE competition_people_sum > 1
     </select>
 
+    <select id="findUserList" parameterType="String" resultMap="userMap">
+        SELECT u.user_name user_name, u.user_id user_id, u.user_name user_name, u.email email, u.password password, u.name name, u.phone phone,
+        u.sex sex,u.user_className user_className, u.period period, c.college_id college_id,
+        c.college_name college_name, un.university_id university_id, un.university_name university_name
+        FROM t_user_competition uc
+        LEFT JOIN t_user u ON uc.user_id = u.user_id
+        LEFT JOIN t_college c
+        ON u.college_id = c.college_id
+        LEFT JOIN t_university un
+        ON c.university_id = un.university_id
+        WHERE uc.competition_id = #{v}
+    </select>
 
+    <resultMap id="userMap" type="com.nnxy.competition.entity.User">
+        <id column="user_id" property="userId" javaType="String" />
+        <result column="user_name" property="userName" javaType="String" />
+        <result column="email" property="email" javaType="String" />
+        <result column="password" property="password" javaType="String" />
+        <result column="name" property="name" javaType="String" />
+        <result column="phone" property="phone" javaType="String" />
+        <result column="sex" property="sex" javaType="String" />
+        <result column="period" property="period" javaType="Integer" />
+        <result column="user_className" property="userClassName" javaType="String" />
+        <association property="college" column="college_id" javaType="com.nnxy.competition.entity.College">
+            <id column="college_id" property="collegeId" javaType="String" />
+            <result column="college_name" property="collegeName" javaType="String" />
+            <association property="university" column="university_id" javaType="com.nnxy.competition.entity.University">
+                <id column="university_id" property="universityId" javaType="String" />
+                <result column="university_name" property="universityName" javaType="String" />
+            </association>
+        </association>
+    </resultMap>
 
 </mapper>

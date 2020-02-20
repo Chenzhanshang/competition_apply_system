@@ -25,7 +25,7 @@
         SELECT college_id FROM t_user WHERE user_name = #{v}
     </select>
     
-    <select id="findUserByUsername" parameterType="String" resultMap="userMap">
+    <select id="findUserByUserName" parameterType="String" resultMap="userMap">
         SELECT u.user_id user_id, u.user_name user_name, u.email email, u.password password, u.name name, u.phone phone,
         u.sex sex,u.user_className user_className, u.period period, r.role_id role_id, r.role_name role_name, c.college_id college_id,
         c.college_name college_name, un.university_id university_id, un.university_name university_name
@@ -41,7 +41,23 @@
         WHERE u.user_name = #{userName}
     </select>
 
-    <!-- findUserByUsername手动映射User的内容 -->
+    <select id="findUserByUserId" parameterType="String" resultMap="userMap">
+        SELECT u.user_id user_id, u.user_name user_name, u.email email, u.password password, u.name name, u.phone phone,
+        u.sex sex,u.user_className user_className, u.period period, r.role_id role_id, r.role_name role_name, c.college_id college_id,
+        c.college_name college_name, un.university_id university_id, un.university_name university_name
+        FROM t_user u
+        LEFT JOIN t_user_role ur
+        ON u.user_id = ur.user_id
+        LEFT JOIN  t_role r
+        ON ur.role_id = r.role_id
+        LEFT JOIN t_college c
+        ON u.college_id = c.college_id
+        LEFT JOIN t_university un
+        ON c.university_id = un.university_id
+        WHERE u.user_id = #{v}
+    </select>
+
+    <!-- 手动映射User的内容 -->
     <resultMap id="userMap" type="com.nnxy.competition.entity.User">
         <id column="user_id" property="userId" javaType="String" />
         <result column="user_name" property="userName" javaType="String" />

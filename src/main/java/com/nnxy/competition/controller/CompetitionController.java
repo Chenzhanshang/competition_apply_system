@@ -119,4 +119,23 @@ public class CompetitionController {
         }
     }
 
+    /**
+     * 通过竞赛id,查询报名该竞赛的用户列表
+     * @param competitionId
+     * @return
+     */
+    @RequestMapping("/getUserReportList")
+    public @ResponseBody ResponseMessage getUserReportList(String competitionId){
+        try {
+            List<User> users = competitionService.findUserList(competitionId);
+            ResponseMessage responseMessage = new ResponseMessage("1","获取成功");
+            responseMessage.getData().put("users", users);
+            return responseMessage;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ResponseMessage("0","获取失败");
+        }
+    }
+
 }

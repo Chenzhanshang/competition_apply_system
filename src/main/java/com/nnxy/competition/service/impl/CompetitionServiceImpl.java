@@ -57,4 +57,10 @@ public class CompetitionServiceImpl implements CompetitionService {
         return competitions;
     }
 
+    @Override
+    public List<User> findUserList(String competitionId) {
+        List<User> users = competitionDao.findUserList(competitionId);
+        return users;
+    }
+
 }

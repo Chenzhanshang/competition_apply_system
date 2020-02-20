@@ -28,7 +28,7 @@ public interface UserService {
      * @param userName
      * @return
      */
-    User findUserByUsername(String userName);
+    User findUserByUserName(String userName);
 
 
     /**
@@ -36,4 +36,11 @@ public interface UserService {
      * @param user
      */
     void updatePassword(User user);
+
+    /**
+     * 通过userId查询所有用户信息
+     * @param userId
+     * @return
+     */
+    User findUserByUserId(String userId);
 }

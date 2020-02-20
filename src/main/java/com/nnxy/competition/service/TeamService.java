@@ -104,4 +104,18 @@ public interface TeamService {
      */
     void updateTeamCancelApply(String teamId);
 
+    /**
+     * 根据竞赛id及已报名的状态（3），获取队伍列表
+     * @param competitionId
+     * @return
+     */
+    List<Team> findTeamByCompetitionIdAndRegistered(String competitionId);
+
+    /**
+     * 根据队伍id和队长id获取队伍所有成员信息
+     * @param teamId
+     * @param captainId
+     * @return
+     */
+    List<User> findUserListByTeamIdAndCaptainId(String teamId, String captainId);
 }

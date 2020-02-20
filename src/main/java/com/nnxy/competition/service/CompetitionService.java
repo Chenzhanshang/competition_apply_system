@@ -45,4 +45,11 @@ public interface CompetitionService {
      * @return
      */
     List<Competition> findAllTeamCompetition();
+
+    /**
+     * 通过竞赛id,查询报名该竞赛的用户列表
+     * @param competitionId
+     * @return
+     */
+    List<User> findUserList(String competitionId);
 }

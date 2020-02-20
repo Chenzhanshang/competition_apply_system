@@ -31,7 +31,7 @@ public interface UserDao {
      * @param userName
      * @return
      */
-    User findUserByUsername(String userName);
+    User findUserByUserName(String userName);
 
 
     /**
@@ -46,4 +46,10 @@ public interface UserDao {
      */
     void updatePassword(User user);
 
+    /**
+     * 根据用户id获取用户信息
+     * @param captainId
+     * @return
+     */
+    User findUserByUserId(String captainId);
 }
