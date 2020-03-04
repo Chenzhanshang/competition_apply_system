@@ -93,14 +93,14 @@ public class UserRealm extends AuthorizingRealm {
     }
 
 //    @Test
-//    public void func(){
-//        String fun = "MD5";
-//        String pwd = "123456";
-//        ByteSource credentialsSalt = ByteSource.Util.bytes("czs12138");
-//        int i = 1024;
-//        SimpleHash simpleHash = new SimpleHash(fun, pwd, credentialsSalt, i);
-//        System.out.println(simpleHash);
-//    }
+////    public void func(){
+////        String fun = "MD5";
+////        String pwd = "123456";
+////        ByteSource credentialsSalt = ByteSource.Util.bytes("czs12138");
+////        int i = 1024;
+////        SimpleHash simpleHash = new SimpleHash(fun, pwd, credentialsSalt, i);
+////        System.out.println(simpleHash);
+////    }
 
 
 }

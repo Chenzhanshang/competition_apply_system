@@ -50,7 +50,6 @@ public interface NotificationService {
 
     /**
      * 根据通知id删除对应通知及文件，竞赛
-     *
      * @param notificationId
      * @return
      */

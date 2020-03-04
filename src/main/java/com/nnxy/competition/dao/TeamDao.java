@@ -136,4 +136,11 @@ public interface TeamDao {
      * @return
      */
     List<User> findUserListByTeamId(String teamId);
+
+    /**
+     * 根据id查询队伍
+     * @param teamId
+     * @return
+     */
+    Team findTeamById(String teamId);
 }

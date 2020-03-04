@@ -185,6 +185,10 @@
         UPDATE t_team SET team_state = #{teamState}, team_headcount = #{teamHeadcount} WHERE team_id = #{teamId}
     </update>
 
+    <select id="findTeamById" parameterType="String" resultType="com.nnxy.competition.entity.Team">
+        SELECT * FROM t_team WHERE team_id = #{v}
+    </select>
+
     <select id="findTeamByCompetitionIdAndRegistered" parameterType="String" resultMap="findTeamByCompetitionIdAndRegisteredMap">
         SELECT t.team_id team_id, t.team_name team_name, t.apply_time apply_time,
         u.user_id user_id,u.name name,u.phone phone,u.email email

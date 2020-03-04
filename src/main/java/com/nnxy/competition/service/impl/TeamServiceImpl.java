@@ -71,6 +71,15 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public void deleteTeamOneUser(String teamId, String userId) {
         teamDao.deleteTeamUser(teamId, userId);
+        //获得当前队伍
+        Team team = teamDao.findTeamById(teamId);
+        //判断当前队伍状态,如果为已满人或已报名，修改队伍状态，反之不修改
+        if(team.getTeamState() == 2 || team.getTeamState() == 3){
+            team.setTeamState(0);
+        }
+        //队伍人数减1
+        team.setTeamHeadcount(team.getTeamHeadcount() - 1);
+        teamDao.updateTeamStateAndHeadCount(team);
     }
 
     @Override

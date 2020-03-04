@@ -43,7 +43,8 @@
     <update id="updateCompetition" parameterType="com.nnxy.competition.utils.CompetitionNotificationVO">
         UPDATE t_competition SET competition_name = #{competitionName}, competition_content = #{competitionContent},
         competition_site = #{competitionSite}, competition_type = #{competitionType}, competition_level = #{competitionLevel},
-        competition_time = #{competitionTime}, competition_people_sum = #{competitionPeopleSum}
+        competition_time = #{competitionTime}, competition_people_sum = #{competitionPeopleSum},
+        competition_state = #{competitionState}
         <if test="collegeId!=null and collegeId!=''">
             , college_id = #{collegeId}
         </if>
@@ -59,6 +60,8 @@
         ON c.college_id = tc.college_id
         LEFT JOIN t_university u
         ON tc.university_id = u.university_id
+        WHERE c.competition_state !=  0
+        ORDER BY c.competition_time DESC
     </select>
 
     <resultMap id="findAllCompetitionMap" type="com.nnxy.competition.entity.Competition">
