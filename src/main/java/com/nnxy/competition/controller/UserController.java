@@ -199,4 +199,13 @@ public class UserController {
         return user;
     }
 
+    //判断是否登录
+    @RequestMapping("/isLogin")
+    public @ResponseBody ResponseMessage isLogin(){
+        if(SecurityUtils.getSubject().isAuthenticated()){
+            return new ResponseMessage("200","已登录");
+        }
+        return new ResponseMessage("1001","未登录,自动跳转到登录界面！");
+    }
+
 }

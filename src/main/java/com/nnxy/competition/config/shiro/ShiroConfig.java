@@ -52,13 +52,9 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("*.css", "anon");
         filterChainDefinitionMap.put("/druid/**", "anon");
         filterChainDefinitionMap.put("/user/login","anon");
-//        filterChainDefinitionMap.put("/admin/login", "anon");
-//        filterChainDefinitionMap.put("/admin/updatePassword", "anon");
-//        filterChainDefinitionMap.put("/admin/regionList", "anon");
-//        filterChainDefinitionMap.put("/admin/addCommunity", "anon");
-//        filterChainDefinitionMap.put("/admin/logout", "logout");
-//        filterChainDefinitionMap.put("/user/**","anon");
-        filterChainDefinitionMap.put("/**", "anon");
+        filterChainDefinitionMap.put("/user/isLogin","anon");
+        filterChainDefinitionMap.put("/user/logout","anon");
+        filterChainDefinitionMap.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
