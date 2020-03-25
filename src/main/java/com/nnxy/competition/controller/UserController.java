@@ -14,7 +14,6 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +33,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
     /**
      * 用户登录
      * @param user
@@ -43,9 +41,6 @@ public class UserController {
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public @ResponseBody
     ResponseMessage login(@RequestBody User user){
-        System.out.println("---------------------------------");
-        System.out.println(user);
-        System.out.println("---------------------------------");
         //获取subject
         Subject subject = SecurityUtils.getSubject();
         if (!subject.isAuthenticated()){
@@ -117,12 +112,9 @@ public class UserController {
      */
     @RequestMapping("/findUserByUsername")
     @ResponseBody
-    public User  findUserByUsername(){
+    public User findUserByUsername(){
         User user = (User) SecurityUtils.getSubject().getPrincipal();
-        System.out.println(user);
         user = userService.findUserByUserName(user.getUserName());
-        System.out.println(user);
-
         return user;
     }
 
@@ -169,22 +161,6 @@ public class UserController {
             e.printStackTrace();
             return new ResponseMessage("0","退出失败");
         }
-    }
-
-    @Autowired
-    private RedisTemplate redisTemplate; //注入
-
-
-    @RequestMapping("/add")
-    public String addStudent() {
-        System.out.println("add");
-        try {
-            redisTemplate.opsForValue().set("test", "测试");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 
     /**

@@ -89,14 +89,10 @@ public class WinNotificationController {
             //将notificationId存入redis，存储文件时使用
             redisUtil.set("notificationId",notification.getNotificationId());
         }
-
         //获得当前毫秒值作为通知时间
         notification.setNotificationTime(System.currentTimeMillis());
-
         //设置类型为2（即获奖通知）
         notification.setNotificationType(2);
-
-        System.out.println(notification);
         try {
             winNotificationService.insertWinNotification(notification);
         }

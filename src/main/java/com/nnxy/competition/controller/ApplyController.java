@@ -38,7 +38,6 @@ public class ApplyController {
     @RequestMapping("/doApply")
     public @ResponseBody
     ResponseMessage doApply(String competitionId){
-        System.out.println(competitionId);
         //创建中间表对象，封装报名信息
         UserCompetition userCompetition = new UserCompetition();
         Competition competition = new Competition();
@@ -82,7 +81,6 @@ public class ApplyController {
             e.printStackTrace();
             return new ResponseMessage("0", "报名失败");
         }
-
     }
 
     /**
@@ -140,7 +138,6 @@ public class ApplyController {
     public @ResponseBody
     ResponseMessage cancelTeamApply(String competitionId){
         User user = (User)SecurityUtils.getSubject().getPrincipal();
-
         try{
             Team team = teamService.findTeamByCaptainIdAndCompetitionId(user.getUserId(), competitionId);
             if(team != null && team.getApplyTime() != null){
@@ -185,10 +182,14 @@ public class ApplyController {
         }
     }
 
+    /**
+     * 获得该用户对于该竞赛的的报名状态/已报名/未报名
+     * @param competitionId
+     * @return
+     */
     @RequestMapping("/loadApplyState")
     public @ResponseBody
     ResponseMessage loadApplyState(String competitionId){
-        System.out.println(competitionId);
         //创建中间表对象，封装报名信息
         UserCompetition userCompetition = new UserCompetition();
         Competition competition = new Competition();
@@ -196,7 +197,6 @@ public class ApplyController {
         userCompetition.setCompetition(competition);
         User user = (User)SecurityUtils.getSubject().getPrincipal();
         userCompetition.setUser(user);
-
         try{
             UserCompetition uc = applyService.findApplyByUserIdAndCompetitionId(userCompetition);
             ResponseMessage responseMessage = new ResponseMessage("1", "加载成功");
@@ -211,7 +211,7 @@ public class ApplyController {
     }
 
     /**
-     * 判断是否已报名该比赛
+     * 获得该队伍对于该竞赛的的报名状态/已报名/未报名
      * @param competitionId
      * @return
      */
@@ -235,6 +235,11 @@ public class ApplyController {
 
     }
 
+    /**
+     * 发起加入队伍申请
+     * @param apply
+     * @return
+     */
     @RequestMapping(value = "/joinTeam", method = RequestMethod.POST)
     public @ResponseBody ResponseMessage joinTeam(@RequestBody Apply apply){
         User user = (User) SecurityUtils.getSubject().getPrincipal();

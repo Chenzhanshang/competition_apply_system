@@ -6,6 +6,8 @@ import com.nnxy.competition.service.FileService;
 import com.nnxy.competition.utils.RedisUtil;
 import com.nnxy.competition.utils.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +26,7 @@ import java.util.UUID;
  */
 
 @Controller
+@PropertySource("classpath:file.properties")
 @RequestMapping("/file")
 public class FileController {
     @Autowired
@@ -31,6 +34,11 @@ public class FileController {
 
     @Autowired
     private RedisUtil redisUtil;
+
+    //抽取上传路径
+    @Value("${filePath}")
+    private String filePath;
+
 
     /**
      * 校验上传竞赛通知的文件，进行保存或修改
@@ -43,10 +51,7 @@ public class FileController {
         //文件是否存在，标志
         Boolean tag = false;
         //设置文件保存路径
-        final String path = "C:\\Users\\Administrator\\Desktop\\file\\competition\\" + competitionId + "\\";
-
-
-
+        final String path = filePath + competitionId + "\\";
         if (multipartFiles != null && multipartFiles.length > 0) {
             for (MultipartFile multipartFile : multipartFiles) {
                 String fileName = multipartFile.getOriginalFilename();
@@ -70,7 +75,6 @@ public class FileController {
                 Competition competition = new Competition();
                 competition.setCompetitionId(competitionId);
                 f.setCompetition(competition);
-                System.out.println(f);
 
                 //判断文件夹是否存在，如果不存在则创建
                 if (!file.exists()) {
@@ -107,7 +111,7 @@ public class FileController {
         //文件是否存在，标志
         Boolean tag = false;
         //设置文件保存路径
-        final String path = "C:\\Users\\Administrator\\Desktop\\file\\notification\\" + notificationId + "\\";
+        final String path = filePath + notificationId + "\\";
         System.out.println(notificationId);
         System.out.println(path);
         if (multipartFiles != null && multipartFiles.length > 0) {
@@ -146,7 +150,6 @@ public class FileController {
                 try {
                     // 文件写入
                     multipartFile.transferTo(file);
-
                     //文件保存至数据库
                     fileService.insertFile(f);
                 } catch (Exception e) {
@@ -168,7 +171,6 @@ public class FileController {
     ResponseMessage deleteFile(String fileId) throws IOException {
         try {
             com.nnxy.competition.entity.File file = fileService.findFileById(fileId);
-            System.out.println(file);
             java.io.File f = new java.io.File(file.getFilePath());
             //文件是否存在
             if (f.exists()) {
@@ -246,7 +248,5 @@ public class FileController {
             return new ResponseMessage("-1", "下载文件失败");
         }
     }
-
-
 
 }

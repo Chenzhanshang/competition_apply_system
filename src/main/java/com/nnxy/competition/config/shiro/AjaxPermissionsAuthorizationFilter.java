@@ -45,8 +45,7 @@ public class AjaxPermissionsAuthorizationFilter extends FormAuthenticationFilter
     }
 
     /**
-     * 解决复杂请求，他们的contentType是application/json，方
-     * 法类型type是post、patch、delete、put，
+     * 解决复杂请求，他们的contentType是application/json，方法类型type是post、patch、delete、put，
      * 这些请求在执行的时候，会先往服务器发送一个探测请求，而这个探测请求的方法类型就是OPTIONS，
      * 这个请求，默认是不会带上cookie的，而且也无法设置让他带上cookie。
      * 如果后端在接收到一个请求之后，判断没有携带cookie,或者携带的cookie已经过期，

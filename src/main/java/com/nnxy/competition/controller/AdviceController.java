@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 
+ *  建议web层
  * @author  :CZS
  * @date    :2020/3/3 14:56
  * Email    :642125256@qq.com
@@ -27,10 +27,15 @@ public class AdviceController {
     @Autowired
     private AdviceService adviceService;
 
+    /**
+     * 新增反馈建议
+     * @param advice
+     * @return
+     */
     @RequestMapping(value = "/submitAdvice",method = RequestMethod.POST)
     public @ResponseBody
     ResponseMessage submitAdvice(@RequestBody Advice advice){
-
+        //设置投诉建议人为当前用户
         advice.setUser((User)SecurityUtils.getSubject().getPrincipal());
         advice.setAdviceId(UUID.randomUUID().toString());
         advice.setAdviceDate(System.currentTimeMillis());
@@ -47,10 +52,14 @@ public class AdviceController {
         }
     }
 
+    /**
+     * 通过状态获得所有反馈建议，状态 0未处理，1已处理
+     * @param adviceState
+     * @return
+     */
     @RequestMapping(value = "/getAllAdvice",method = RequestMethod.GET)
     public @ResponseBody
     ResponseMessage getAllAdvice(Integer adviceState){
-        System.out.println(adviceState);
         try {
             List<Advice> advices = adviceService.getAllAdvice(adviceState);
             ResponseMessage responseMessage = new ResponseMessage("1","获取成功！");
@@ -63,6 +72,11 @@ public class AdviceController {
         }
     }
 
+    /**
+     * 处理反馈建议，根据id
+     * @param adviceId
+     * @return
+     */
     @RequestMapping("/disposeAdvice")
     public @ResponseBody ResponseMessage disposeAdvice(String adviceId){
         Advice advice = new Advice();

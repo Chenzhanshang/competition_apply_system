@@ -95,7 +95,6 @@ public class NotificationController {
     ResponseMessage
     insertCompetitionNotification(@RequestBody CompetitionNotificationVO competitionNotificationVO) throws IOException {
         //封装比赛类
-        System.out.println(competitionNotificationVO);
         Competition competition = new Competition();
         competition.setCompetitionContent(competitionNotificationVO.getCompetitionContent());
         competition.setCompetitionLevel(competitionNotificationVO.getCompetitionLevel());
@@ -119,24 +118,13 @@ public class NotificationController {
 
         //若为院级比赛
         if(competition.getCompetitionLevel() == 1){
-//            //获得当前用户（含用户名密码）
-//            User user = (User) SecurityUtils.getSubject().getPrincipal();
-//            //根据用户名活的用户的学院id
-//            String collegeId = userService.findCollegeIdByUserName(user.getUserName());
-//            //根据学院获得学院信息，内含需要使用的学校id
-//            College col = collegeService.findCollegeById(collegeId);
-//            //根据前端传来的学院名和学校id获得唯一一个学院
-//            College college = collegeService.findCollegeByNameAndUniversityId(
-//                    competitionNotificationVO.getCollegeName(), col.getUniversity().getUniversityId());
             College college = new College();
             college.setCollegeId(competitionNotificationVO.getCollegeId());
             competition.setCollege(college);
         }
 
-
         //封装通知类
         Notification notification = new Notification();
-
         notification.setNotificationTitle(competitionNotificationVO.getNotificationTitle());
         notification.setNotificationId(UUID.randomUUID().toString());
         notification.setNotificationTime(System.currentTimeMillis());
@@ -147,21 +135,21 @@ public class NotificationController {
         System.out.println(competition);
         try {
             notificationService.insertCompetitionAndNotification(competition, notification);
+            ResponseMessage responseMessage = new ResponseMessage("1", "添加成功");
+            responseMessage.getData().put("competitionId",competition.getCompetitionId());
+            return responseMessage;
         }
         catch (Exception e){
             e.printStackTrace();
             return new ResponseMessage("0", "添加失败");
         }
 
-        ResponseMessage responseMessage = new ResponseMessage("1", "添加成功");
-        responseMessage.getData().put("competitionId",competition.getCompetitionId());
-        return responseMessage;
+
 
     }
 
     /**
      * 根据通知id查找内容，用于回显修改通知的信息
-     *
      * @param notificationId
      * @return
      */
@@ -170,12 +158,10 @@ public class NotificationController {
     ResponseMessage findDataByNotificationId(String notificationId){
         try {
             Notification notification = notificationService.findDataByNotificationId(notificationId);
-            System.out.println(notification);
             List<File> files = fileService.findFileByCompetitionId(notification.getCompetition().getCompetitionId());
             notification.getCompetition().setFiles(files);
             ResponseMessage responseMessage = new ResponseMessage("1","获取成功");
             responseMessage.getData().put("notification", notification);
-            System.out.println(notification);
             return responseMessage;
         }
         catch (Exception e){
@@ -205,7 +191,6 @@ public class NotificationController {
                 System.out.println(s);
                 //快速for循环 快捷键iter
                 for (File file : files) {
-                    System.out.println(file);
                     java.io.File f = new java.io.File(file.getFilePath());
                     //文件是否存在
                     if (f.exists()) {
@@ -224,7 +209,6 @@ public class NotificationController {
                 //删除文件夹
                 f1.delete();
             }
-
 
             //删除信息
             notificationService.deleteNotificationById(notificationId, competitionId);
@@ -245,7 +229,7 @@ public class NotificationController {
         try {
             //获得当前用户（含用户名密码）
             User user = (User) SecurityUtils.getSubject().getPrincipal();
-            //根据用户名活的用户的学院id
+            //根据用户名获得用户的学院id
             String collegeId = userService.findCollegeIdByUserName(user.getUserName());
             //根据学校id获得学院列表
             List<College> colleges = collegeService.findCollegeByUniversityId(collegeService.findCollegeById(collegeId).getUniversity().getUniversityId());
@@ -269,7 +253,6 @@ public class NotificationController {
     @RequestMapping(value = "/updateNotification", method = RequestMethod.POST)
     public @ResponseBody
     ResponseMessage updateNotification(@RequestBody CompetitionNotificationVO competitionNotificationVO){
-        System.out.println(competitionNotificationVO);
         //将competitionId存入redis，修改文件时使用
         redisUtil.set("competitionId",competitionNotificationVO.getCompetitionId());
         try {

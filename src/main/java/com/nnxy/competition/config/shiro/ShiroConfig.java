@@ -54,7 +54,9 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/user/login","anon");
         filterChainDefinitionMap.put("/user/isLogin","anon");
         filterChainDefinitionMap.put("/user/logout","anon");
-        filterChainDefinitionMap.put("/**", "authc");
+        filterChainDefinitionMap.put("/file/uploadFile","anon");
+        filterChainDefinitionMap.put("/notification/insertCompetition","anon");
+        filterChainDefinitionMap.put("/**", "anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
@@ -68,7 +70,6 @@ public class ShiroConfig {
         securityManager.setCacheManager(cacheManager());
         // 自定义session管理 使用redis
         securityManager.setSessionManager(sessionManager());
-
 
         return securityManager;
     }
@@ -124,7 +125,8 @@ public class ShiroConfig {
         RedisManager redisManager = new RedisManager();
         redisManager.setHost("localhost");
         redisManager.setPort(6379);
-        redisManager.setExpire(1800);// 配置缓存过期时间
+        // 配置缓存过期时间，单位/秒
+        redisManager.setExpire(1800);
         redisManager.setTimeout(0);
         // redisManager.setPassword(password);
         return redisManager;

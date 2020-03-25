@@ -33,7 +33,6 @@ public class CompetitionController {
     @RequestMapping("/findCompetitionById")
     public @ResponseBody
     ResponseMessage findCompetitionById(String competitionId){
-        System.out.println(competitionId);
         try {
             Competition competition = competitionService.findCompetitionById(competitionId);
             ResponseMessage responseMessage = new ResponseMessage("1","获取成功");
@@ -47,6 +46,11 @@ public class CompetitionController {
         }
     }
 
+    /**
+     * 获得该竞赛已报名的用户列表
+     * @param competitionId
+     * @return
+     */
     @RequestMapping("/findUserByCompetitionId")
     public @ResponseBody ResponseMessage findUserByCompetitionId(String competitionId){
         try {
@@ -62,7 +66,7 @@ public class CompetitionController {
     }
 
     /**
-     * 查询所有比赛
+     * 获得所有比赛
      * @return
      */
     @RequestMapping("/findAllCompetition")
@@ -81,7 +85,7 @@ public class CompetitionController {
     }
 
     /**
-     * 根据当前用户id获得已参加列表
+     * 根据当前用户id获得已参加的竞赛列表
      * @return
      */
     @RequestMapping("/findCompetitionListByUserId")
