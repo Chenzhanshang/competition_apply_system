@@ -8,6 +8,9 @@ import com.nnxy.competition.entity.User;
 import com.nnxy.competition.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +28,7 @@ public class TeamServiceImpl implements TeamService {
     @Autowired
     private UserDao userDao;
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     @Override
     public void insertTeam(Team team) {
         teamDao.insertTeam(team);
@@ -49,12 +53,14 @@ public class TeamServiceImpl implements TeamService {
         teamDao.updateMyTeam(team);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     @Override
     public void deleteTeamUser(String teamId, String userId) {
         teamDao.deleteTeamUser(teamId, userId);
         teamDao.updateTeamHeadcount(teamId);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     @Override
     public void deleteTeam(String teamId) {
         //通过队伍id删除所有队员

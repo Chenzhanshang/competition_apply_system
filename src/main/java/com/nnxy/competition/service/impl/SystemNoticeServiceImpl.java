@@ -7,6 +7,9 @@ import com.nnxy.competition.entity.Notification;
 import com.nnxy.competition.service.SystemNoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,6 +41,7 @@ public class SystemNoticeServiceImpl implements SystemNoticeService {
         systemNoticeDao.insertNotice(notification);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     @Override
     public void deleteNotificationById(String notificationId) {
         //先删除文件，文件引用公告外键

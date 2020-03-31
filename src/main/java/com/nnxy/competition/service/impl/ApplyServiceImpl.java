@@ -8,6 +8,9 @@ import com.nnxy.competition.entity.UserTeam;
 import com.nnxy.competition.service.ApplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -50,6 +53,7 @@ public class ApplyServiceImpl implements ApplyService {
         applyDao.insertTeamApply(apply);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     @Override
     public void updateApplyByDispose(Apply apply) {
         applyDao.updateApplyByDispose(apply);

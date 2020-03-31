@@ -10,6 +10,9 @@ import com.nnxy.competition.service.NotificationService;
 import com.nnxy.competition.utils.CompetitionNotificationVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -43,6 +46,7 @@ public class NotificationServiceImpl implements NotificationService {
         return notifications;
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     @Override
     public void insertCompetitionAndNotification( Competition competition, Notification notification) {
         competitionDao.insertCompetition(competition);
@@ -54,10 +58,10 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public Notification findDataByNotificationId(String notificationId) {
         Notification notification = notificationDao.findDataByNotificationId(notificationId);
-
         return notification;
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     @Override
     public void deleteNotificationById(String notificationId, String competitionId) {
         //删通知
@@ -69,6 +73,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     @Override
     public void updateNotification(CompetitionNotificationVO competitionNotificationVO) {
         notificationDao.updateNotification(competitionNotificationVO);

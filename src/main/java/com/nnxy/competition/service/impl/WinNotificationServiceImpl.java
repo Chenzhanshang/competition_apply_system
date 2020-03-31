@@ -7,6 +7,9 @@ import com.nnxy.competition.entity.Notification;
 import com.nnxy.competition.service.WinNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -34,6 +37,7 @@ public class WinNotificationServiceImpl implements WinNotificationService {
         return notifications;
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     @Override
     public void insertWinNotification(Notification notification) {
         winNotificationServiceDao.insertWinNotification(notification);
@@ -48,6 +52,7 @@ public class WinNotificationServiceImpl implements WinNotificationService {
         }
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     @Override
     public void deleteWinNotificationById(String notificationId, String competitionId) {
         //先删除文件
@@ -56,6 +61,7 @@ public class WinNotificationServiceImpl implements WinNotificationService {
         winNotificationServiceDao.deleteWin(competitionId);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     @Override
     public void updateWinNotification(Notification notification) {
         winNotificationServiceDao.updateWinNotification(notification);

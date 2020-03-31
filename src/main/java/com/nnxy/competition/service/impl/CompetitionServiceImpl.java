@@ -28,8 +28,6 @@ public class CompetitionServiceImpl implements CompetitionService {
     @Override
     public Competition findCompetitionById(String competitionId) {
         Competition competition = competitionDao.findCompetitionById(competitionId);
-//        List<File> files = fileDao.findFileByCompetitionId(competitionId);
-//        competition.setFiles(files);
         return competition;
     }
 
