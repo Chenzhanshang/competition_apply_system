@@ -9,9 +9,11 @@ import com.nnxy.competition.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
@@ -91,16 +93,16 @@ public class UserRealm extends AuthorizingRealm {
         info = new SimpleAuthenticationInfo(userFindUserByUsername,userFindUserByUsername.getPassword(),credentialsSalt,this.getName());
         return info;
     }
-
-//    @Test
-////    public void func(){
-////        String fun = "MD5";
-////        String pwd = "123456";
-////        ByteSource credentialsSalt = ByteSource.Util.bytes("czs12138");
-////        int i = 1024;
-////        SimpleHash simpleHash = new SimpleHash(fun, pwd, credentialsSalt, i);
-////        System.out.println(simpleHash);
-////    }
-
+    /*
+    @Test
+    public void func(){
+        String fun = "MD5";
+        String pwd = "970915";
+        ByteSource credentialsSalt = ByteSource.Util.bytes("xfms");
+        int i = 1024;
+        SimpleHash simpleHash = new SimpleHash(fun, pwd, credentialsSalt, i);
+        System.out.println(simpleHash);
+    }
+    */
 
 }

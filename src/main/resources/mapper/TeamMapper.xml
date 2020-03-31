@@ -191,9 +191,15 @@
 
     <select id="findTeamByCompetitionIdAndRegistered" parameterType="String" resultMap="findTeamByCompetitionIdAndRegisteredMap">
         SELECT t.team_id team_id, t.team_name team_name, t.apply_time apply_time,
-        u.user_id user_id,u.name name,u.phone phone,u.email email
+        u.user_id user_id, u.period period, u.name name,u.phone phone,u.email email,
+        u.user_className user_className, u.sex sex, c.college_id college_id,
+        c.college_name college_name, un.university_id university_id, un.university_name university_name
         FROM t_team t 
         LEFT JOIN t_user u ON t.captain_id = u.user_id
+        LEFT JOIN t_college c
+        ON u.college_id = c.college_id
+        LEFT JOIN t_university un
+        ON c.university_id = un.university_id
         WHERE t.competition_id = #{v} AND t.team_state = 3
         ORDER BY t.apply_time DESC 
     </select>
@@ -206,7 +212,18 @@
             <id column="user_id" property="userId" javaType="String" />
             <result column="name" property="name" javaType="String" />
             <result column="phone" property="phone" javaType="String" />
+            <result column="user_className" property="userClassName" javaType="String" />
+            <result column="sex" property="sex" javaType="String" />
             <result column="email" property="email" javaType="String" />
+            <result column="period" property="period" javaType="Integer" />
+            <association property="college" column="college_id" javaType="com.nnxy.competition.entity.College">
+                <id column="college_id" property="collegeId" javaType="String" />
+                <result column="college_name" property="collegeName" javaType="String" />
+                <association property="university" column="university_id" javaType="com.nnxy.competition.entity.University">
+                    <id column="university_id" property="universityId" javaType="String" />
+                    <result column="university_name" property="universityName" javaType="String" />
+                </association>
+            </association>
         </association>
     </resultMap>
 

@@ -1,13 +1,19 @@
 package com.nnxy.competition.controller;
 
 import com.nnxy.competition.entity.Competition;
+import com.nnxy.competition.entity.Team;
 import com.nnxy.competition.entity.User;
 import com.nnxy.competition.entity.UserCompetition;
 import com.nnxy.competition.service.CompetitionService;
+import com.nnxy.competition.service.TeamService;
+import com.nnxy.competition.utils.POIUtils;
+import com.nnxy.competition.utils.RedisUtil;
 import com.nnxy.competition.utils.ResponseMessage;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -22,6 +28,10 @@ import java.util.List;
 @Controller
 @RequestMapping("/competition")
 public class CompetitionController {
+    @Autowired
+    private TeamService teamService;
+    @Autowired
+    private RedisUtil redisUtil;
     @Autowired
     private CompetitionService competitionService;
 
@@ -134,12 +144,31 @@ public class CompetitionController {
             List<User> users = competitionService.findUserList(competitionId);
             ResponseMessage responseMessage = new ResponseMessage("1","获取成功");
             responseMessage.getData().put("users", users);
+            redisUtil.set("competitionId", competitionId);
             return responseMessage;
         }
         catch (Exception e){
             e.printStackTrace();
             return new ResponseMessage("0","获取失败");
         }
+    }
+
+
+    @GetMapping("/export")
+    public ResponseEntity<byte[]> exportData() {
+        List<User> list = (List<User>) competitionService.findUserList(redisUtil.get("competitionId").toString());
+        return POIUtils.userExcel(list);
+    }
+
+    @GetMapping("/exportTeam")
+    public ResponseEntity<byte[]> exportTeamData() {
+        //根据竞赛id及已报名的状态（3），获取队伍列表
+        List<Team> teamList = teamService.findTeamByCompetitionIdAndRegistered(redisUtil.get("competitionId").toString());
+        for (Team team : teamList) {
+            //获取队伍成员放入队伍
+            team.setUsers(teamService.findUserListByTeamIdAndCaptainId(team.getTeamId(),team.getCaptain().getUserId()));
+        }
+        return POIUtils.teamExcel(teamList);
     }
 
 }

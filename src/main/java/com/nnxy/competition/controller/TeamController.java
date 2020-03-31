@@ -4,6 +4,7 @@ import com.nnxy.competition.entity.Apply;
 import com.nnxy.competition.entity.Team;
 import com.nnxy.competition.entity.User;
 import com.nnxy.competition.service.TeamService;
+import com.nnxy.competition.utils.RedisUtil;
 import com.nnxy.competition.utils.ResponseMessage;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/team")
 public class TeamController {
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Autowired
     private TeamService teamService;
@@ -250,6 +253,8 @@ public class TeamController {
             List<Team> teams = teamService.findTeamByCompetitionIdAndRegistered(competitionId);
             ResponseMessage responseMessage = new ResponseMessage("1","获取成功");
             responseMessage.getData().put("teams",teams);
+            //将id放入缓存，供导出用
+            redisUtil.set("competitionId",competitionId);
             return responseMessage;
         }
         catch (Exception e){
