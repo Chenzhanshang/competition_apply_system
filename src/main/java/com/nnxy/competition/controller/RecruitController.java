@@ -17,8 +17,9 @@ import java.util.List;
 
 /**
  * 招募web层
- * @author  :CZS
- * @date    :2019/12/30 11:31
+ *
+ * @author :CZS
+ * @date :2019/12/30 11:31
  * Email    :642125256@qq.com
  */
 @Controller
@@ -31,6 +32,7 @@ public class RecruitController {
 
     /**
      * 根据队伍状态获取正在招募的队伍列表
+     *
      * @return
      */
     @RequestMapping("/findAllRecruitTeam")
@@ -45,12 +47,12 @@ public class RecruitController {
             List<Team> teams1 = new ArrayList<Team>();
             int i;
             for (Team team : teams) {
-                for (i = 0; i < userTeams.size(); i++ ) {
-                    if(team.getTeamId().equals(userTeams.get(i).getTeamId())){
+                for (i = 0; i < userTeams.size(); i++) {
+                    if (team.getTeamId().equals(userTeams.get(i).getTeamId())) {
                         break;
                     }
                 }
-                if(i == userTeams.size()){
+                if (i == userTeams.size()) {
                     teams1.add(team);
                 }
 
@@ -65,35 +67,35 @@ public class RecruitController {
     }
 
     @RequestMapping("/recruitUser")
-    public @ResponseBody ResponseMessage recruitUser(String teamId){
+    public @ResponseBody
+    ResponseMessage recruitUser(String teamId) {
         Team team = new Team();
         team.setTeamId(teamId);
         //设置队伍状态为1,即招募中
         team.setTeamState(1);
         try {
             teamService.updateTeam(team);
-            return new ResponseMessage("1","发起招募成功");
-        }
-        catch (Exception e){
+            return new ResponseMessage("1", "发起招募成功");
+        } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseMessage("0","发起招募失败");
+            return new ResponseMessage("0", "发起招募失败");
         }
 
     }
 
     @RequestMapping("/cancelRecruit")
-    public @ResponseBody ResponseMessage cancelRecruit(String teamId){
+    public @ResponseBody
+    ResponseMessage cancelRecruit(String teamId) {
         Team team = new Team();
         team.setTeamId(teamId);
         //设置队伍状态为0,即未招募
         team.setTeamState(0);
         try {
             teamService.updateTeam(team);
-            return new ResponseMessage("1","取消招募成功");
-        }
-        catch (Exception e){
+            return new ResponseMessage("1", "取消招募成功");
+        } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseMessage("0","取消招募失败");
+            return new ResponseMessage("0", "取消招募失败");
         }
 
     }

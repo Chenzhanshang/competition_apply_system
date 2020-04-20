@@ -14,6 +14,7 @@ import java.util.List;
 public interface FileDao {
     /**
      * 插入新文件
+     *
      * @param file
      * @return
      */
@@ -21,6 +22,7 @@ public interface FileDao {
 
     /**
      * 根据比赛id查询文件
+     *
      * @param competitionId
      * @return
      */
@@ -28,6 +30,7 @@ public interface FileDao {
 
     /**
      * 根据比赛id删除文件
+     *
      * @param CompetitionId
      * @return
      */
@@ -35,6 +38,7 @@ public interface FileDao {
 
     /**
      * 根据文件id搜索文件
+     *
      * @param fileId
      * @return
      */
@@ -42,6 +46,7 @@ public interface FileDao {
 
     /**
      * 根据文件id删除文件
+     *
      * @param fileId
      * @return
      */
@@ -49,6 +54,7 @@ public interface FileDao {
 
     /**
      * 根据公告id查询文件
+     *
      * @param notificationId
      * @return
      */
@@ -56,6 +62,7 @@ public interface FileDao {
 
     /**
      * 根据公告id删除文件
+     *
      * @param notificationId
      * @return
      */

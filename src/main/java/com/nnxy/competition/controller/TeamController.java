@@ -19,9 +19,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 
- * @author  :CZS
- * @date    :2019/12/27 12:03
+ * @author :CZS
+ * @date :2019/12/27 12:03
  * Email    :642125256@qq.com
  */
 
@@ -37,12 +36,13 @@ public class TeamController {
 
     /**
      * 创建队伍
+     *
      * @param team
      * @return
      */
     @RequestMapping(value = "/addTeam", method = RequestMethod.POST)
     public @ResponseBody
-    ResponseMessage addTeam(@RequestBody Team team){
+    ResponseMessage addTeam(@RequestBody Team team) {
         //生成id
         team.setTeamId(UUID.randomUUID().toString());
         //获得当前用户
@@ -56,8 +56,7 @@ public class TeamController {
         try {
             teamService.insertTeam(team);
             return new ResponseMessage("1", "创建成功");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "创建失败");
         }
@@ -65,18 +64,19 @@ public class TeamController {
 
     /**
      * 获取当前用户创建的所有队伍
+     *
      * @return
      */
     @RequestMapping("/findMyTeam")
-    public @ResponseBody ResponseMessage findMyTeam(){
+    public @ResponseBody
+    ResponseMessage findMyTeam() {
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         try {
             List<Team> teams = teamService.findMyTeam(user.getUserId());
             ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
             responseMessage.getData().put("teams", teams);
             return responseMessage;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "获取失败");
         }
@@ -84,18 +84,19 @@ public class TeamController {
 
     /**
      * 获取当前用户加入的所有队伍
+     *
      * @return
      */
     @RequestMapping("/findJoinTeam")
-    public @ResponseBody ResponseMessage findJoinTeam(){
+    public @ResponseBody
+    ResponseMessage findJoinTeam() {
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         try {
             List<Team> teams = teamService.findJoinTeam(user.getUserId());
             ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
             responseMessage.getData().put("teams", teams);
             return responseMessage;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "获取失败");
         }
@@ -103,19 +104,20 @@ public class TeamController {
 
     /**
      * 根据队伍id获得队伍其他成员信息
+     *
      * @param teamId
      * @return
      */
     @RequestMapping("/findUsersByTeamId")
-    public @ResponseBody ResponseMessage findUsersByTeamId(String teamId){
+    public @ResponseBody
+    ResponseMessage findUsersByTeamId(String teamId) {
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         try {
             List<User> users = teamService.findUsersByTeamIdAndNotNowUser(teamId, user.getUserId());
             ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
             responseMessage.getData().put("users", users);
             return responseMessage;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "获取失败");
         }
@@ -123,16 +125,17 @@ public class TeamController {
 
     /**
      * 根据队伍信息修改数据库队伍数据
+     *
      * @param team
      * @return
      */
     @RequestMapping(value = "/updateMyTeam")
-    public @ResponseBody ResponseMessage updateMyTeam(@RequestBody Team team){
+    public @ResponseBody
+    ResponseMessage updateMyTeam(@RequestBody Team team) {
         try {
             teamService.updateMyTeam(team);
             return new ResponseMessage("1", "修改成功");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "修改失败");
         }
@@ -140,16 +143,17 @@ public class TeamController {
 
     /**
      * 删除队伍中的成员
+     *
      * @param teamId
      * @param userId
      */
     @RequestMapping("/deleteTeamUser")
-    public @ResponseBody ResponseMessage deleteTeamUser(String teamId, String userId){
+    public @ResponseBody
+    ResponseMessage deleteTeamUser(String teamId, String userId) {
         try {
-            teamService.deleteTeamUser(teamId,userId);
+            teamService.deleteTeamUser(teamId, userId);
             return new ResponseMessage("1", "删除成功");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "删除失败");
         }
@@ -157,15 +161,16 @@ public class TeamController {
 
     /**
      * 解散队伍，并清空队员
+     *
      * @param teamId
      */
     @RequestMapping("/deleteTeam")
-    public @ResponseBody ResponseMessage deleteTeam(String teamId){
+    public @ResponseBody
+    ResponseMessage deleteTeam(String teamId) {
         try {
             teamService.deleteTeam(teamId);
             return new ResponseMessage("1", "删除成功");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "删除失败");
         }
@@ -173,25 +178,27 @@ public class TeamController {
 
     /**
      * 退出队伍
+     *
      * @param teamId
      * @return
      */
     @RequestMapping("/exitTeam")
-    public @ResponseBody ResponseMessage exitTeam(String teamId){
+    public @ResponseBody
+    ResponseMessage exitTeam(String teamId) {
         User user = (User) SecurityUtils.getSubject().getPrincipal();
 
         try {
             teamService.deleteTeamOneUser(teamId, user.getUserId());
             return new ResponseMessage("1", "退出成功");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "退出失败");
         }
     }
 
     @RequestMapping("/joinMyTeamList")
-    public @ResponseBody ResponseMessage joinMyTeamList(){
+    public @ResponseBody
+    ResponseMessage joinMyTeamList() {
         try {
             User user = (User) SecurityUtils.getSubject().getPrincipal();
             List<Team> teams = teamService.findMyTeam(user.getUserId());
@@ -199,15 +206,15 @@ public class TeamController {
             ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
             responseMessage.getData().put("applies", applies);
             return responseMessage;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "获取失败");
         }
     }
 
     @RequestMapping("/myDisposeList")
-    public @ResponseBody ResponseMessage myDisposeList(){
+    public @ResponseBody
+    ResponseMessage myDisposeList() {
         try {
             User user = (User) SecurityUtils.getSubject().getPrincipal();
             List<Team> teams = teamService.findMyTeam(user.getUserId());
@@ -215,22 +222,22 @@ public class TeamController {
             ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
             responseMessage.getData().put("applies", applies);
             return responseMessage;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "获取失败");
         }
     }
 
     @RequestMapping("/getMyTeamByCompetitionId")
-    public @ResponseBody ResponseMessage getMyTeamByCompetitionId(String competitionId){
+    public @ResponseBody
+    ResponseMessage getMyTeamByCompetitionId(String competitionId) {
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         try {
             List<Team> teams = teamService.findMyTeam(user.getUserId());
             List<Team> teams1 = new ArrayList<Team>();
-            if(teams.size() != 0 && teams != null){
+            if (teams.size() != 0 && teams != null) {
                 for (Team team : teams) {
-                    if(team.getCompetition().getCompetitionId().equals(competitionId)){
+                    if (team.getCompetition().getCompetitionId().equals(competitionId)) {
                         teams1.add(team);
                     }
                 }
@@ -238,8 +245,7 @@ public class TeamController {
             ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
             responseMessage.getData().put("teams", teams1);
             return responseMessage;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "获取失败");
         }
@@ -247,37 +253,38 @@ public class TeamController {
     }
 
     @RequestMapping("/getTeamReportList")
-    public @ResponseBody ResponseMessage getTeamReportList(String competitionId){
+    public @ResponseBody
+    ResponseMessage getTeamReportList(String competitionId) {
         try {
             //根据竞赛id及已报名的状态（3），获取队伍列表
             List<Team> teams = teamService.findTeamByCompetitionIdAndRegistered(competitionId);
-            ResponseMessage responseMessage = new ResponseMessage("1","获取成功");
-            responseMessage.getData().put("teams",teams);
+            ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
+            responseMessage.getData().put("teams", teams);
             //将id放入缓存，供导出用
-            redisUtil.set("competitionId",competitionId);
+            redisUtil.set("competitionId", competitionId);
             return responseMessage;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseMessage("0","获取失败");
+            return new ResponseMessage("0", "获取失败");
         }
     }
 
     /**
      * 根据队伍id和队长id获取队伍所有成员信息
+     *
      * @param teamId
      * @param captainId
      * @return
      */
     @RequestMapping("/getTeamMembers")
-    public @ResponseBody ResponseMessage getTeamMembers(String teamId, String captainId){
+    public @ResponseBody
+    ResponseMessage getTeamMembers(String teamId, String captainId) {
         try {
             List<User> users = teamService.findUserListByTeamIdAndCaptainId(teamId, captainId);
             ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
-            responseMessage.getData().put("users",users);
+            responseMessage.getData().put("users", users);
             return responseMessage;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "获取失败");
         }

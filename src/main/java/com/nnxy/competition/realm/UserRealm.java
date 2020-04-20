@@ -37,6 +37,7 @@ public class UserRealm extends AuthorizingRealm {
 
     /**
      * 授权
+     *
      * @param principalCollection
      * @return
      */
@@ -45,13 +46,13 @@ public class UserRealm extends AuthorizingRealm {
         //开始获取权限
         Object primaryPrincipal = principalCollection.getPrimaryPrincipal();
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        if(primaryPrincipal instanceof User){
+        if (primaryPrincipal instanceof User) {
             User user = (User) primaryPrincipal;
 
             //获取user的角色
             Set<Role> roleSet = roleService.getRoleByUserId(user.getUserId());
             Set<String> roles = new HashSet<>();
-            for (Role role:roleSet) {
+            for (Role role : roleSet) {
                 roles.add(role.getRoleName());
             }
             simpleAuthorizationInfo.addRoles(roles);
@@ -59,7 +60,7 @@ public class UserRealm extends AuthorizingRealm {
             //通过角色获取权限
             Set<Promise> promiseSet = promiseService.getPromiseByRole(roleSet);
             Set<String> promises = new HashSet<>();
-            for (Promise promise:promiseSet) {
+            for (Promise promise : promiseSet) {
                 promises.add(promise.getPromiseName());
             }
             simpleAuthorizationInfo.addStringPermissions(promises);
@@ -70,6 +71,7 @@ public class UserRealm extends AuthorizingRealm {
 
     /**
      * 认证
+     *
      * @param authenticationToken
      * @return
      * @throws AuthenticationException
@@ -77,11 +79,11 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         //转换为UsernamePasswordToken
-        UsernamePasswordToken upToken = (UsernamePasswordToken)authenticationToken;
+        UsernamePasswordToken upToken = (UsernamePasswordToken) authenticationToken;
         //从数据库中获取用户信息
         System.out.println(userService.findUserByUserName(upToken.getUsername()));
         User userFindUserByUsername = userService.findUserByUserName(upToken.getUsername());
-        if (userFindUserByUsername == null){
+        if (userFindUserByUsername == null) {
             throw new UnknownAccountException("用户不存在");
         }
         userFindUserByUsername.setRoles(roleService.getRoleByUserId(userFindUserByUsername.getUserId()));
@@ -90,15 +92,16 @@ public class UserRealm extends AuthorizingRealm {
         ByteSource credentialsSalt = ByteSource.Util.bytes(userFindUserByUsername.getUserName());
         SimpleAuthenticationInfo info = null;
         //比对密码
-        info = new SimpleAuthenticationInfo(userFindUserByUsername,userFindUserByUsername.getPassword(),credentialsSalt,this.getName());
+        info = new SimpleAuthenticationInfo(userFindUserByUsername, userFindUserByUsername.getPassword(), credentialsSalt, this.getName());
         return info;
     }
+
     /*
     @Test
     public void func(){
         String fun = "MD5";
-        String pwd = "970915";
-        ByteSource credentialsSalt = ByteSource.Util.bytes("xfms");
+        String pwd = "123456";
+        ByteSource credentialsSalt = ByteSource.Util.bytes("20160216010");
         int i = 1024;
         SimpleHash simpleHash = new SimpleHash(fun, pwd, credentialsSalt, i);
         System.out.println(simpleHash);

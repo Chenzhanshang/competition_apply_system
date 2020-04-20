@@ -7,31 +7,33 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 /**
- * 
- * @author  :CZS
- * @date    :2019/12/18 10:30
+ * @author :CZS
+ * @date :2019/12/18 10:30
  * Email    :642125256@qq.com
  */
 @Mapper
 public interface NotificationDao {
     /**
      * 通知类型查找通知
+     *
      * @param notificationType
      * @return
      */
-    public List<Notification> findNotificationByType(Integer notificationType) ;
+    public List<Notification> findNotificationByType(Integer notificationType);
 
 
     /**
      * 通知类型和状态查找系统公告
+     *
      * @param notificationType
      * @param notificationState
      * @return
      */
-    List<Notification> findSystemNoticeByTypeAndState(Integer notificationType,Integer notificationState);
+    List<Notification> findSystemNoticeByTypeAndState(Integer notificationType, Integer notificationState);
 
     /**
      * 插入新通知
+     *
      * @param notification
      * @return
      */

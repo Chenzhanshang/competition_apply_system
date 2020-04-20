@@ -21,7 +21,7 @@
         SELECT * FROM t_file WHERE file_id = #{v}
     </select>
 
-    <delete id="deleteFileById" parameterType="String" >
+    <delete id="deleteFileById" parameterType="String">
         DELETE FROM t_file WHERE file_id = #{v}
     </delete>
 
@@ -33,7 +33,6 @@
     <delete id="deleteFileByNnotificationId" parameterType="String">
         DELETE FROM t_file WHERE notification_id = #{v}
     </delete>
-
 
 
 </mapper>

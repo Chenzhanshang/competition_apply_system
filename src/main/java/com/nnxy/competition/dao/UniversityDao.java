@@ -12,6 +12,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UniversityDao {
     /**
      * 根据用户的学院id查询学校
+     *
      * @param collegeId
      * @return
      */

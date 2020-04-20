@@ -20,9 +20,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 
- * @author  :CZS
- * @date    :2019/12/24 14:23
+ * @author :CZS
+ * @date :2019/12/24 14:23
  * Email    :642125256@qq.com
  */
 
@@ -40,34 +39,35 @@ public class WinNotificationController {
 
     @Autowired
     private FileService fileService;
+
     /**
      * 获取所有获奖通知
+     *
      * @return
      */
     @RequestMapping("/findAllWinNotification")
     public @ResponseBody
-    ResponseMessage findAllWinNotification(){
+    ResponseMessage findAllWinNotification() {
         try {
             List<Notification> notifications = winNotificationService.findAllWinNotification(2);
-            ResponseMessage responseMessage = new ResponseMessage("1","获取成功");
+            ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
             responseMessage.getData().put("notifications", notifications);
             return responseMessage;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "获取失败");
         }
     }
 
     @RequestMapping("/findWinByCompetitionId")
-    public @ResponseBody ResponseMessage findWinByCompetitionId(String competitionId){
+    public @ResponseBody
+    ResponseMessage findWinByCompetitionId(String competitionId) {
         try {
             List<UserCompetition> userCompetitions = applyService.findWinByCompetitionId(competitionId);
-            ResponseMessage responseMessage = new ResponseMessage("1","获取成功");
-            responseMessage.getData().put("userCompetitions",userCompetitions);
+            ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
+            responseMessage.getData().put("userCompetitions", userCompetitions);
             return responseMessage;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "获取失败");
         }
@@ -75,6 +75,7 @@ public class WinNotificationController {
 
     /**
      * 保存新公告
+     *
      * @param notification
      * @return
      */
@@ -84,10 +85,11 @@ public class WinNotificationController {
     insertWinNotification(@RequestBody Notification notification) throws IOException {
         //生成id
         notification.setNotificationId(UUID.randomUUID().toString());
+        System.out.println("---------------------------------" + notification.getUserIds());
         //判断是否为上传文件的获奖通知
-        if(notification.getUserIds() == null || notification.getUserIds().size() == 0){
+        if (notification.getUserIds() == null || notification.getUserIds().size() == 0) {
             //将notificationId存入redis，存储文件时使用
-            redisUtil.set("notificationId",notification.getNotificationId());
+            redisUtil.set("notificationId", notification.getNotificationId());
         }
         //获得当前毫秒值作为通知时间
         notification.setNotificationTime(System.currentTimeMillis());
@@ -95,8 +97,7 @@ public class WinNotificationController {
         notification.setNotificationType(2);
         try {
             winNotificationService.insertWinNotification(notification);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "添加失败");
         }
@@ -106,6 +107,7 @@ public class WinNotificationController {
 
     /**
      * 删除获奖通知
+     *
      * @param notificationId
      * @return
      */
@@ -117,9 +119,9 @@ public class WinNotificationController {
             String s = null;
             List<File> files = fileService.findFileByNotificationId(notificationId);
             //如果有文件
-            if(files.size() > 0){
+            if (files.size() > 0) {
                 //截取文件保存所在的文件夹路径
-                s = files.get(0).getFilePath().substring(0,files.get(0).getFilePath().length() - files.get(0).getFileName().length() - 1);
+                s = files.get(0).getFilePath().substring(0, files.get(0).getFilePath().length() - files.get(0).getFileName().length() - 1);
                 System.out.println(s);
                 //快速for循环 快捷键iter
                 for (File file : files) {
@@ -154,12 +156,14 @@ public class WinNotificationController {
 
     /**
      * 获取回显表单数据
+     *
      * @param competitionId
      * @param notificationId
      * @return
      */
     @RequestMapping("/findWinForm")
-    public @ResponseBody ResponseMessage findWinForm(String notificationId, String competitionId){
+    public @ResponseBody
+    ResponseMessage findWinForm(String notificationId, String competitionId) {
         try {
             List<UserCompetition> userCompetitions = applyService.findWinByCompetitionId(competitionId);
             List<File> files = fileService.findFileByNotificationId(notificationId);
@@ -167,8 +171,7 @@ public class WinNotificationController {
             responseMessage.getData().put("userCompetitions", userCompetitions);
             responseMessage.getData().put("files", files);
             return responseMessage;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "获取失败");
         }
@@ -176,6 +179,7 @@ public class WinNotificationController {
 
     /**
      * 更新公告
+     *
      * @param notification
      * @return
      */
@@ -184,15 +188,14 @@ public class WinNotificationController {
     ResponseMessage
     updateWinNotification(@RequestBody Notification notification) throws IOException {
         //判断是否为上传文件的获奖通知
-        if(notification.getUserIds() == null || notification.getUserIds().size() == 0){
+        if (notification.getUserIds() == null || notification.getUserIds().size() == 0) {
             //将notificationId存入redis，存储文件时使用
-            redisUtil.set("notificationId",notification.getNotificationId());
+            redisUtil.set("notificationId", notification.getNotificationId());
         }
         System.out.println(notification);
         try {
             winNotificationService.updateWinNotification(notification);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "修改失败");
         }

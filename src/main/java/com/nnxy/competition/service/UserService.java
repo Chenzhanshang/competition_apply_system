@@ -11,6 +11,7 @@ public interface UserService {
 
     /**
      * 通过用户名，密码查询用户
+     *
      * @param user
      * @return
      */
@@ -18,6 +19,7 @@ public interface UserService {
 
     /**
      * 通过用户名查询学院id
+     *
      * @param userName
      * @return
      */
@@ -25,6 +27,7 @@ public interface UserService {
 
     /**
      * 通过userName查询所有用户信息
+     *
      * @param userName
      * @return
      */
@@ -33,12 +36,14 @@ public interface UserService {
 
     /**
      * 修改用户密码
+     *
      * @param user
      */
     void updatePassword(User user);
 
     /**
      * 通过userId查询所有用户信息
+     *
      * @param userId
      * @return
      */

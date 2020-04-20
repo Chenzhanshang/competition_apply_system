@@ -12,6 +12,7 @@ import java.util.List;
 public interface CompetitionTypeService {
     /**
      * 获取全部比赛类型
+     *
      * @return
      */
     List<CompetitionType> findAllCompetitionType();

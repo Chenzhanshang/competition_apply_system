@@ -4,6 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nnxy.competition.dao.CompetitionTypeDao">
     <select id="findAllCompetitionType" resultType="com.nnxy.competition.entity.CompetitionType">
-        SELECT * FROM  t_competitiontype
+        SELECT * FROM t_competitiontype
     </select>
 </mapper>

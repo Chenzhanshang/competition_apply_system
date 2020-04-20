@@ -5,7 +5,8 @@
 <mapper namespace="com.nnxy.competition.dao.RecruitDao">
     <select id="findAllTeamByState" resultMap="findAllTeamByStateMap">
         SELECT t.team_id team_id, t.team_name team_name, t.team_headcount team_headcount, t.team_content team_content,
-         c.competition_id competition_id, c.competition_name competition_name, u.user_id user_id, u.name name
+        c.competition_id competition_id, c.competition_name competition_name, u.user_id user_id, u.name name,
+        u.phone phone, u.email email
         FROM t_team t
         LEFT JOIN t_competition c
         ON c.competition_id = t.competition_id
@@ -16,17 +17,19 @@
     </select>
 
     <resultMap id="findAllTeamByStateMap" type="com.nnxy.competition.entity.Team">
-        <id column="team_id" property="teamId" javaType="String" />
-        <result column="team_name" property="teamName" javaType="String" />
-        <result column="team_headcount" property="teamHeadcount" javaType="Integer" />
-        <result column="team_content" property="teamContent" javaType="String" />
+        <id column="team_id" property="teamId" javaType="String"/>
+        <result column="team_name" property="teamName" javaType="String"/>
+        <result column="team_headcount" property="teamHeadcount" javaType="Integer"/>
+        <result column="team_content" property="teamContent" javaType="String"/>
         <collection property="captain" javaType="com.nnxy.competition.entity.User" column="user_id">
-            <id column="user_id" property="userId" javaType="String" />
-            <result column="name" property="name" javaType="String" />
+            <id column="user_id" property="userId" javaType="String"/>
+            <result column="name" property="name" javaType="String"/>
+            <result column="phone" property="phone" javaType="String"/>
+            <result column="email" property="email" javaType="String"/>
         </collection>
         <collection property="competition" javaType="com.nnxy.competition.entity.Competition" column="competition_id">
-            <id column="competition_id" property="competitionId" javaType="String" />
-            <result column="competition_name" property="competitionName" javaType="String" />
+            <id column="competition_id" property="competitionId" javaType="String"/>
+            <result column="competition_name" property="competitionName" javaType="String"/>
         </collection>
     </resultMap>
 

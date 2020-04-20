@@ -13,12 +13,14 @@ import java.util.List;
 public interface AdviceService {
     /**
      * 插入反馈建议
+     *
      * @param advice
      */
     public void insertAdvice(Advice advice);
 
     /**
      * 获取所有的投诉建议
+     *
      * @param adviceState
      * @return
      */
@@ -26,6 +28,7 @@ public interface AdviceService {
 
     /**
      * 更新处理后的建议信息
+     *
      * @param advice
      */
     void updateAdvice(Advice advice);

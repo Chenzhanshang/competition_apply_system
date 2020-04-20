@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 全局异常处理类
- * @author  :CZS
- * @date    :2019/12/17 13:31
+ *
+ * @author :CZS
+ * @date :2019/12/17 13:31
  * Email    :642125256@qq.com
  */
 @ControllerAdvice
@@ -21,10 +22,11 @@ public class GlobalExceptionHandler {
 
     /**
      * 权限不足返回信息
+     *
      * @return
      */
     @ExceptionHandler(UnauthorizedException.class)
-    public ResponseMessage unauthorizedExceptionHandler(){
+    public ResponseMessage unauthorizedExceptionHandler() {
         return new ResponseMessage(ErrorEnum.E_UNAUTHORIZED);
     }
 

@@ -2,8 +2,9 @@ package com.nnxy.competition.entity;
 
 /**
  * 队伍申请
- * @author  :CZS
- * @date    :2019/12/31 10:25
+ *
+ * @author :CZS
+ * @date :2019/12/31 10:25
  * Email    :642125256@qq.com
  */
 public class Apply {

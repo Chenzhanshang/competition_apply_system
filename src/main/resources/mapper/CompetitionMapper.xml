@@ -4,8 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nnxy.competition.dao.CompetitionDao">
     <select id="findCompetitionById" parameterType="String" resultMap="competitionMap">
-        SELECT c.competition_id competition_id, c.competition_time competition_time, c.competition_name competition_name,
-        c.competition_content competition_content, c.competition_site competition_site, c.competition_state competition_state,
+        SELECT c.competition_id competition_id, c.competition_time competition_time, c.competition_name
+        competition_name,
+        c.competition_content competition_content, c.competition_site competition_site, c.competition_state
+        competition_state,
         c.competition_people_sum competition_people_sum, f.file_id file_id, f.file_name file_name, f.file_path file_path
         FROM t_competition c
         LEFT JOIN t_file f
@@ -13,27 +15,28 @@
         WHERE c.competition_id = #{v}
     </select>
 
-    <resultMap id="competitionMap" type="com.nnxy.competition.entity.Competition" >
-        <id column="competition_id" property="competitionId" javaType="String" />
-        <result column="competition_time" property="competitionTime" javaType="String" />
-        <result column="competition_name" property="competitionName" javaType="String" />
-        <result column="competition_content" property="competitionContent" javaType="String" />
-        <result column="competition_site" property="competitionSite" javaType="String" />
-        <result column="competition_state" property="competitionState" javaType="Integer" />
-        <result column="competition_people_sum" property="competitionPeopleSum" javaType="Integer" />
+    <resultMap id="competitionMap" type="com.nnxy.competition.entity.Competition">
+        <id column="competition_id" property="competitionId" javaType="String"/>
+        <result column="competition_time" property="competitionTime" javaType="String"/>
+        <result column="competition_name" property="competitionName" javaType="String"/>
+        <result column="competition_content" property="competitionContent" javaType="String"/>
+        <result column="competition_site" property="competitionSite" javaType="String"/>
+        <result column="competition_state" property="competitionState" javaType="Integer"/>
+        <result column="competition_people_sum" property="competitionPeopleSum" javaType="Integer"/>
         <collection property="files" ofType="com.nnxy.competition.entity.File" column="file_id">
             <id column="file_id" property="fileId" javaType="String"/>
-            <result column="file_name" property="fileName" javaType="String" />
-            <result column="file_path" property="filePath" javaType="String" />
+            <result column="file_name" property="fileName" javaType="String"/>
+            <result column="file_path" property="filePath" javaType="String"/>
         </collection>
     </resultMap>
 
 
     <insert id="insertCompetition" parameterType="com.nnxy.competition.entity.Competition">
         INSERT INTO t_competition(competition_id, college_id, competition_name, competition_state,
-         competition_content, competition_type, competition_time, competition_level, competition_site, competition_people_sum)
-         VALUES (#{competitionId} , #{college.collegeId}, #{competitionName}, #{competitionState}, #{competitionContent},
-         #{competitionType}, #{competitionTime}, #{competitionLevel}, #{competitionSite}, #{competitionPeopleSum})
+        competition_content, competition_type, competition_time, competition_level, competition_site,
+        competition_people_sum)
+        VALUES (#{competitionId} , #{college.collegeId}, #{competitionName}, #{competitionState}, #{competitionContent},
+        #{competitionType}, #{competitionTime}, #{competitionLevel}, #{competitionSite}, #{competitionPeopleSum})
     </insert>
 
     <delete id="deleteCompetitionById" parameterType="String">
@@ -42,7 +45,8 @@
 
     <update id="updateCompetition" parameterType="com.nnxy.competition.utils.CompetitionNotificationVO">
         UPDATE t_competition SET competition_name = #{competitionName}, competition_content = #{competitionContent},
-        competition_site = #{competitionSite}, competition_type = #{competitionType}, competition_level = #{competitionLevel},
+        competition_site = #{competitionSite}, competition_type = #{competitionType}, competition_level =
+        #{competitionLevel},
         competition_time = #{competitionTime}, competition_people_sum = #{competitionPeopleSum},
         competition_state = #{competitionState}
         <if test="collegeId!=null and collegeId!=''">
@@ -52,40 +56,44 @@
     </update>
 
     <select id="findAllCompetition" resultMap="findAllCompetitionMap">
-        SELECT  c.competition_id competition_id, c.competition_time competition_time, c.competition_name competition_name,
-        c.competition_content competition_content, c.competition_site competition_site, c.competition_level competition_level,
-        c.competition_type competition_type, c.competition_people_sum competition_people_sum,tc.college_name college_name, u.university_name university_name
+        SELECT c.competition_id competition_id, c.competition_time competition_time, c.competition_name
+        competition_name,
+        c.competition_content competition_content, c.competition_site competition_site, c.competition_level
+        competition_level,
+        c.competition_type competition_type, c.competition_people_sum competition_people_sum,tc.college_name
+        college_name, u.university_name university_name
         FROM t_competition c
         LEFT JOIN t_college tc
         ON c.college_id = tc.college_id
         LEFT JOIN t_university u
         ON tc.university_id = u.university_id
-        WHERE c.competition_state !=  0
+        WHERE c.competition_state != 0
         ORDER BY c.competition_time DESC
     </select>
 
     <resultMap id="findAllCompetitionMap" type="com.nnxy.competition.entity.Competition">
-        <id column="competition_id" property="competitionId" javaType="String" />
-        <result column="competition_time" property="competitionTime" javaType="String" />
-        <result column="competition_name" property="competitionName" javaType="String" />
-        <result column="competition_content" property="competitionContent" javaType="String" />
-        <result column="competition_site" property="competitionSite" javaType="String" />
-        <result column="competition_level" property="competitionLevel" javaType="Integer" />
-        <result column="competition_type" property="competitionType" javaType="String" />
-        <result column="competition_people_sum" property="competitionPeopleSum" javaType="Integer" />
+        <id column="competition_id" property="competitionId" javaType="String"/>
+        <result column="competition_time" property="competitionTime" javaType="String"/>
+        <result column="competition_name" property="competitionName" javaType="String"/>
+        <result column="competition_content" property="competitionContent" javaType="String"/>
+        <result column="competition_site" property="competitionSite" javaType="String"/>
+        <result column="competition_level" property="competitionLevel" javaType="Integer"/>
+        <result column="competition_type" property="competitionType" javaType="String"/>
+        <result column="competition_people_sum" property="competitionPeopleSum" javaType="Integer"/>
         <association property="college" javaType="com.nnxy.competition.entity.College" column="college_id">
-            <id column="college_id" property="collegeId" javaType="String" />
-            <result column="college_name" property="collegeName" javaType="String" />
+            <id column="college_id" property="collegeId" javaType="String"/>
+            <result column="college_name" property="collegeName" javaType="String"/>
             <association property="university" javaType="com.nnxy.competition.entity.University" column="university_id">
-                <id column="university_id" property="universityId" javaType="String" />
-                <result column="university_name" property="universityName" javaType="String" />
+                <id column="university_id" property="universityId" javaType="String"/>
+                <result column="university_name" property="universityName" javaType="String"/>
             </association>
         </association>
     </resultMap>
 
     <select id="findUserByCompetitionId" parameterType="String" resultMap="findUserByCompetitionIdMap">
         SELECT u.user_id user_id, u.user_className user_className, u.period period,
-        u.name name, u.user_name user_name, u.phone phone, u.email email,c.college_id college_id, c.college_name college_name
+        u.name name, u.user_name user_name, u.phone phone, u.email email,c.college_id college_id, c.college_name
+        college_name
         FROM t_user_competition uc
         LEFT JOIN t_user u
         ON uc.user_id = u.user_id
@@ -94,23 +102,24 @@
         WHERE uc.competition_id = #{v}
     </select>
 
-    <resultMap id="findUserByCompetitionIdMap" type="com.nnxy.competition.entity.User" >
-        <id column="user_id" property="userId" javaType="String" />
-        <result column="user_className" property="userClassName" javaType="String" />
-        <result column="period" property="period" javaType="Integer" />
-        <result column="name" property="name" javaType="String" />
-        <result column="user_name" property="userName" javaType="String" />
-        <result column="phone" property="phone" javaType="String" />
-        <result column="email" property="email" javaType="String" />
-        <association property="college" javaType="com.nnxy.competition.entity.College" column="college_id" >
-            <id column="college_id" property="collegeId" javaType="String" />
-            <result column="college_name" property="collegeName" javaType="String" />
+    <resultMap id="findUserByCompetitionIdMap" type="com.nnxy.competition.entity.User">
+        <id column="user_id" property="userId" javaType="String"/>
+        <result column="user_className" property="userClassName" javaType="String"/>
+        <result column="period" property="period" javaType="Integer"/>
+        <result column="name" property="name" javaType="String"/>
+        <result column="user_name" property="userName" javaType="String"/>
+        <result column="phone" property="phone" javaType="String"/>
+        <result column="email" property="email" javaType="String"/>
+        <association property="college" javaType="com.nnxy.competition.entity.College" column="college_id">
+            <id column="college_id" property="collegeId" javaType="String"/>
+            <result column="college_name" property="collegeName" javaType="String"/>
         </association>
     </resultMap>
 
     <select id="findCompetitionListByUserId" parameterType="String" resultMap="findCompetitionListByUserIdMap">
         SELECT uc.date dt, c.competition_name competition_name, c.competition_type competition_type,
-        c.competition_id competition_id,c.competition_people_sum competition_people_sum, c.competition_state competition_state
+        c.competition_id competition_id,c.competition_people_sum competition_people_sum, c.competition_state
+        competition_state
         FROM t_user_competition uc
         LEFT JOIN t_competition c
         ON uc.competition_id = c.competition_id
@@ -118,26 +127,27 @@
     </select>
 
     <resultMap id="findCompetitionListByUserIdMap" type="com.nnxy.competition.entity.UserCompetition">
-        <id column="user_id" property="userId" javaType="String" />
-        <result column="dt" property="date" javaType="Long" />
+        <id column="user_id" property="userId" javaType="String"/>
+        <result column="dt" property="date" javaType="Long"/>
         <association property="competition" javaType="com.nnxy.competition.entity.Competition" column="competition_id">
-            <id column="competition_id" property="competitionId" javaType="String" />
-            <result column="competition_name" property="competitionName" javaType="String" />
-            <result column="competition_state" property="competitionState" javaType="Integer" />
-            <result column="competition_type" property="competitionType" javaType="String" />
-            <result column="competition_people_sum" property="competitionPeopleSum" javaType="Integer" />
+            <id column="competition_id" property="competitionId" javaType="String"/>
+            <result column="competition_name" property="competitionName" javaType="String"/>
+            <result column="competition_state" property="competitionState" javaType="Integer"/>
+            <result column="competition_type" property="competitionType" javaType="String"/>
+            <result column="competition_people_sum" property="competitionPeopleSum" javaType="Integer"/>
         </association>
     </resultMap>
 
 
     <select id="findAllTeamCompetition" resultType="com.nnxy.competition.entity.Competition">
-        SELECT  competition_id, competition_name, competition_people_sum
+        SELECT competition_id, competition_name, competition_people_sum
         FROM t_competition
         WHERE competition_people_sum > 1
     </select>
 
     <select id="findUserList" parameterType="String" resultMap="userMap">
-        SELECT u.user_name user_name, u.user_id user_id, u.user_name user_name, u.email email, u.password password, u.name name, u.phone phone,
+        SELECT u.user_name user_name, u.user_id user_id, u.user_name user_name, u.email email, u.password password,
+        u.name name, u.phone phone,
         u.sex sex,u.user_className user_className, u.period period, c.college_id college_id,
         c.college_name college_name, un.university_id university_id, un.university_name university_name
         FROM t_user_competition uc
@@ -150,21 +160,21 @@
     </select>
 
     <resultMap id="userMap" type="com.nnxy.competition.entity.User">
-        <id column="user_id" property="userId" javaType="String" />
-        <result column="user_name" property="userName" javaType="String" />
-        <result column="email" property="email" javaType="String" />
-        <result column="password" property="password" javaType="String" />
-        <result column="name" property="name" javaType="String" />
-        <result column="phone" property="phone" javaType="String" />
-        <result column="sex" property="sex" javaType="String" />
-        <result column="period" property="period" javaType="Integer" />
-        <result column="user_className" property="userClassName" javaType="String" />
+        <id column="user_id" property="userId" javaType="String"/>
+        <result column="user_name" property="userName" javaType="String"/>
+        <result column="email" property="email" javaType="String"/>
+        <result column="password" property="password" javaType="String"/>
+        <result column="name" property="name" javaType="String"/>
+        <result column="phone" property="phone" javaType="String"/>
+        <result column="sex" property="sex" javaType="String"/>
+        <result column="period" property="period" javaType="Integer"/>
+        <result column="user_className" property="userClassName" javaType="String"/>
         <association property="college" column="college_id" javaType="com.nnxy.competition.entity.College">
-            <id column="college_id" property="collegeId" javaType="String" />
-            <result column="college_name" property="collegeName" javaType="String" />
+            <id column="college_id" property="collegeId" javaType="String"/>
+            <result column="college_name" property="collegeName" javaType="String"/>
             <association property="university" column="university_id" javaType="com.nnxy.competition.entity.University">
-                <id column="university_id" property="universityId" javaType="String" />
-                <result column="university_name" property="universityName" javaType="String" />
+                <id column="university_id" property="universityId" javaType="String"/>
+                <result column="university_name" property="universityName" javaType="String"/>
             </association>
         </association>
     </resultMap>

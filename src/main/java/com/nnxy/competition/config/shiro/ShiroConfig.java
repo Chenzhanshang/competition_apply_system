@@ -51,11 +51,11 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("*.js", "anon");
         filterChainDefinitionMap.put("*.css", "anon");
         filterChainDefinitionMap.put("/druid/**", "anon");
-        filterChainDefinitionMap.put("/user/login","anon");
-        filterChainDefinitionMap.put("/user/isLogin","anon");
-        filterChainDefinitionMap.put("/user/logout","anon");
-        filterChainDefinitionMap.put("/file/uploadFile","anon");
-        filterChainDefinitionMap.put("/notification/insertCompetition","anon");
+        filterChainDefinitionMap.put("/user/login", "anon");
+        filterChainDefinitionMap.put("/user/isLogin", "anon");
+        filterChainDefinitionMap.put("/user/logout", "anon");
+        filterChainDefinitionMap.put("/file/uploadFile", "anon");
+        filterChainDefinitionMap.put("/notification/insertCompetition", "anon");
         filterChainDefinitionMap.put("/**", "anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;

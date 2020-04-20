@@ -7,14 +7,14 @@ import com.nnxy.competition.entity.UserCompetition;
 import java.util.List;
 
 /**
- * 
- * @author  :CZS
- * @date    :2019/12/18 15:26
+ * @author :CZS
+ * @date :2019/12/18 15:26
  * Email    :642125256@qq.com
  */
 public interface CompetitionService {
     /**
      * 通过竞赛id查询比赛详情
+     *
      * @param competitionId
      * @return
      */
@@ -22,12 +22,14 @@ public interface CompetitionService {
 
     /**
      * 查询所有比赛详情
+     *
      * @return
      */
     List<Competition> findAllCompetition();
 
     /**
      * 根据比赛id获得比赛列表
+     *
      * @param competitionId
      * @return
      */
@@ -35,6 +37,7 @@ public interface CompetitionService {
 
     /**
      * 根据当前用户id获得已参加列表
+     *
      * @param userId
      * @return
      */
@@ -42,12 +45,14 @@ public interface CompetitionService {
 
     /**
      * 查询所有组队比赛列表
+     *
      * @return
      */
     List<Competition> findAllTeamCompetition();
 
     /**
      * 通过竞赛id,查询报名该竞赛的用户列表
+     *
      * @param competitionId
      * @return
      */

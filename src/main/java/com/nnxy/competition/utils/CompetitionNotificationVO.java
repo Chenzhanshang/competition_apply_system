@@ -1,9 +1,8 @@
 package com.nnxy.competition.utils;
 
 /**
- * 
- * @author  :CZS
- * @date    :2019/12/20 0:33
+ * @author :CZS
+ * @date :2019/12/20 0:33
  * Email    :642125256@qq.com
  */
 public class CompetitionNotificationVO {

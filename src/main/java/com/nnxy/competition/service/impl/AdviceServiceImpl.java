@@ -9,15 +9,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * 
- * @author  :CZS
- * @date    :2020/3/3 15:10
+ * @author :CZS
+ * @date :2020/3/3 15:10
  * Email    :642125256@qq.com
  */
 @Service
 public class AdviceServiceImpl implements AdviceService {
     @Autowired
     private AdviceDao adviceDao;
+
     @Override
     public void insertAdvice(Advice advice) {
         adviceDao.insertAdvice(advice);

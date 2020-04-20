@@ -15,6 +15,7 @@ public interface PromiseService {
 
     /**
      * 通过角色获取权限
+     *
      * @param roles
      * @return
      */

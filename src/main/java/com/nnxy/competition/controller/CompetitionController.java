@@ -20,9 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 /**
- * 
- * @author  :CZS
- * @date    :2019/12/18 15:23
+ * @author :CZS
+ * @date :2019/12/18 15:23
  * Email    :642125256@qq.com
  */
 @Controller
@@ -37,39 +36,40 @@ public class CompetitionController {
 
     /**
      * 根据比赛id获得比赛
+     *
      * @param competitionId
      * @return
      */
     @RequestMapping("/findCompetitionById")
     public @ResponseBody
-    ResponseMessage findCompetitionById(String competitionId){
+    ResponseMessage findCompetitionById(String competitionId) {
         try {
             Competition competition = competitionService.findCompetitionById(competitionId);
-            ResponseMessage responseMessage = new ResponseMessage("1","获取成功");
+            ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
             responseMessage.getData().put("competition", competition);
             System.out.println(competition);
             return responseMessage;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseMessage("0","获取失败");
+            return new ResponseMessage("0", "获取失败");
         }
     }
 
     /**
      * 获得该竞赛已报名的用户列表
+     *
      * @param competitionId
      * @return
      */
     @RequestMapping("/findUserByCompetitionId")
-    public @ResponseBody ResponseMessage findUserByCompetitionId(String competitionId){
+    public @ResponseBody
+    ResponseMessage findUserByCompetitionId(String competitionId) {
         try {
             List<User> users = competitionService.findUserByCompetitionId(competitionId);
-            ResponseMessage responseMessage = new ResponseMessage("1","获取成功");
+            ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
             responseMessage.getData().put("users", users);
             return responseMessage;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "获取失败");
         }
@@ -77,18 +77,18 @@ public class CompetitionController {
 
     /**
      * 获得所有比赛
+     *
      * @return
      */
     @RequestMapping("/findAllCompetition")
     public @ResponseBody
-    ResponseMessage findAllCompetition(){
-        try{
+    ResponseMessage findAllCompetition() {
+        try {
             List<Competition> competitions = competitionService.findAllCompetition();
-            ResponseMessage responseMessage = new ResponseMessage("1","获取成功");
+            ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
             responseMessage.getData().put("competitions", competitions);
             return responseMessage;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "获取失败");
         }
@@ -96,10 +96,12 @@ public class CompetitionController {
 
     /**
      * 根据当前用户id获得已参加的竞赛列表
+     *
      * @return
      */
     @RequestMapping("/findCompetitionListByUserId")
-    public @ResponseBody ResponseMessage findCompetitionListByUserId(){
+    public @ResponseBody
+    ResponseMessage findCompetitionListByUserId() {
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         System.out.println(user);
         try {
@@ -107,8 +109,7 @@ public class CompetitionController {
             ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
             responseMessage.getData().put("userCompetitions", userCompetitions);
             return responseMessage;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "获取失败");
         }
@@ -116,18 +117,18 @@ public class CompetitionController {
 
     /**
      * 查询所有组队比赛
+     *
      * @return
      */
     @RequestMapping("/findAllTeamCompetition")
     public @ResponseBody
-    ResponseMessage findAllTeamCompetition(){
-        try{
+    ResponseMessage findAllTeamCompetition() {
+        try {
             List<Competition> competitions = competitionService.findAllTeamCompetition();
-            ResponseMessage responseMessage = new ResponseMessage("1","获取成功");
+            ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
             responseMessage.getData().put("competitions", competitions);
             return responseMessage;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "获取失败");
         }
@@ -135,21 +136,22 @@ public class CompetitionController {
 
     /**
      * 通过竞赛id,查询报名该竞赛的用户列表
+     *
      * @param competitionId
      * @return
      */
     @RequestMapping("/getUserReportList")
-    public @ResponseBody ResponseMessage getUserReportList(String competitionId){
+    public @ResponseBody
+    ResponseMessage getUserReportList(String competitionId) {
         try {
             List<User> users = competitionService.findUserList(competitionId);
-            ResponseMessage responseMessage = new ResponseMessage("1","获取成功");
+            ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
             responseMessage.getData().put("users", users);
             redisUtil.set("competitionId", competitionId);
             return responseMessage;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseMessage("0","获取失败");
+            return new ResponseMessage("0", "获取失败");
         }
     }
 
@@ -166,7 +168,7 @@ public class CompetitionController {
         List<Team> teamList = teamService.findTeamByCompetitionIdAndRegistered(redisUtil.get("competitionId").toString());
         for (Team team : teamList) {
             //获取队伍成员放入队伍
-            team.setUsers(teamService.findUserListByTeamIdAndCaptainId(team.getTeamId(),team.getCaptain().getUserId()));
+            team.setUsers(teamService.findUserListByTeamIdAndCaptainId(team.getTeamId(), team.getCaptain().getUserId()));
         }
         return POIUtils.teamExcel(teamList);
     }

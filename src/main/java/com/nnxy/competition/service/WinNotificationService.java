@@ -5,22 +5,23 @@ import com.nnxy.competition.entity.Notification;
 import java.util.List;
 
 /**
- * 
- * @author  :CZS
- * @date    :2019/12/24 14:34
+ * @author :CZS
+ * @date :2019/12/24 14:34
  * Email    :642125256@qq.com
  */
 public interface WinNotificationService {
     /**
      * 获取所有获奖通知
+     *
      * @param notificationType
      * @return
      */
-    public List<Notification> findAllWinNotification(Integer notificationType) ;
+    public List<Notification> findAllWinNotification(Integer notificationType);
 
 
     /**
      * 保存新获奖通知
+     *
      * @param notification
      * @return
      */
@@ -28,6 +29,7 @@ public interface WinNotificationService {
 
     /**
      * 删除获奖通知
+     *
      * @param notificationId
      * @param competitionId
      * @return
@@ -36,6 +38,7 @@ public interface WinNotificationService {
 
     /**
      * 修改获奖通知
+     *
      * @param notification
      * @return
      */

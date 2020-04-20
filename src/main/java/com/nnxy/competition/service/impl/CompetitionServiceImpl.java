@@ -12,15 +12,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * 
- * @author  :CZS
- * @date    :2019/12/18 15:27
+ * @author :CZS
+ * @date :2019/12/18 15:27
  * Email    :642125256@qq.com
  */
 @Service
 public class CompetitionServiceImpl implements CompetitionService {
     @Autowired
-    private  CompetitionDao competitionDao;
+    private CompetitionDao competitionDao;
 
     @Autowired
     private FileDao fileDao;

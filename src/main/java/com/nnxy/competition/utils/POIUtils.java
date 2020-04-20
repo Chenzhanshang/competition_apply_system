@@ -173,7 +173,6 @@ public class POIUtils {
         c1.setCellValue("队伍名");
 
 
-
         HSSFCell c2 = r0.createCell(2);
         c2.setCellStyle(headerStyle);
         c2.setCellValue("姓名");
@@ -219,7 +218,7 @@ public class POIUtils {
 
             //队伍成员标题行
             //6. 创建标题行
-            HSSFRow rr0 = sheet.createRow(i+2);
+            HSSFRow rr0 = sheet.createRow(i + 2);
             //设置行值,从1开始，代表成员偏移一格
             HSSFCell cc1 = rr0.createCell(1);
             cc1.setCellValue("成员序号");
@@ -255,7 +254,7 @@ public class POIUtils {
             //队长信息加队员表头，占两行
             nowLine += 2;
 
-            for(int j = 1; j < team.getUsers().size() ; j ++){
+            for (int j = 1; j < team.getUsers().size(); j++) {
                 User user = team.getUsers().get(j);
                 HSSFRow row1 = sheet.createRow(nowLine);
                 row1.createCell(1).setCellValue(j);
@@ -266,7 +265,7 @@ public class POIUtils {
                 row1.createCell(6).setCellValue(user.getUserClassName());
                 row1.createCell(7).setCellValue(user.getSex());
                 row1.createCell(8).setCellValue(user.getPhone());
-                nowLine ++;
+                nowLine++;
             }
         }
 

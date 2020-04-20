@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nnxy.competition.dao.AdviceDao">
     <insert id="insertAdvice" parameterType="com.nnxy.competition.entity.Advice">
         INSERT INTO t_advice (advice_id, user_id, advice_type, advice_state, advice_content, advice_date)
         VALUES (#{adviceId},#{user.userId},#{adviceType},#{adviceState},#{adviceContent},#{adviceDate})
     </insert>
 
-    <select id="getAllAdvice" parameterType="Integer"  resultMap="adviceMap">
+    <select id="getAllAdvice" parameterType="Integer" resultMap="adviceMap">
         SELECT a.advice_id advice_id, a.advice_content advice_content,a.advice_date advice_date,
         a.advice_state advice_state, a.advice_type advice_type,a.dispose_time dispose_time,
         u.user_id user_id ,u.user_name user_name,u.name name
@@ -16,30 +16,32 @@
         LEFT JOIN t_user u
         ON a.user_id = u.user_id
         WHERE a.advice_state = #{v}
-        <if test="adviceState = 1">
-            ORDER BY a.dispose_time DESC
-        </if>
-        <if test="adviceState = 0">
-            ORDER BY a.advice_date DESC
-        </if>
+        <choose>
+            <when test="adviceState = 1">
+                ORDER BY a.dispose_time DESC
+            </when>
+            <otherwise>
+                ORDER BY a.advice_date DESC
+            </otherwise>
+        </choose>
 
     </select>
 
     <resultMap id="adviceMap" type="com.nnxy.competition.entity.Advice">
-        <id column="advice_id" property="adviceId" javaType="String" />
-        <result column="advice_content" property="adviceContent" javaType="String" />
-        <result column="advice_date" property="adviceDate" javaType="Long" />
-        <result column="dispose_time" property="disposeTime" javaType="Long" />
-        <result column="advice_state" property="adviceState" javaType="Integer" />
-        <result column="advice_type" property="adviceType" javaType="String" />
+        <id column="advice_id" property="adviceId" javaType="String"/>
+        <result column="advice_content" property="adviceContent" javaType="String"/>
+        <result column="advice_date" property="adviceDate" javaType="Long"/>
+        <result column="dispose_time" property="disposeTime" javaType="Long"/>
+        <result column="advice_state" property="adviceState" javaType="Integer"/>
+        <result column="advice_type" property="adviceType" javaType="String"/>
         <association property="user" javaType="com.nnxy.competition.entity.User" column="user_id">
-            <id column="user_id" property="userId" javaType="String" />
-            <result column="user_name" property="userName" javaType="String" />
-            <result column="name" property="name" javaType="String" />
+            <id column="user_id" property="userId" javaType="String"/>
+            <result column="user_name" property="userName" javaType="String"/>
+            <result column="name" property="name" javaType="String"/>
         </association>
     </resultMap>
 
-    <update id="updateAdvice" parameterType="com.nnxy.competition.entity.Advice" >
+    <update id="updateAdvice" parameterType="com.nnxy.competition.entity.Advice">
         UPDATE t_advice SET advice_state = #{adviceState}, dispose_time = #{disposeTime}
         WHERE advice_id = #{adviceId}
     </update>

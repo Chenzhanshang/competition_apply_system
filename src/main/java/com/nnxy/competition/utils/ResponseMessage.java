@@ -11,9 +11,9 @@ import java.util.Map;
  */
 public class ResponseMessage implements Serializable {
 
-    private String status ;
-    private String msg ;
-    private Map<String,Object> data = new HashMap<String,Object>();
+    private String status;
+    private String msg;
+    private Map<String, Object> data = new HashMap<String, Object>();
 
 
     public ResponseMessage() {
@@ -24,12 +24,12 @@ public class ResponseMessage implements Serializable {
         this.msg = msg;
     }
 
-    public ResponseMessage(SuccessEnum successEnum){
+    public ResponseMessage(SuccessEnum successEnum) {
         this.status = successEnum.getSuccessCode();
         this.msg = successEnum.getSuccessMsg();
     }
 
-    public ResponseMessage(ErrorEnum errorEnum){
+    public ResponseMessage(ErrorEnum errorEnum) {
         this.status = errorEnum.getErrorCode();
         this.msg = errorEnum.getErrorMsg();
     }

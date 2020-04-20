@@ -15,6 +15,7 @@ public interface RoleDao {
 
     /**
      * 通过userId获取user的角色
+     *
      * @param userId
      * @return
      */

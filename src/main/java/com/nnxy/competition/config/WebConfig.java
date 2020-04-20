@@ -6,17 +6,17 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- *
- * @author  :CZS
- * @date    :2019/12/17 13:31
+ * @author :CZS
+ * @date :2019/12/17 13:31
  * Email    :642125256@qq.com
  */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-    static final String[] ORIGINS = new String[] { "GET", "POST", "PUT", "DELETE" };
+    static final String[] ORIGINS = new String[]{"GET", "POST", "PUT", "DELETE"};
 
     /**
      * 配置静态资源路径映射
+     *
      * @param registry
      */
     @Override
@@ -27,6 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     /**
      * 解决跨域问题
+     *
      * @param registry
      */
     @Override

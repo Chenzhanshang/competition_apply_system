@@ -14,6 +14,7 @@ import java.util.List;
 public interface CollegeDao {
     /**
      * 根据学院名和用户所在学校查询学院
+     *
      * @param collegeName
      * @param universityId
      * @return
@@ -22,6 +23,7 @@ public interface CollegeDao {
 
     /**
      * 根据id查询学院
+     *
      * @param collegeId
      * @return
      */
@@ -29,11 +31,11 @@ public interface CollegeDao {
 
     /**
      * 根据学校id查询学院列表
+     *
      * @param universityId
      * @return
      */
     List<College> findCollegeByUniversityId(String universityId);
-
 
 
 }

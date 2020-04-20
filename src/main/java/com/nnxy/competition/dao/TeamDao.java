@@ -16,6 +16,7 @@ import java.util.List;
 public interface TeamDao {
     /**
      * 保存新创建队伍信息
+     *
      * @param team
      * @return
      */
@@ -23,6 +24,7 @@ public interface TeamDao {
 
     /**
      * 获取当前用户创建的所有队伍
+     *
      * @param userId
      * @return
      */
@@ -30,6 +32,7 @@ public interface TeamDao {
 
     /**
      * 根据队伍id和自己的id获得除自己以外的成员列表
+     *
      * @param teamId
      * @param userId
      * @return
@@ -38,6 +41,7 @@ public interface TeamDao {
 
     /**
      * 根据队伍id和自己的id增加到队伍中
+     *
      * @param teamId
      * @param userId
      * @return
@@ -46,6 +50,7 @@ public interface TeamDao {
 
     /**
      * 根据队伍信息修改数据库队伍数据
+     *
      * @param team
      * @return
      */
@@ -53,6 +58,7 @@ public interface TeamDao {
 
     /**
      * 删除队伍中的成员
+     *
      * @param teamId
      * @param userId
      */
@@ -60,18 +66,21 @@ public interface TeamDao {
 
     /**
      * 解散队伍，并清空队员
+     *
      * @param teamId
      */
     void deleteTeam(String teamId);
 
     /**
      * 通过队伍id删除所有队员
+     *
      * @param teamId
      */
     void deleteTeamUserByTeamId(String teamId);
 
     /**
      * 获取当前用户加入的所有队伍
+     *
      * @param userId
      * @return
      */
@@ -79,6 +88,7 @@ public interface TeamDao {
 
     /**
      * 根据用户所有比赛获取所有已处理的申请
+     *
      * @param teams
      * @return
      */
@@ -86,6 +96,7 @@ public interface TeamDao {
 
     /**
      * 根据用户所有比赛获取所有待处理的申请
+     *
      * @param teams
      * @return
      */
@@ -93,12 +104,14 @@ public interface TeamDao {
 
     /**
      * 报名，修改队伍信息
+     *
      * @param team
      */
     void updateTeam(Team team);
 
     /**
      * 根据用户id和竞赛id获取队伍
+     *
      * @param userId
      * @param competitionId
      * @return
@@ -107,18 +120,21 @@ public interface TeamDao {
 
     /**
      * 取消队伍报名
+     *
      * @param teamId
      */
     void updateTeamCancelApply(String teamId);
 
     /**
      * 修改队伍的状态和人数
+     *
      * @param team
      */
     void updateTeamStateAndHeadCount(Team team);
 
     /**
      * 根据竞赛id及已报名的状态（3），获取队伍列表
+     *
      * @param competitionId
      * @return
      */
@@ -126,12 +142,14 @@ public interface TeamDao {
 
     /**
      * 修改队伍人数 为当前人数-1
+     *
      * @param teamId
      */
     void updateTeamHeadcount(String teamId);
 
     /**
      * 根据队伍id获取除队长以外的队员信息
+     *
      * @param teamId
      * @return
      */
@@ -139,6 +157,7 @@ public interface TeamDao {
 
     /**
      * 根据id查询队伍
+     *
      * @param teamId
      * @return
      */

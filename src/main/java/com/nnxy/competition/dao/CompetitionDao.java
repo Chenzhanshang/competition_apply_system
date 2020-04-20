@@ -15,8 +15,9 @@ import java.util.List;
  */
 @Mapper
 public interface CompetitionDao {
-     /**
+    /**
      * 通过竞赛id查询比赛详情
+     *
      * @param competitionId
      * @return
      */
@@ -24,6 +25,7 @@ public interface CompetitionDao {
 
     /**
      * 通过竞赛id删除比赛
+     *
      * @param competitionId
      * @return
      */
@@ -31,6 +33,7 @@ public interface CompetitionDao {
 
     /**
      * 插入新比赛
+     *
      * @param competition
      * @return
      */
@@ -46,12 +49,14 @@ public interface CompetitionDao {
 
     /**
      * 查询所有比赛详情
+     *
      * @return
      */
     List<Competition> findAllCompetition();
 
     /**
      * 根据比赛id获得参赛列表
+     *
      * @param competitionId
      * @return
      */
@@ -59,6 +64,7 @@ public interface CompetitionDao {
 
     /**
      * 根据当前用户id获得已参加列表
+     *
      * @param userId
      * @return
      */
@@ -66,12 +72,14 @@ public interface CompetitionDao {
 
     /**
      * 查询所有组队比赛列表
+     *
      * @return
      */
     List<Competition> findAllTeamCompetition();
 
     /**
      * 通过竞赛id,查询报名该竞赛的用户列表
+     *
      * @param competitionId
      * @return
      */

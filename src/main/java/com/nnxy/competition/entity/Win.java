@@ -3,9 +3,8 @@ package com.nnxy.competition.entity;
 import java.util.List;
 
 /**
- * 
- * @author  :CZS
- * @date    :2019/12/24 15:55
+ * @author :CZS
+ * @date :2019/12/24 15:55
  * Email    :642125256@qq.com
  */
 public class Win {

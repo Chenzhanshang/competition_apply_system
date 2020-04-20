@@ -1,9 +1,8 @@
 package com.nnxy.competition.entity;
 
 /**
- * 
- * @author  :CZS
- * @date    :2019/12/19 10:29
+ * @author :CZS
+ * @date :2019/12/19 10:29
  * Email    :642125256@qq.com
  */
 public class File {

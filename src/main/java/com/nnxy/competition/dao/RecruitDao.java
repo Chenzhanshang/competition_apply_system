@@ -8,9 +8,8 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * 
- * @author  :CZS
- * @date    :2019/12/30 11:39
+ * @author :CZS
+ * @date :2019/12/30 11:39
  * Email    :642125256@qq.com
  */
 
@@ -18,15 +17,17 @@ import java.util.List;
 public interface RecruitDao {
     /**
      * 根据队伍状态获取队伍列表
+     *
      * @param teamState
      * @param captainId
      * @return
      */
-    public List<Team> findAllTeamByState(@Param("teamState") Integer teamState, @Param("captainId") String captainId) ;
+    public List<Team> findAllTeamByState(@Param("teamState") Integer teamState, @Param("captainId") String captainId);
 
     /**
      * 查询该用户的所有加入的队伍列表
-     * @param  userId
+     *
+     * @param userId
      * @return
      */
     List<UserTeam> findAllUserTeam(String userId);

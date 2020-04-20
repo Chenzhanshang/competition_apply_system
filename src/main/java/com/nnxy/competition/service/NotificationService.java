@@ -7,9 +7,8 @@ import com.nnxy.competition.utils.CompetitionNotificationVO;
 import java.util.List;
 
 /**
- * 
- * @author  :CZS
- * @date    :2019/12/18 10:27
+ * @author :CZS
+ * @date :2019/12/18 10:27
  * Email    :642125256@qq.com
  */
 public interface NotificationService {
@@ -50,6 +49,7 @@ public interface NotificationService {
 
     /**
      * 根据通知id删除对应通知及文件，竞赛
+     *
      * @param notificationId
      * @return
      */

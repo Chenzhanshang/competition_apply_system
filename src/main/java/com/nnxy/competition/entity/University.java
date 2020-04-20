@@ -8,7 +8,7 @@ import java.util.List;
  * CreateTime 2019/12/13 11:10
  * Email 642125256@qq.com
  */
-public class University implements Serializable{
+public class University implements Serializable {
     private String universityId;
 
     private String universityName;

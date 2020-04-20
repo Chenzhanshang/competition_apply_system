@@ -14,9 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * 
- * @author  :CZS
- * @date    :2019/12/22 17:28
+ * @author :CZS
+ * @date :2019/12/22 17:28
  * Email    :642125256@qq.com
  */
 @Service
@@ -41,7 +40,7 @@ public class SystemNoticeServiceImpl implements SystemNoticeService {
         systemNoticeDao.insertNotice(notification);
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
+    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public void deleteNotificationById(String notificationId) {
         //先删除文件，文件引用公告外键

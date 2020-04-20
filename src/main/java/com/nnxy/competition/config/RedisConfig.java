@@ -12,8 +12,9 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
  * redis配置类
- * @author  :CZS
- * @date    :2019/12/17 13:33
+ *
+ * @author :CZS
+ * @date :2019/12/17 13:33
  * Email    :642125256@qq.com
  */
 @Configuration
@@ -21,13 +22,14 @@ public class RedisConfig {
 
     /**
      * 实例化 redisTemplate
+     *
      * @param factory RedisConnectionFactory
      * @return 实例化对象
      */
     @Bean
-    public RedisTemplate<String,Object> redisTemplate(RedisConnectionFactory factory){
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
         //实例化
-        RedisTemplate<String,Object> redisTemplate = new RedisTemplate<String, Object>();
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
         redisTemplate.setConnectionFactory(factory);
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
         ObjectMapper om = new ObjectMapper();

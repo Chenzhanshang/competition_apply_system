@@ -14,6 +14,7 @@ public interface RoleService {
 
     /**
      * 通过adminid获取角色
+     *
      * @param userId
      * @return
      */

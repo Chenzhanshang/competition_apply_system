@@ -19,8 +19,9 @@ import java.util.UUID;
 
 /**
  * 系统公告web层
- * @author  :CZS
- * @date    :2019/12/22 17:16
+ *
+ * @author :CZS
+ * @date :2019/12/22 17:16
  * Email    :642125256@qq.com
  */
 @Controller
@@ -34,20 +35,21 @@ public class SystemNoticeController {
 
     @Autowired
     private RedisUtil redisUtil;
+
     /**
      * 已指定notificationType为1的为系统通知
+     *
      * @return
      */
     @RequestMapping("/findAll")
     public @ResponseBody
-    ResponseMessage findNotice(){
-        try{
+    ResponseMessage findNotice() {
+        try {
             List<Notification> notifications = systemNoticeService.findNoticeByType(1);
-            ResponseMessage responseMessage = new ResponseMessage("1","获取成功");
-            responseMessage.getData().put("notifications",notifications);
+            ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
+            responseMessage.getData().put("notifications", notifications);
             return responseMessage;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "获取失败");
         }
@@ -56,6 +58,7 @@ public class SystemNoticeController {
 
     /**
      * 保存新公告
+     *
      * @param notification
      * @return
      */
@@ -66,7 +69,7 @@ public class SystemNoticeController {
         //生成id
         notification.setNotificationId(UUID.randomUUID().toString());
         //将notificationId存入redis，存储文件时使用
-        redisUtil.set("notificationId",notification.getNotificationId());
+        redisUtil.set("notificationId", notification.getNotificationId());
         //获得当前毫秒值作为公告时间
         notification.setNotificationTime(System.currentTimeMillis());
 
@@ -75,9 +78,8 @@ public class SystemNoticeController {
 
         System.out.println(notification);
         try {
-            systemNoticeService.insertNotice( notification);
-        }
-        catch (Exception e){
+            systemNoticeService.insertNotice(notification);
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "添加失败");
         }
@@ -87,6 +89,7 @@ public class SystemNoticeController {
 
     /**
      * 删除公告
+     *
      * @param notificationId
      * @return
      */
@@ -98,9 +101,9 @@ public class SystemNoticeController {
             String s = null;
             List<File> files = fileService.findFileByNotificationId(notificationId);
             //如果有文件
-            if(files.size() > 0){
+            if (files.size() > 0) {
                 //截取文件保存所在的文件夹路径
-                s = files.get(0).getFilePath().substring(0,files.get(0).getFilePath().length() - files.get(0).getFileName().length() - 1);
+                s = files.get(0).getFilePath().substring(0, files.get(0).getFilePath().length() - files.get(0).getFileName().length() - 1);
                 System.out.println(s);
                 //快速for循环 快捷键iter
                 for (File file : files) {
@@ -136,23 +139,23 @@ public class SystemNoticeController {
 
     /**
      * 修改公告内容
+     *
      * @param notification
      * @return
      */
     @RequestMapping(value = "/updateNotice", method = RequestMethod.POST)
     public @ResponseBody
-    ResponseMessage updateNotification(@RequestBody Notification notification){
+    ResponseMessage updateNotification(@RequestBody Notification notification) {
         System.out.println(notification);
         //将competitionId存入redis，修改文件时使用
-        redisUtil.set("notificationId",notification.getNotificationId());
+        redisUtil.set("notificationId", notification.getNotificationId());
         try {
             systemNoticeService.updateNotification(notification);
-            ResponseMessage responseMessage = new ResponseMessage("1","修改成功");
+            ResponseMessage responseMessage = new ResponseMessage("1", "修改成功");
             return responseMessage;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseMessage("0","修改失败");
+            return new ResponseMessage("0", "修改失败");
         }
     }
 }

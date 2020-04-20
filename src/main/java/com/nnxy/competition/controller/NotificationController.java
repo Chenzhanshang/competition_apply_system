@@ -68,6 +68,7 @@ public class NotificationController {
 
     /**
      * 加载所有竞赛类型
+     *
      * @return
      */
     @RequestMapping("/findAllType")
@@ -87,6 +88,7 @@ public class NotificationController {
 
     /**
      * 保存新竞赛，通知
+     *
      * @param competitionNotificationVO
      * @return
      */
@@ -105,19 +107,18 @@ public class NotificationController {
 
         String competitionId = UUID.randomUUID().toString();
         //将competitionId存入redis，存储文件时使用
-        redisUtil.set("competitionId",competitionId);
+        redisUtil.set("competitionId", competitionId);
         //默认为比赛进行中
         competition.setCompetitionState(1);
         competition.setCompetitionId(competitionId);
-        if(competitionNotificationVO.getCompetitionTime() == null || "".equals(competitionNotificationVO.getCompetitionTime()) || "待定".equals(competitionNotificationVO.getCompetitionTime())){
+        if (competitionNotificationVO.getCompetitionTime() == null || "".equals(competitionNotificationVO.getCompetitionTime()) || "待定".equals(competitionNotificationVO.getCompetitionTime())) {
             competition.setCompetitionTime("待定");
-        }
-        else {
+        } else {
             competition.setCompetitionTime(competitionNotificationVO.getCompetitionTime());
         }
 
         //若为院级比赛
-        if(competition.getCompetitionLevel() == 1){
+        if (competition.getCompetitionLevel() == 1) {
             College college = new College();
             college.setCollegeId(competitionNotificationVO.getCollegeId());
             competition.setCollege(college);
@@ -136,37 +137,35 @@ public class NotificationController {
         try {
             notificationService.insertCompetitionAndNotification(competition, notification);
             ResponseMessage responseMessage = new ResponseMessage("1", "添加成功");
-            responseMessage.getData().put("competitionId",competition.getCompetitionId());
+            responseMessage.getData().put("competitionId", competition.getCompetitionId());
             return responseMessage;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "添加失败");
         }
-
 
 
     }
 
     /**
      * 根据通知id查找内容，用于回显修改通知的信息
+     *
      * @param notificationId
      * @return
      */
     @RequestMapping("/findDataByNotificationId")
     public @ResponseBody
-    ResponseMessage findDataByNotificationId(String notificationId){
+    ResponseMessage findDataByNotificationId(String notificationId) {
         try {
             Notification notification = notificationService.findDataByNotificationId(notificationId);
             List<File> files = fileService.findFileByCompetitionId(notification.getCompetition().getCompetitionId());
             notification.getCompetition().setFiles(files);
-            ResponseMessage responseMessage = new ResponseMessage("1","获取成功");
+            ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
             responseMessage.getData().put("notification", notification);
             return responseMessage;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseMessage("0","获取失败");
+            return new ResponseMessage("0", "获取失败");
         }
     }
 
@@ -185,9 +184,9 @@ public class NotificationController {
             String s = null;
             List<File> files = fileService.findFileByCompetitionId(competitionId);
             //如果有文件
-            if(files.size() > 0){
+            if (files.size() > 0) {
                 //保存文件夹路径
-                s = files.get(0).getFilePath().substring(0,files.get(0).getFilePath().length() - files.get(0).getFileName().length() - 1);
+                s = files.get(0).getFilePath().substring(0, files.get(0).getFilePath().length() - files.get(0).getFileName().length() - 1);
                 System.out.println(s);
                 //快速for循环 快捷键iter
                 for (File file : files) {
@@ -221,11 +220,12 @@ public class NotificationController {
 
     /**
      * 根据当前用户学校id查询学院列表，用于回显
+     *
      * @return
      */
     @RequestMapping("/findCollege")
     public @ResponseBody
-    ResponseMessage findCollege(){
+    ResponseMessage findCollege() {
         try {
             //获得当前用户（含用户名密码）
             User user = (User) SecurityUtils.getSubject().getPrincipal();
@@ -234,12 +234,11 @@ public class NotificationController {
             //根据学校id获得学院列表
             List<College> colleges = collegeService.findCollegeByUniversityId(collegeService.findCollegeById(collegeId).getUniversity().getUniversityId());
             System.out.println(colleges);
-            ResponseMessage responseMessage = new ResponseMessage("1","获取成功");
+            ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
             responseMessage.getData().put("colleges", colleges);
             return responseMessage;
-        }
-        catch (Exception e){
-            return new ResponseMessage("0","获取失败");
+        } catch (Exception e) {
+            return new ResponseMessage("0", "获取失败");
         }
     }
 
@@ -252,17 +251,16 @@ public class NotificationController {
      */
     @RequestMapping(value = "/updateNotification", method = RequestMethod.POST)
     public @ResponseBody
-    ResponseMessage updateNotification(@RequestBody CompetitionNotificationVO competitionNotificationVO){
+    ResponseMessage updateNotification(@RequestBody CompetitionNotificationVO competitionNotificationVO) {
         //将competitionId存入redis，修改文件时使用
-        redisUtil.set("competitionId",competitionNotificationVO.getCompetitionId());
+        redisUtil.set("competitionId", competitionNotificationVO.getCompetitionId());
         try {
             notificationService.updateNotification(competitionNotificationVO);
-            ResponseMessage responseMessage = new ResponseMessage("1","修改成功");
+            ResponseMessage responseMessage = new ResponseMessage("1", "修改成功");
             return responseMessage;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseMessage("0","修改失败");
+            return new ResponseMessage("0", "修改失败");
         }
     }
 }

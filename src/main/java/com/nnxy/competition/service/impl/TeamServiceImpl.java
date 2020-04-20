@@ -16,9 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
- * @author  :CZS
- * @date    :2019/12/27 12:13
+ * @author :CZS
+ * @date :2019/12/27 12:13
  * Email    :642125256@qq.com
  */
 @Service
@@ -28,12 +27,12 @@ public class TeamServiceImpl implements TeamService {
     @Autowired
     private UserDao userDao;
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
+    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public void insertTeam(Team team) {
         teamDao.insertTeam(team);
         //将自己增加到队伍中
-        teamDao.insertUserTeam(team.getTeamId(),team.getCaptain().getUserId());
+        teamDao.insertUserTeam(team.getTeamId(), team.getCaptain().getUserId());
     }
 
     @Override
@@ -53,14 +52,14 @@ public class TeamServiceImpl implements TeamService {
         teamDao.updateMyTeam(team);
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
+    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public void deleteTeamUser(String teamId, String userId) {
         teamDao.deleteTeamUser(teamId, userId);
         teamDao.updateTeamHeadcount(teamId);
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
+    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public void deleteTeam(String teamId) {
         //通过队伍id删除所有队员
@@ -74,13 +73,14 @@ public class TeamServiceImpl implements TeamService {
         return teams;
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public void deleteTeamOneUser(String teamId, String userId) {
         teamDao.deleteTeamUser(teamId, userId);
         //获得当前队伍
         Team team = teamDao.findTeamById(teamId);
         //判断当前队伍状态,如果为已满人或已报名，修改队伍状态，反之不修改
-        if(team.getTeamState() == 2 || team.getTeamState() == 3){
+        if (team.getTeamState() == 2 || team.getTeamState() == 3) {
             team.setTeamState(0);
         }
         //队伍人数减1
@@ -90,7 +90,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public List<Apply> findAllMyTeamApply(List<Team> teams) {
-        if(teams == null || teams.size() == 0){
+        if (teams == null || teams.size() == 0) {
             return null;
         }
         List<Apply> applies = teamDao.findAllMyTeamApply(teams);
@@ -99,7 +99,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public List<Apply> findAllMyHistoryTeamApply(List<Team> teams) {
-        if(teams == null || teams.size() == 0){
+        if (teams == null || teams.size() == 0) {
             return null;
         }
         //获取审批过的申请列表

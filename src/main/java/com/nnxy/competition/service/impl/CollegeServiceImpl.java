@@ -9,15 +9,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * 
- * @author  :CZS
- * @date    :2019/12/20 14:00
+ * @author :CZS
+ * @date :2019/12/20 14:00
  * Email    :642125256@qq.com
  */
 @Service
 public class CollegeServiceImpl implements CollegeService {
     @Autowired
     private CollegeDao collegeDao;
+
     @Override
     public College findCollegeByNameAndUniversityId(String collegeName, String universityId) {
         College college = collegeDao.findCollegeByNameAndUniversityId(collegeName, universityId);

@@ -17,9 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * 
- * @author  :CZS
- * @date    :2019/12/18 10:29
+ * @author :CZS
+ * @date :2019/12/18 10:29
  * Email    :642125256@qq.com
  */
 
@@ -41,18 +40,17 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public List<Notification> findSystemNoticeByTypeAndState(Integer notificationType,Integer notificationState) {
-        List<Notification> notifications = notificationDao.findSystemNoticeByTypeAndState(notificationType,notificationState);
+    public List<Notification> findSystemNoticeByTypeAndState(Integer notificationType, Integer notificationState) {
+        List<Notification> notifications = notificationDao.findSystemNoticeByTypeAndState(notificationType, notificationState);
         return notifications;
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
+    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
-    public void insertCompetitionAndNotification( Competition competition, Notification notification) {
+    public void insertCompetitionAndNotification(Competition competition, Notification notification) {
         competitionDao.insertCompetition(competition);
         notificationDao.insertNotification(notification);
     }
-
 
 
     @Override
@@ -61,7 +59,7 @@ public class NotificationServiceImpl implements NotificationService {
         return notification;
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
+    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public void deleteNotificationById(String notificationId, String competitionId) {
         //删通知
@@ -73,7 +71,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
+    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public void updateNotification(CompetitionNotificationVO competitionNotificationVO) {
         notificationDao.updateNotification(competitionNotificationVO);

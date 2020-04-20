@@ -15,9 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * 
- * @author  :CZS
- * @date    :2019/12/18 16:55
+ * @author :CZS
+ * @date :2019/12/18 16:55
  * Email    :642125256@qq.com
  */
 @Service
@@ -26,6 +25,7 @@ public class ApplyServiceImpl implements ApplyService {
     private ApplyDao applyDao;
     @Autowired
     private TeamDao teamDao;
+
     @Override
     public void insertApply(UserCompetition userCompetition) {
         applyDao.insertApply(userCompetition);
@@ -53,12 +53,12 @@ public class ApplyServiceImpl implements ApplyService {
         applyDao.insertTeamApply(apply);
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
+    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public void updateApplyByDispose(Apply apply) {
         applyDao.updateApplyByDispose(apply);
         //如果为通过加入队伍操作
-        if(apply.getApplyState() == 1){
+        if (apply.getApplyState() == 1) {
             UserTeam userTeam = new UserTeam();
             userTeam.setUserId(apply.getUser().getUserId());
             userTeam.setTeamId(apply.getTeam().getTeamId());
@@ -84,7 +84,7 @@ public class ApplyServiceImpl implements ApplyService {
 
     @Override
     public Boolean findApplyByUserIdAndApplyStateAndTeamId(Apply apply) {
-        if(applyDao.findApplyByUserIdAndApplyStateAndTeamId(apply) != null){
+        if (applyDao.findApplyByUserIdAndApplyStateAndTeamId(apply) != null) {
             return true;
         }
         return false;

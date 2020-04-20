@@ -10,6 +10,7 @@ import com.nnxy.competition.entity.University;
 public interface UniversityService {
     /**
      * 根据用户的学院id查询学校
+     *
      * @param collegeId
      * @return
      */

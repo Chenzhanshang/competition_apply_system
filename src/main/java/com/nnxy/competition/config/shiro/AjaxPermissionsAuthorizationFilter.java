@@ -15,8 +15,9 @@ import java.io.PrintWriter;
 
 /**
  * 对没有登录的请求进行拦截, 全部返回json信息. 覆盖掉shiro原本的跳转jsp界面的拦截方式
- * @author  :CZS
- * @date    :2019/12/17 13:31
+ *
+ * @author :CZS
+ * @date :2019/12/17 13:31
  * Email    :642125256@qq.com
  */
 public class AjaxPermissionsAuthorizationFilter extends FormAuthenticationFilter {
@@ -52,8 +53,9 @@ public class AjaxPermissionsAuthorizationFilter extends FormAuthenticationFilter
      * 那么他会让这个请求返回错误，不会成功返回状态码200。
      * 这样，复杂请求的真正请求就不会到达服务端。
      * 所以复杂请求这里就永远也请求不到数据。
-     *
+     * <p>
      * 此方法然所有复杂请求的探测请求都返回200
+     *
      * @param request
      * @param response
      * @param mappedValue
@@ -62,9 +64,9 @@ public class AjaxPermissionsAuthorizationFilter extends FormAuthenticationFilter
      */
     @Override
     public boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
-        HttpServletRequest req = (HttpServletRequest)request;
-        HttpServletResponse res = (HttpServletResponse)response;
-        if(req.getMethod().equals(RequestMethod.OPTIONS.name())){
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
+        if (req.getMethod().equals(RequestMethod.OPTIONS.name())) {
             return true;
         }
         return super.onPreHandle(request, response, mappedValue);
@@ -73,14 +75,14 @@ public class AjaxPermissionsAuthorizationFilter extends FormAuthenticationFilter
     /**
      * 为response设置header，实现跨域
      */
-    private void setHeader(HttpServletRequest request, HttpServletResponse response){
+    private void setHeader(HttpServletRequest request, HttpServletResponse response) {
         //跨域的header设置
         response.setHeader("Access-control-Allow-Origin", request.getHeader("Origin"));
         response.setHeader("Access-Control-Allow-Methods", request.getMethod());
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
         //防止乱码，适用于传输JSON数据
-        response.setHeader("Content-Type","application/json;charset=UTF-8");
+        response.setHeader("Content-Type", "application/json;charset=UTF-8");
     }
 
     @Bean

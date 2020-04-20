@@ -3,20 +3,24 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nnxy.competition.dao.ApplyDao">
-    <insert id="insertApply" parameterType="com.nnxy.competition.entity.UserCompetition" >
-        INSERT INTO t_user_competition(competition_id, user_id, date) values (#{competition.competitionId}, #{user.userId}, #{date})
+    <insert id="insertApply" parameterType="com.nnxy.competition.entity.UserCompetition">
+        INSERT INTO t_user_competition(competition_id, user_id, date) values (#{competition.competitionId},
+        #{user.userId}, #{date})
     </insert>
 
 
-    <select id="findApplyByUserIdAndCompetitionId" parameterType="com.nnxy.competition.entity.UserCompetition" resultType="com.nnxy.competition.entity.UserCompetition">
-        SELECT * FROM t_user_competition WHERE user_id = #{user.userId} AND competition_id = #{competition.competitionId}
+    <select id="findApplyByUserIdAndCompetitionId" parameterType="com.nnxy.competition.entity.UserCompetition"
+            resultType="com.nnxy.competition.entity.UserCompetition">
+        SELECT * FROM t_user_competition WHERE user_id = #{user.userId} AND competition_id =
+        #{competition.competitionId}
     </select>
 
-    <select id="deleteApply" parameterType="com.nnxy.competition.entity.UserCompetition" >
+    <select id="deleteApply" parameterType="com.nnxy.competition.entity.UserCompetition">
         DELETE FROM t_user_competition WHERE user_id = #{user.userId} AND competition_id = #{competition.competitionId}
     </select>
 
-    <select id="findApplyByUserIdAndApplyStateAndTeamId" parameterType="com.nnxy.competition.entity.Apply" resultType="com.nnxy.competition.entity.Apply">
+    <select id="findApplyByUserIdAndApplyStateAndTeamId" parameterType="com.nnxy.competition.entity.Apply"
+            resultType="com.nnxy.competition.entity.Apply">
         SELECT * FROM t_apply WHERE user_id = #{user.userId} AND team_id = #{team.teamId} AND apply_state = 0
     </select>
 
@@ -24,8 +28,9 @@
         DELETE FROM t_apply WHERE apply_id = #{aplyId}
     </delete>
 
-    <select id="findWinByCompetitionId" parameterType="String" resultMap="findWinByCompetitionIdMap" >
-        SELECT uc.competition_id competition_id, uc.user_id user_id, uc.win_ranking win_ranking, uc.win_level_name win_level_name,
+    <select id="findWinByCompetitionId" parameterType="String" resultMap="findWinByCompetitionIdMap">
+        SELECT uc.competition_id competition_id, uc.user_id user_id, uc.win_ranking win_ranking, uc.win_level_name
+        win_level_name,
         u.name name,u.user_className user_className, c.competition_name competition_name, tc.college_name college_name
         FROM t_user_competition uc
         LEFT JOIN t_user u
@@ -34,7 +39,7 @@
         ON uc.competition_id = c.competition_id
         LEFT JOIN t_college tc
         ON u.college_id = tc.college_id
-        WHERE uc.competition_id = #{v}
+        WHERE uc.competition_id = #{v} AND uc.win_ranking != ""
         ORDER BY win_ranking
     </select>
 
@@ -44,12 +49,12 @@
         <result column="win_ranking" property="winRanking" javaType="Integer"/>
         <result column="win_level_name" property="winLevelName" javaType="String"/>
         <association property="user" javaType="com.nnxy.competition.entity.User" column="user_id">
-            <id column="user_id" property="userId" javaType="String" />
+            <id column="user_id" property="userId" javaType="String"/>
             <result column="name" property="name" javaType="String"/>
             <result column="user_className" property="userClassName" javaType="String"/>
         </association>
         <association property="competition" javaType="com.nnxy.competition.entity.Competition" column="competition_id">
-            <id column="competition_id" property="competitionId" javaType="String" />
+            <id column="competition_id" property="competitionId" javaType="String"/>
             <result column="competition_name" property="competitionName" javaType="String"/>
         </association>
     </resultMap>
@@ -60,11 +65,13 @@
     </insert>
 
     <update id="updateApplyByDispose" parameterType="com.nnxy.competition.entity.Apply">
-        UPDATE t_apply SET apply_state = #{applyState}, apply_dispose_time = #{applyDisposeTime} WHERE apply_id = #{applyId}
+        UPDATE t_apply SET apply_state = #{applyState}, apply_dispose_time = #{applyDisposeTime} WHERE apply_id =
+        #{applyId}
     </update>
 
     <select id="findMyApplyList" resultMap="ApplyListMap">
-        SELECT a.apply_id apply_id, a.apply_time apply_time, a.apply_state apply_state,a.apply_dispose_time apply_dispose_time,
+        SELECT a.apply_id apply_id, a.apply_time apply_time, a.apply_state apply_state,a.apply_dispose_time
+        apply_dispose_time,
         a.apply_content apply_content,t.team_id team_id, t.team_name team_name, c.competition_id competition_id,
         c.competition_name competition_name
         FROM t_apply a
@@ -77,23 +84,25 @@
     </select>
 
     <resultMap id="ApplyListMap" type="com.nnxy.competition.entity.Apply">
-        <id column="apply_id" property="applyId" javaType="String" />
-        <result column="apply_time" property="applyTime" javaType="Long" />
-        <result column="apply_state" property="applyState" javaType="Integer" />
-        <result column="apply_dispose_time" property="applyDisposeTime" javaType="Long" />
-        <result column="apply_content" property="applyContent" javaType="String" />
+        <id column="apply_id" property="applyId" javaType="String"/>
+        <result column="apply_time" property="applyTime" javaType="Long"/>
+        <result column="apply_state" property="applyState" javaType="Integer"/>
+        <result column="apply_dispose_time" property="applyDisposeTime" javaType="Long"/>
+        <result column="apply_content" property="applyContent" javaType="String"/>
         <association property="team" javaType="com.nnxy.competition.entity.Team" column="team_id">
-            <id column="team_id" property="teamId" javaType="String" />
-            <result column="team_name" property="teamName" javaType="String" />
-            <association property="competition" javaType="com.nnxy.competition.entity.Competition" column="competition_id">
-                <id column="competition_id" property="competitionId" javaType="String" />
-                <result column="competition_name" property="competitionName" javaType="String" />
+            <id column="team_id" property="teamId" javaType="String"/>
+            <result column="team_name" property="teamName" javaType="String"/>
+            <association property="competition" javaType="com.nnxy.competition.entity.Competition"
+                         column="competition_id">
+                <id column="competition_id" property="competitionId" javaType="String"/>
+                <result column="competition_name" property="competitionName" javaType="String"/>
             </association>
         </association>
     </resultMap>
 
     <select id="findMyHistoryApplyList" resultMap="ApplyListMap">
-        SELECT a.apply_id apply_id, a.apply_time apply_time, a.apply_state apply_state,a.apply_dispose_time apply_dispose_time,
+        SELECT a.apply_id apply_id, a.apply_time apply_time, a.apply_state apply_state,a.apply_dispose_time
+        apply_dispose_time,
         a.apply_content apply_content,t.team_id team_id, t.team_name team_name, c.competition_id competition_id,
         c.competition_name competition_name
         FROM t_apply a
