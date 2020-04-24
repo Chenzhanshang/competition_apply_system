@@ -167,10 +167,20 @@ public class WinNotificationController {
         try {
             List<UserCompetition> userCompetitions = applyService.findWinByCompetitionId(competitionId);
             List<File> files = fileService.findFileByNotificationId(notificationId);
-            ResponseMessage responseMessage = new ResponseMessage("1", "获取成功");
-            responseMessage.getData().put("userCompetitions", userCompetitions);
-            responseMessage.getData().put("files", files);
-            return responseMessage;
+            if(userCompetitions != null && userCompetitions.size() != 0){
+                ResponseMessage responseMessage = new ResponseMessage("1", "获取成功,为获奖名单");
+                responseMessage.getData().put("userCompetitions", userCompetitions);
+                return responseMessage;
+            }
+            else if(files != null && files.size() != 0){
+                ResponseMessage responseMessage = new ResponseMessage("2", "获取成功,为获奖文件");
+                responseMessage.getData().put("files", files);
+                return responseMessage;
+            }
+            return new ResponseMessage("0", "获取失败");
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "获取失败");
