@@ -131,13 +131,12 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public List<User> findUserListByTeamIdAndCaptainId(String teamId, String captainId) {
-        //获取队长信息
-        List<User> users = new ArrayList<User>();
-        User captain = userDao.findUserByUserId(captainId);
-        users.add(captain);
 
-        //获取除队长以外的队员信息
+        List<User> users = new ArrayList<User>();
+        //获取队伍成员信息
         List<User> users1 = teamDao.findUserListByTeamId(teamId);
+        System.out.println(users1);
+        System.out.println(users1.size());
         for (User user : users1) {
             users.add(user);
         }

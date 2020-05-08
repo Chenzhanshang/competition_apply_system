@@ -131,7 +131,11 @@ public class UserController {
             SimpleHash simpleHash = new SimpleHash("MD5", u.getPassword(), credentialsSalt, 1024);
             user.setPassword(simpleHash.toString());
             userService.updatePassword(user);
-            return new ResponseMessage("1", "修改成功");
+            Subject subject = SecurityUtils.getSubject();
+            if (subject.isAuthenticated()) {
+                subject.logout();
+            }
+            return new ResponseMessage("1", "修改成功,请重新登录！");
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage("0", "修改失败");

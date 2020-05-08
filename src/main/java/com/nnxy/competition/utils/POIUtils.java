@@ -205,7 +205,8 @@ public class POIUtils {
         Integer nowLine = 1;
         for (int i = 0; i < teamList.size(); i++) {
             Team team = teamList.get(i);
-            HSSFRow row = sheet.createRow(i + 1);
+            System.out.println(team);
+            HSSFRow row = sheet.createRow(nowLine);
             row.createCell(0).setCellValue(i + 1);
             row.createCell(1).setCellValue(team.getTeamName());
             row.createCell(2).setCellValue(team.getCaptain().getName());
@@ -215,10 +216,11 @@ public class POIUtils {
             row.createCell(6).setCellValue(team.getCaptain().getUserClassName());
             row.createCell(7).setCellValue(team.getCaptain().getSex());
             row.createCell(8).setCellValue(team.getCaptain().getPhone());
-
+            //行自加
+            nowLine ++;
             //队伍成员标题行
             //6. 创建标题行
-            HSSFRow rr0 = sheet.createRow(i + 2);
+            HSSFRow rr0 = sheet.createRow(nowLine);
             //设置行值,从1开始，代表成员偏移一格
             HSSFCell cc1 = rr0.createCell(1);
             cc1.setCellValue("成员序号");
@@ -251,9 +253,7 @@ public class POIUtils {
             HSSFCell cc8 = rr0.createCell(8);
             cc8.setCellStyle(headerStyle);
             cc8.setCellValue("联系电话");
-            //队长信息加队员表头，占两行
-            nowLine += 2;
-
+            nowLine ++;
             for (int j = 1; j < team.getUsers().size(); j++) {
                 User user = team.getUsers().get(j);
                 HSSFRow row1 = sheet.createRow(nowLine);

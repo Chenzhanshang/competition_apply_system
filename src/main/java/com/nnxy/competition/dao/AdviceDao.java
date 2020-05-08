@@ -2,6 +2,7 @@ package com.nnxy.competition.dao;
 
 import com.nnxy.competition.entity.Advice;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public interface AdviceDao {
      *
      * @return
      */
-    List<Advice> getAllAdvice(Integer adviceState);
+    List<Advice> getAllAdvice(@Param("adviceState")Integer adviceState);
 
     /**
      * 插入反馈建议

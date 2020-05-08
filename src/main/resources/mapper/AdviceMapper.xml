@@ -15,15 +15,8 @@
         FROM t_advice a
         LEFT JOIN t_user u
         ON a.user_id = u.user_id
-        WHERE a.advice_state = #{v}
-        <choose>
-            <when test="adviceState = 1">
-                ORDER BY a.dispose_time DESC
-            </when>
-            <otherwise>
-                ORDER BY a.advice_date DESC
-            </otherwise>
-        </choose>
+        WHERE a.advice_state = #{adviceState}
+        ORDER BY a.advice_date DESC
 
     </select>
 
