@@ -118,4 +118,8 @@
         INSERT INTO t_user_team(user_id, team_id) VALUES (#{userId}, #{teamId})
     </insert>
 
+    <delete id="deleteApplyByTeamId" parameterType="String">
+        DELETE FROM t_apply WHERE team_id = #{v}
+    </delete>
+
 </mapper>

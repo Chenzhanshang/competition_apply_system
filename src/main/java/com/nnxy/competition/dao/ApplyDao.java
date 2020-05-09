@@ -103,4 +103,10 @@ public interface ApplyDao {
      * @param applyId
      */
     void deleteTeamApply(String applyId);
+
+    /**
+     * 删除队伍所有申请
+     * @param teamId
+     */
+    void deleteApplyByTeamId(String teamId);
 }

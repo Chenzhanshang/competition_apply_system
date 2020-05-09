@@ -17,7 +17,7 @@
         LEFT JOIN t_file f
         ON f.notification_id = n.notification_id
         WHERE n.notification_type = #{v}
-
+        ORDER BY notification_time DESC
     </select>
 
     <resultMap id="notificationMap" type="com.nnxy.competition.entity.Notification">

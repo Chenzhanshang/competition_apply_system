@@ -1,5 +1,6 @@
 package com.nnxy.competition.service.impl;
 
+import com.nnxy.competition.dao.ApplyDao;
 import com.nnxy.competition.dao.TeamDao;
 import com.nnxy.competition.dao.UserDao;
 import com.nnxy.competition.entity.Apply;
@@ -25,7 +26,7 @@ public class TeamServiceImpl implements TeamService {
     @Autowired
     private TeamDao teamDao;
     @Autowired
-    private UserDao userDao;
+    private ApplyDao applyDao;
 
     @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
@@ -64,6 +65,8 @@ public class TeamServiceImpl implements TeamService {
     public void deleteTeam(String teamId) {
         //通过队伍id删除所有队员
         teamDao.deleteTeamUserByTeamId(teamId);
+        //删除所有申请
+        applyDao.deleteApplyByTeamId(teamId);
         teamDao.deleteTeam(teamId);
     }
 
