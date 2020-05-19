@@ -6,6 +6,8 @@ import com.nnxy.competition.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author :CZS
  * @date :2019/12/14 13:13
@@ -44,6 +46,12 @@ public class UserServiceImpl implements UserService {
     public User findUserByUserId(String userId) {
         User user = userDao.findUserByUserId(userId);
         return user;
+    }
+
+    @Override
+    public List<User> getAllUser() {
+        List<User> users = userDao.getAllUser();
+        return users;
     }
 
 

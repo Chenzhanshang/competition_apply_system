@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 
 /**
  * @author :CZS
@@ -185,6 +187,27 @@ public class UserController {
             return new ResponseMessage("200", "已登录");
         }
         return new ResponseMessage("1001", "未登录,自动跳转到登录界面！");
+    }
+
+    /**
+     * 获得所有用户
+     *
+     * @return
+     */
+    @RequestMapping("/getAllUser")
+    @ResponseBody
+    public ResponseMessage getAllUser() {
+        List<User> users = null;
+        try {
+            users = userService.getAllUser();
+            ResponseMessage responseMessage = new ResponseMessage("1","获取成功");
+            responseMessage.getData().put("userList",users);
+            return responseMessage;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseMessage("0", "获取失败");
+        }
     }
 
 }

@@ -127,8 +127,10 @@
     </select>
 
     <resultMap id="findCompetitionListByUserIdMap" type="com.nnxy.competition.entity.UserCompetition">
-        <id column="user_id" property="userId" javaType="String"/>
         <result column="dt" property="date" javaType="Long"/>
+        <association property="user" column="user_id" javaType="com.nnxy.competition.entity.User" >
+            <id column="user_id" property="userId" javaType="String"/>
+        </association>
         <association property="competition" javaType="com.nnxy.competition.entity.Competition" column="competition_id">
             <id column="competition_id" property="competitionId" javaType="String"/>
             <result column="competition_name" property="competitionName" javaType="String"/>
@@ -179,4 +181,27 @@
         </association>
     </resultMap>
 
+    <select id="findTeamCompetitionListByUserId" parameterType="String" resultMap="findTeamCompetitionListByUserIdMap">
+        SELECT t.captain_id captain_id, t.apply_time apply_time, c.competition_name competition_name, c.competition_type competition_type,
+        c.competition_id competition_id,c.competition_people_sum competition_people_sum, c.competition_state competition_state
+        FROM t_team t
+        LEFT JOIN t_competition c
+        ON t.competition_id = c.competition_id
+        WHERE t.captain_id = #{v} AND t.apply_time IS NOT NULL
+    </select>
+
+    <resultMap id="findTeamCompetitionListByUserIdMap" type="com.nnxy.competition.entity.UserCompetition">
+
+        <result column="apply_time" property="date" javaType="Long"/>
+        <association property="user" column="captain_id" javaType="com.nnxy.competition.entity.User" >
+            <id column="captain_id" property="userId" javaType="String"/>
+        </association>
+        <association property="competition" javaType="com.nnxy.competition.entity.Competition" column="competition_id">
+            <id column="competition_id" property="competitionId" javaType="String"/>
+            <result column="competition_name" property="competitionName" javaType="String"/>
+            <result column="competition_state" property="competitionState" javaType="Integer"/>
+            <result column="competition_type" property="competitionType" javaType="String"/>
+            <result column="competition_people_sum" property="competitionPeopleSum" javaType="Integer"/>
+        </association>
+    </resultMap>
 </mapper>

@@ -45,6 +45,10 @@ public class CompetitionServiceImpl implements CompetitionService {
     @Override
     public List<UserCompetition> findCompetitionListByUserId(String userId) {
         List<UserCompetition> competitions = competitionDao.findCompetitionListByUserId(userId);
+        //获取组队赛已报名列表
+        List<UserCompetition> competitions1 = competitionDao.findTeamCompetitionListByUserId(userId);
+        System.out.println("------------" + competitions1);
+        competitions.addAll(competitions1);
         return competitions;
     }
 

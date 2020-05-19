@@ -3,6 +3,8 @@ package com.nnxy.competition.dao;
 import com.nnxy.competition.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 
 /**
  * @author CZS
@@ -58,4 +60,10 @@ public interface UserDao {
      * @return
      */
     User findUserByUserId(String captainId);
+
+    /**
+     * 获得所有用户
+     * @return
+     */
+    List<User> getAllUser();
 }

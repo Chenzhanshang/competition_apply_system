@@ -2,6 +2,8 @@ package com.nnxy.competition.service;
 
 import com.nnxy.competition.entity.User;
 
+import java.util.List;
+
 /**
  * @author CZS
  * CreateTime 2019/12/4 11:09
@@ -48,4 +50,10 @@ public interface UserService {
      * @return
      */
     User findUserByUserId(String userId);
+
+    /**
+     * 获得所有用户
+     * @return
+     */
+    List<User> getAllUser();
 }

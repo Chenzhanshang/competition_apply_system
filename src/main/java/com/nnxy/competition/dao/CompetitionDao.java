@@ -84,4 +84,11 @@ public interface CompetitionDao {
      * @return
      */
     List<User> findUserList(String competitionId);
+
+    /**
+     * 获取组队赛已报名竞赛列表
+     * @param userId
+     * @return
+     */
+    List<UserCompetition> findTeamCompetitionListByUserId(String userId);
 }
